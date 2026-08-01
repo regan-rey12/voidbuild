@@ -1,0 +1,48 @@
+{
+  "id": "clinic-ntinda-1",
+  "name": "Family Care Clinic Ntinda",
+  "category": "clinic",
+  "description": "Clinic Ntinda, general treatment",
+  "meta": { "target": "Clinic Ntinda", "language": "en" },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": { "businessName": "Family Care Clinic", "phone": "+256 700 555666", "whatsapp": "+256700555666" },
+      "style": { "primaryColor": "#06B6D4" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "🩺 Open Daily 8am-8pm - Lab & Pharmacy",
+        "title": "Your Health, Our Care in Ntinda",
+        "subtitle": "General treatment, lab tests, maternity. Affordable UGX, MTN MoMo accepted. Doctor on call.",
+        "ctaText": "Call Doctor Now",
+        "ctaLink": "#contact",
+        "image": "clinic doctor hospital"
+      },
+      "style": { "primaryColor": "#06B6D4" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "Our Services - UGX",
+        "services": [
+          { "name": "General Check", "price": "UGX 20,000", "description": "Doctor consultation", "icon": "🩺" },
+          { "name": "Lab Tests", "price": "UGX 15,000+", "description": "Malaria, typhoid, etc", "icon": "🔬" },
+          { "name": "Pharmacy", "price": "UGX 5,000+", "description": "Drugs available", "icon": "💊" }
+        ]
+      },
+      "style": { "primaryColor": "#06B6D4" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": { "phone": "+256 700 555666", "whatsapp": "+256700555666", "location": "Ntinda Trading Centre, Near Shell, Kampala", "hours": "Mon-Sun 8am-8pm" },
+      "style": { "primaryColor": "#06B6D4" }
+    },
+    { "id": "footer-1", "type": "footer", "data": { "businessName": "Family Care Clinic Ntinda", "tagline": "General Treatment • Lab • Pharmacy", "year": 2026 }, "style": { "primaryColor": "#06B6D4" } }
+  ]
+}

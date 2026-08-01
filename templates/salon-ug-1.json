@@ -1,0 +1,130 @@
+{
+  "id": "salon-ug-1",
+  "name": "Aisha's Beauty Salon",
+  "category": "salon",
+  "description": "Salon Wandegeya - braids with real photos",
+  "meta": { "target": "Salon in Wandegeya, Kampala", "language": "en" },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": {
+        "businessName": "Aisha's Beauty",
+        "phone": "+256 700 123456",
+        "whatsapp": "+256700123456",
+        "links": [
+          { "label": "Services", "href": "#services" },
+          { "label": "Gallery", "href": "#gallery" },
+          { "label": "Contact", "href": "#contact" }
+        ]
+      },
+      "style": { "primaryColor": "#EC4899" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "🔥 #1 Rated in Wandegeya - Real Photos",
+        "title": "Slay Every Day at Aisha's Beauty Salon",
+        "subtitle": "Braids, natural hair, nails & makeup. See real work photos below. Affordable prices, MTN MoMo accepted. Open 7am - 9pm.",
+        "ctaText": "Book on WhatsApp",
+        "ctaLink": "#contact",
+        "image": "african salon braids beautiful woman Kampala"
+      },
+      "style": { "primaryColor": "#EC4899", "alignment": "left" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "Our Services - Real Photos, Fair Prices",
+        "subheading": "All services include wash & style. Real photos of our work. Students get 10% off. Click image to upload your own.",
+        "services": [
+          {
+            "name": "Box Braids",
+            "price": "UGX 35,000",
+            "description": "Neat, long-lasting braids. 3-4 hours. See real photo.",
+            "icon": "💇🏾‍♀️",
+            "image": "african box braids long beautiful"
+          },
+          {
+            "name": "Natural Hair Treatment",
+            "price": "UGX 20,000",
+            "description": "Deep conditioning & styling for natural hair.",
+            "icon": "✨",
+            "image": "african natural hair treatment"
+          },
+          {
+            "name": "Nails + Makeup",
+            "price": "UGX 25,000",
+            "description": "Gel nails + soft glam makeup for events.",
+            "icon": "💅",
+            "image": "nails makeup african woman"
+          },
+          {
+            "name": "Bridal Package",
+            "price": "UGX 80,000",
+            "description": "Full bridal look + trial. Real bridal photos.",
+            "icon": "👰🏾",
+            "image": "african bridal makeup wedding"
+          },
+          {
+            "name": "Kids Braids",
+            "price": "UGX 15,000",
+            "description": "Gentle & quick for school kids. See real kids braids.",
+            "icon": "👧🏾",
+            "image": "kids african braids children"
+          },
+          {
+            "name": "Men's Haircut",
+            "price": "UGX 10,000",
+            "description": "Clean cuts, beard trim for men.",
+            "icon": "💈",
+            "image": "african men haircut barbershop"
+          }
+        ]
+      },
+      "style": { "primaryColor": "#EC4899" }
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery",
+      "data": {
+        "heading": "Real Work - Our Portfolio",
+        "subheading": "Real photos from our salon in Wandegeya - not stock. Click any image to upload your own work.",
+        "images": [
+          "african box braids",
+          "african natural hair",
+          "nails art",
+          "african bridal",
+          "kids braids",
+          "barbershop haircut"
+        ]
+      },
+      "style": { "primaryColor": "#EC4899" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": {
+        "heading": "Find Us in Wandegeya",
+        "phone": "+256 700 123456",
+        "whatsapp": "+256700123456",
+        "location": "Wandegeya Market, Shop 12A, Near Shell, Kampala",
+        "hours": "Mon-Sun: 7am - 9pm. Walk-ins welcome.",
+        "email": "aisha@beauty.ug"
+      },
+      "style": { "primaryColor": "#EC4899" }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "businessName": "Aisha's Beauty Salon",
+        "tagline": "Real Photos • Braids • Natural Hair • Nails • Wandegeya, Kampala",
+        "year": 2026
+      },
+      "style": { "primaryColor": "#EC4899" }
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "portfolio-kampala-1",
+  "name": "John Photographer Kampala",
+  "category": "portfolio",
+  "description": "Freelance photographer Kampala",
+  "meta": { "target": "Photographer Kampala portfolio", "language": "en" },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": { "businessName": "John Photography", "phone": "+256 706 999000", "whatsapp": "+256706999000" },
+      "style": { "primaryColor": "#111827" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "📸 Available for Weddings, Kwanjulas, Birthdays",
+        "title": "Capturing Your Story in Kampala",
+        "subtitle": "Freelance photographer - weddings, events, portraits. UGX pricing, WhatsApp booking, fast delivery.",
+        "ctaText": "Book on WhatsApp",
+        "ctaLink": "#contact",
+        "image": "photographer camera wedding"
+      },
+      "style": { "primaryColor": "#111827" }
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery",
+      "data": { "heading": "My Work", "images": ["wedding", "portrait", "event", "african wedding", "photography", "camera"] },
+      "style": { "primaryColor": "#111827" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "Packages - UGX",
+        "services": [
+          { "name": "Portrait", "price": "UGX 100,000", "description": "1hr shoot + 20 edited", "icon": "📸" },
+          { "name": "Wedding", "price": "UGX 500,000", "description": "Full day + album", "icon": "💍" },
+          { "name": "Event", "price": "UGX 200,000", "description": "Birthdays, corporate", "icon": "🎉" }
+        ]
+      },
+      "style": { "primaryColor": "#111827" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": { "phone": "+256 706 999000", "whatsapp": "+256706999000", "location": "Kampala, Makindye", "hours": "Available daily" },
+      "style": { "primaryColor": "#111827" }
+    },
+    { "id": "footer-1", "type": "footer", "data": { "businessName": "John Photography", "tagline": "Kampala Photographer", "year": 2026 }, "style": { "primaryColor": "#111827" } }
+  ]
+}

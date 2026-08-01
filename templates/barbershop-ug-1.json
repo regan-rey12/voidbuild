@@ -1,0 +1,48 @@
+{
+  "id": "barbershop-wandegeya-1",
+  "name": "Fresh Cuts Barbershop Wandegeya",
+  "category": "barbershop",
+  "description": "Barbershop Wandegeya",
+  "meta": { "target": "Barbershop Wandegeya", "language": "en" },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": { "businessName": "Fresh Cuts", "phone": "+256 702 777888", "whatsapp": "+256702777888" },
+      "style": { "primaryColor": "#111827" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "💈 Walk-ins Welcome - Student Discount 10%",
+        "title": "Stay Fresh - Best Cuts in Wandegeya",
+        "subtitle": "Haircuts, beard trim, dreadlocks. UGX 5k-15k. Open 8am-9pm. MoMo accepted.",
+        "ctaText": "Book on WhatsApp",
+        "ctaLink": "#contact",
+        "image": "barbershop haircut man"
+      },
+      "style": { "primaryColor": "#111827" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "Services - UGX",
+        "services": [
+          { "name": "Haircut", "price": "UGX 8,000", "description": "Fade, clean", "icon": "💈" },
+          { "name": "Beard + Haircut", "price": "UGX 12,000", "description": "Beard trim & lineup", "icon": "🧔" },
+          { "name": "Dreadlocks", "price": "UGX 15,000", "description": "Retwist & style", "icon": "✊" }
+        ]
+      },
+      "style": { "primaryColor": "#111827" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": { "phone": "+256 702 777888", "whatsapp": "+256702777888", "location": "Wandegeya Market, Second Floor, Kampala", "hours": "Daily 8am-9pm" },
+      "style": { "primaryColor": "#111827" }
+    },
+    { "id": "footer-1", "type": "footer", "data": { "businessName": "Fresh Cuts Barbershop", "tagline": "Wandegeya - Stay Fresh", "year": 2026 }, "style": { "primaryColor": "#111827" } }
+  ]
+}

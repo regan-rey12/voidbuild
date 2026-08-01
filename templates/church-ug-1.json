@@ -1,0 +1,70 @@
+{
+  "id": "church-mbarara-1",
+  "name": "Victory Church Mbarara",
+  "category": "church",
+  "description": "Church in Mbarara - Sunday service, youth",
+  "meta": { "target": "Church Mbarara", "language": "en" },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": {
+        "businessName": "Victory Church",
+        "phone": "+256 782 111222",
+        "whatsapp": "+256782111222",
+        "links": [{ "label": "Services", "href": "#services" }, { "label": "Contact", "href": "#contact" }]
+      },
+      "style": { "primaryColor": "#6366F1" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "🙏 Sunday 8am & 10:30am - All Welcome",
+        "title": "Welcome to Victory Church Mbarara",
+        "subtitle": "Growing in faith, serving community. Join us this Sunday. Live on Facebook.",
+        "ctaText": "Join on WhatsApp",
+        "ctaLink": "#contact",
+        "image": "church congregation worship"
+      },
+      "style": { "primaryColor": "#6366F1" }
+    },
+    {
+      "id": "stats-1",
+      "type": "stats",
+      "data": {
+        "stats": [
+          { "number": "500+", "label": "Members" },
+          { "number": "10", "label": "Years" },
+          { "number": "3", "label": "Services Weekly" }
+        ]
+      },
+      "style": { "primaryColor": "#6366F1" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "Our Services",
+        "services": [
+          { "name": "Sunday Service", "price": "8am & 10:30am", "description": "Main worship", "icon": "🙏" },
+          { "name": "Youth Fellowship", "price": "Sat 3pm", "description": "Youth gathering", "icon": "👥" },
+          { "name": "Bible Study", "price": "Wed 5pm", "description": "Midweek study", "icon": "📖" }
+        ]
+      },
+      "style": { "primaryColor": "#6366F1" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": {
+        "phone": "+256 782 111222",
+        "whatsapp": "+256782111222",
+        "location": "Mbarara Main, Near Market, Mbarara",
+        "hours": "Sun 8am, 10:30am | Wed 5pm | Sat 3pm"
+      },
+      "style": { "primaryColor": "#6366F1" }
+    },
+    { "id": "footer-1", "type": "footer", "data": { "businessName": "Victory Church Mbarara", "tagline": "Faith • Hope • Love", "year": 2026 }, "style": { "primaryColor": "#6366F1" } }
+  ]
+}

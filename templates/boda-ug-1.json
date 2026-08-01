@@ -1,0 +1,53 @@
+{
+  "id": "boda-kampala-1",
+  "name": "Speed Boda Garage Ntinda",
+  "category": "boda",
+  "description": "Boda boda repair Ntinda",
+  "meta": { "target": "Boda garage Kampala", "language": "en" },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": { "businessName": "Speed Boda Garage", "phone": "+256 750 444555", "whatsapp": "+256750444555" },
+      "style": { "primaryColor": "#111827" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "🔧 Fast Repair - 30 mins - Open Daily",
+        "title": "Boda Repair Fast & Cheap in Ntinda",
+        "subtitle": "Engine, oil, tyres, wiring. Genuine parts. MTN MoMo accepted. Call now, we rescue.",
+        "ctaText": "Call Now - Rescue",
+        "ctaLink": "#contact",
+        "image": "motorcycle repair garage"
+      },
+      "style": { "primaryColor": "#111827" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "Our Services - UGX",
+        "services": [
+          { "name": "Oil Change", "price": "UGX 20,000", "description": "Full service + filter", "icon": "🛢️" },
+          { "name": "Tyre + Tube", "price": "UGX 35,000", "description": "New tube, pressure check", "icon": "🛞" },
+          { "name": "Engine Repair", "price": "UGX 50,000+", "description": "Piston, clutch, wiring", "icon": "🔧" }
+        ]
+      },
+      "style": { "primaryColor": "#111827" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": {
+        "phone": "+256 750 444555",
+        "whatsapp": "+256750444555",
+        "location": "Ntinda-Kisaasi Road, Stage, Kampala",
+        "hours": "Mon-Sun 7am-8pm"
+      },
+      "style": { "primaryColor": "#111827" }
+    },
+    { "id": "footer-1", "type": "footer", "data": { "businessName": "Speed Boda Garage", "tagline": "Fast Boda Repair Ntinda", "year": 2026 }, "style": { "primaryColor": "#111827" } }
+  ]
+}

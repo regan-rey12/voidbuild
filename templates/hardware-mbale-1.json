@@ -1,0 +1,74 @@
+{
+  "id": "hardware-mbale-1",
+  "name": "Musa Hardware Mbale",
+  "category": "hardware",
+  "description": "Building materials Mbale - cement, iron sheets, paint",
+  "meta": { "target": "Hardware shop Mbale", "language": "en" },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": {
+        "businessName": "Musa Hardware",
+        "phone": "+256 772 345678",
+        "whatsapp": "+256772345678",
+        "links": [
+          { "label": "Products", "href": "#services" },
+          { "label": "Contact", "href": "#contact" }
+        ]
+      },
+      "style": { "primaryColor": "#F59E0B" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "🏗️ Trusted Since 2018 - Free Delivery in Mbale Town",
+        "title": "Build Strong with Musa Hardware",
+        "subtitle": "Cement, iron sheets, nails, paint - fair prices. MTN MoMo & Airtel Money accepted. Call for price list.",
+        "ctaText": "Call for Price List",
+        "ctaLink": "#contact",
+        "image": "hardware shop building materials cement"
+      },
+      "style": { "primaryColor": "#F59E0B" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "What We Sell - Best Price in Mbale",
+        "subheading": "Tororo & Hima cement available. Wholesale price.",
+        "services": [
+          { "name": "Cement", "price": "UGX 35,000/bag", "description": "Tororo, Hima, all types", "icon": "🏗️" },
+          { "name": "Iron Sheets", "price": "UGX 28,000", "description": "Versatile & G32, all colors", "icon": "🏠" },
+          { "name": "Paint & Tools", "price": "UGX 15,000+", "description": "Plascon, hammers, nails, timber", "icon": "🎨" },
+          { "name": "Plumbing", "price": "UGX 10,000+", "description": "Pipes, tanks, fittings", "icon": "🚰" }
+        ]
+      },
+      "style": { "primaryColor": "#F59E0B" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": {
+        "heading": "Find Us in Mbale",
+        "phone": "+256 772 345678",
+        "whatsapp": "+256772345678",
+        "location": "Mbale Main Road, Opposite Stanbic Bank, Mbale",
+        "hours": "Mon-Sat: 7:30am - 6:30pm, Sunday: Closed",
+        "email": "musa@hardware.ug"
+      },
+      "style": { "primaryColor": "#F59E0B" }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "businessName": "Musa Hardware Mbale",
+        "tagline": "Building Mbale - Cement, Iron Sheets, Paint, Tools",
+        "year": 2026
+      },
+      "style": { "primaryColor": "#F59E0B" }
+    }
+  ]
+}

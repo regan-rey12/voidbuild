@@ -1,0 +1,59 @@
+{
+  "id": "boutique-kampala-1",
+  "name": "Trendy Boutique Ntinda",
+  "category": "boutique",
+  "description": "Women clothes boutique Ntinda",
+  "meta": { "target": "Boutique Ntinda", "language": "en" },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": { "businessName": "Trendy Boutique", "phone": "+256 703 222333", "whatsapp": "+256703222333" },
+      "style": { "primaryColor": "#EC4899" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "👗 New Stock Weekly - Delivery in Kampala",
+        "title": "Look Fab with Trendy Boutique",
+        "subtitle": "Dresses, bags, shoes - UGX 30k-80k. Order via WhatsApp, pay MoMo, we deliver.",
+        "ctaText": "Shop on WhatsApp",
+        "ctaLink": "#contact",
+        "image": "fashion boutique women clothes"
+      },
+      "style": { "primaryColor": "#EC4899" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "New Arrivals",
+        "services": [
+          { "name": "Dresses", "price": "UGX 50,000", "description": "Ankara & casual", "icon": "👗" },
+          { "name": "Bags & Shoes", "price": "UGX 40,000", "description": "Matching sets", "icon": "👜" },
+          { "name": "Accessories", "price": "UGX 15,000", "description": "Jewelry, belts", "icon": "💍" }
+        ]
+      },
+      "style": { "primaryColor": "#EC4899" }
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery",
+      "data": { "heading": "See Our Collection", "images": ["fashion", "dress", "boutique", "shoes", "bag", "women"] },
+      "style": { "primaryColor": "#EC4899" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": {
+        "phone": "+256 703 222333",
+        "whatsapp": "+256703222333",
+        "location": "Ntinda Complex, Shop B12, Kampala",
+        "hours": "Mon-Sat 9am-7pm"
+      },
+      "style": { "primaryColor": "#EC4899" }
+    },
+    { "id": "footer-1", "type": "footer", "data": { "businessName": "Trendy Boutique Ntinda", "tagline": "Dresses • Bags • Shoes - Ntinda", "year": 2026 }, "style": { "primaryColor": "#EC4899" } }
+  ]
+}

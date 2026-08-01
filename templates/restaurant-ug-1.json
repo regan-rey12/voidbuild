@@ -1,0 +1,63 @@
+{
+  "id": "restaurant-wandegeya-1",
+  "name": "Mama's Kitchen Wandegeya",
+  "category": "restaurant",
+  "description": "Local food restaurant Wandegeya",
+  "meta": { "target": "Restaurant Wandegeya", "language": "en" },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": {
+        "businessName": "Mama's Kitchen",
+        "phone": "+256 700 987654",
+        "whatsapp": "+256700987654",
+        "links": [{ "label": "Menu", "href": "#services" }, { "label": "Contact", "href": "#contact" }]
+      },
+      "style": { "primaryColor": "#EF4444" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "🍛 Fresh Daily - Delivery in 30 mins",
+        "title": "Taste Home at Mama's Kitchen",
+        "subtitle": "Luwombo, matooke, pilau, chicken. Fresh, affordable. Order via WhatsApp, pay MoMo.",
+        "ctaText": "Order on WhatsApp",
+        "ctaLink": "#contact",
+        "image": "ugandan food restaurant pilau"
+      },
+      "style": { "primaryColor": "#EF4444" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "Our Menu - UGX Prices",
+        "services": [
+          { "name": "Luwombo + Matooke", "price": "UGX 15,000", "description": "Chicken luwombo with matooke", "icon": "🍛" },
+          { "name": "Pilau + Chicken", "price": "UGX 18,000", "description": "Friday special", "icon": "🍗" },
+          { "name": "Rolex Combo", "price": "UGX 5,000", "description": "Chapati + eggs + soda", "icon": "🫓" }
+        ]
+      },
+      "style": { "primaryColor": "#EF4444" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": {
+        "phone": "+256 700 987654",
+        "whatsapp": "+256700987654",
+        "location": "Wandegeya, Bombo Road, Near Makerere",
+        "hours": "Daily 7am - 10pm"
+      },
+      "style": { "primaryColor": "#EF4444" }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": { "businessName": "Mama's Kitchen Wandegeya", "tagline": "Fresh local food daily", "year": 2026 },
+      "style": { "primaryColor": "#EF4444" }
+    }
+  ]
+}
