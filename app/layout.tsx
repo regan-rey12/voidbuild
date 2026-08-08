@@ -1,9 +1,19 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import FeedbackButton from "../components/FeedbackButton";
 
 export const metadata: Metadata = {
   title: "VoidBuild - AI Website Builder for Uganda | UGX, MoMo, WhatsApp",
-  description: "Build your shop website in 30 seconds. UGX pricing, WhatsApp-ready, MTN MoMo & Airtel Money. 10 Uganda templates.",
+  description: "Build your shop website in 30 seconds. Professional, fast, WhatsApp-ready. 10 Uganda templates.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
+  openGraph: {
+    title: "VoidBuild - Build your shop website in 30 seconds",
+    description: "Professional websites for Ugandan SMEs - UGX pricing, WhatsApp ready",
+    images: ["/logo.png"],
+  },
 };
 
 export default function RootLayout({
@@ -14,10 +24,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Flutterwave SDK for MoMo payments - Day 5 */}
-        <script src="https://checkout.flutterwave.com/v3.js" async></script>
+        <link rel="icon" href="/logo.png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
       </head>
-      <body>{children}</body>
+      <body className="antialiased">
+        {children}
+        <FeedbackButton />
+      </body>
     </html>
   );
 }

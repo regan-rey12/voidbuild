@@ -1,4 +1,4 @@
-// VoidBuild Auth - Phone OTP + Email magic link + Google
+// VoidBuild Auth - Email + Google
 // Uganda SMEs have phone, not always email - phone OTP is best
 
 import { getSupabase } from './supabase';
@@ -31,7 +31,7 @@ export async function signInWithEmail(email: string) {
     }
   });
   if (error) throw error;
-  return { success: true, message: 'Magic link sent to email - check inbox (and spam)' };
+  return { success: true, message: 'Sign-in link sent to email - check inbox (and spam)' };
 }
 
 export async function signInWithPhone(phone: string) {

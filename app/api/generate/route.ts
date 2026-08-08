@@ -1,74 +1,138 @@
-// VoidBuild v2 API - FIXED free models + better errors
-export const runtime = 'edge';
+// VoidBuild v2 API - Fixed Module Not Found using fs readFile for templates
+export const runtime = 'nodejs';
+
+import fs from 'fs';
+import path from 'path';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-const SYSTEM_PROMPT = `You are VoidBuild AI, expert for Ugandan SMEs.
+const SYSTEM_PROMPT = `You are VoidBuild AI for Ugandan SMEs. OUTPUT ONLY VALID JSON, FULL, NOT TRUNCATED.
 
-OUTPUT ONLY VALID JSON. No markdown, no code fences.
-
-STRUCTURE (MUST FOLLOW):
+STRUCTURE:
 {
-  "id": "type-location-number",
+  "id": "type-location",
   "name": "Business Name",
-  "category": "salon | hardware | restaurant | church | shop | boda | school | clinic | boutique | barbershop | portfolio",
-  "description": "short",
-  "meta": {"target": "Salon in Wandegeya", "language": "en"},
+  "category": "salon | hardware | restaurant | church | boutique | boda | school | clinic | barbershop | portfolio",
+  "meta": {"target": "Salon Wandegeya"},
   "blocks": [
-    {"id":"nav-1","type":"navbar","data":{"businessName":"Aisha's Beauty","phone":"+256 700 123456","whatsapp":"+256700123456","links":[{"label":"Services","href":"#services"},{"label":"Contact","href":"#contact"}]},"style":{"primaryColor":"#EC4899"}},
-    {"id":"hero-1","type":"hero","data":{"badge":"#1 Rated in Wandegeya","title":"Slay Every Day","subtitle":"Braids, natural hair. MTN MoMo accepted. Open 7am-9pm.","ctaText":"Book on WhatsApp","ctaLink":"#contact","image":"african salon braids"},"style":{"primaryColor":"#EC4899","alignment":"left"}},
-    {"id":"services-1","type":"services","data":{"heading":"Our Services - Fair Prices","subheading":"Students 10% off","services":[{"name":"Box Braids","price":"UGX 35,000","description":"Neat, long-lasting 3-4hrs","icon":"💇🏾‍♀️"}]},"style":{"primaryColor":"#EC4899"}},
-    {"id":"contact-1","type":"contact","data":{"heading":"Find Us in Wandegeya","phone":"+256 700 123456","whatsapp":"+256700123456","location":"Wandegeya Market, Shop 12A, Kampala","hours":"Mon-Sun 7am-9pm"},"style":{"primaryColor":"#EC4899"}},
-    {"id":"footer-1","type":"footer","data":{"businessName":"Aisha's Beauty","tagline":"Braids • Natural Hair • Wandegeya","year":2026},"style":{"primaryColor":"#EC4899"}}
+    {"id":"nav-1","type":"navbar","data":{"businessName":"Business","phone":"+256 700 123456","whatsapp":"+256700123456"},"style":{"primaryColor":"#EC4899"}},
+    {"id":"hero-1","type":"hero","data":{"title":"Headline 6 words","subtitle":"Subtitle 15 words with UGX","ctaText":"Book on WhatsApp","image":"salon"},"style":{"primaryColor":"#EC4899"}},
+    {"id":"services-1","type":"services","data":{"heading":"Our Services","services":[{"name":"Service 1","price":"UGX 35,000","description":"20 words","image":"braids"}]},"style":{"primaryColor":"#EC4899"}},
+    {"id":"contact-1","type":"contact","data":{"phone":"+256 700 123456","whatsapp":"+256700123456","location":"Wandegeya, Kampala","hours":"Mon-Sun 7am-9pm"},"style":{"primaryColor":"#EC4899"}},
+    {"id":"footer-1","type":"footer","data":{"businessName":"Business","tagline":"Tagline","year":2026},"style":{"primaryColor":"#EC4899"}}
   ]
 }
-
-RULES:
-- primaryColor by category: salon=#EC4899 pink, hardware=#F59E0B amber, restaurant=#EF4444 red, church=#6366F1 indigo, shop=#10B981 emerald, boda=#111827 black, school=#0EA5E9 sky, clinic=#06B6D4 cyan, boutique=#EC4899 pink, barbershop=#111827 black
-- All prices MUST be UGX: "UGX 35,000"
-- Always include phone + whatsapp in +256 format
-- Mention MTN MoMo / Airtel Money in subtitle if shop
-- Location Ugandan: Wandegeya, Mbale, Mbarara, Gulu, Kampala, Ntinda, Entebbe
-- 3-6 services, each price UGX, icon emoji
-- Short text, mobile-friendly
+RULES: All prices UGX, phone +256, location Uganda, short texts, 3 services max.
 `;
 
+function loadTemplates() {
+  try {
+    const templatesDir = path.join(process.cwd(), 'templates');
+    const read = (name: string) => {
+      const filePath = path.join(templatesDir, name);
+      if (!fs.existsSync(filePath)) {
+        // Try alternative path: app is in voidbuild/app, templates in voidbuild/templates, process.cwd() is voidbuild, so join works
+        // If not found, try relative to this file
+        const altPath = path.join(__dirname, '..', '..', '..', '..', 'templates', name);
+        if (fs.existsSync(altPath)) {
+          return JSON.parse(fs.readFileSync(altPath, 'utf8'));
+        }
+        throw new Error(`Template not found: ${name} at ${filePath}`);
+      }
+      return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    };
+
+    return {
+      'salon-ug-1': read('salon-ug-1.json'),
+      'hardware-mbale-1': read('hardware-mbale-1.json'),
+      'restaurant-ug-1': read('restaurant-ug-1.json'),
+      'boutique-ug-1': read('boutique-ug-1.json'),
+      'church-ug-1': read('church-ug-1.json'),
+      'boda-ug-1': read('boda-ug-1.json'),
+      'school-ug-1': read('school-ug-1.json'),
+      'clinic-ug-1': read('clinic-ug-1.json'),
+      'barbershop-ug-1': read('barbershop-ug-1.json'),
+      'portfolio-ug-1': read('portfolio-ug-1.json'),
+    };
+  } catch (e) {
+    console.error('Failed to load templates via fs, using minimal fallback:', e);
+    // Minimal hardcoded fallback if fs fails
+    const minimal = {
+      id: 'salon-ug-1',
+      name: 'Sample Business',
+      category: 'salon',
+      meta: { target: 'Salon' },
+      blocks: [
+        { id: 'nav-1', type: 'navbar', data: { businessName: 'Sample', phone: '+256 700 123456' }, style: { primaryColor: '#EC4899' } },
+        { id: 'hero-1', type: 'hero', data: { title: 'Welcome', subtitle: 'Sample site', ctaText: 'Contact', image: 'business' }, style: { primaryColor: '#EC4899' } },
+        { id: 'contact-1', type: 'contact', data: { phone: '+256 700 123456', location: 'Kampala' }, style: { primaryColor: '#EC4899' } },
+        { id: 'footer-1', type: 'footer', data: { businessName: 'Sample', year: 2026 }, style: { primaryColor: '#EC4899' } },
+      ]
+    };
+    return {
+      'salon-ug-1': minimal,
+      'hardware-mbale-1': minimal,
+      'restaurant-ug-1': minimal,
+      'boutique-ug-1': minimal,
+      'church-ug-1': minimal,
+      'boda-ug-1': minimal,
+      'school-ug-1': minimal,
+      'clinic-ug-1': minimal,
+      'barbershop-ug-1': minimal,
+      'portfolio-ug-1': minimal,
+    };
+  }
+}
+
+const FALLBACK_TEMPLATES = loadTemplates();
+
+function getClosestTemplate(desc: string) {
+  const lower = desc.toLowerCase();
+  if (lower.includes('hardware') || lower.includes('cement')) return FALLBACK_TEMPLATES['hardware-mbale-1'];
+  if (lower.includes('restaurant') || lower.includes('food')) return FALLBACK_TEMPLATES['restaurant-ug-1'];
+  if (lower.includes('boutique') || lower.includes('fashion')) return FALLBACK_TEMPLATES['boutique-ug-1'];
+  if (lower.includes('church')) return FALLBACK_TEMPLATES['church-ug-1'];
+  if (lower.includes('boda') || lower.includes('garage')) return FALLBACK_TEMPLATES['boda-ug-1'];
+  if (lower.includes('school')) return FALLBACK_TEMPLATES['school-ug-1'];
+  if (lower.includes('clinic')) return FALLBACK_TEMPLATES['clinic-ug-1'];
+  if (lower.includes('barbershop') || lower.includes('barber')) return FALLBACK_TEMPLATES['barbershop-ug-1'];
+  if (lower.includes('portfolio') || lower.includes('photographer')) return FALLBACK_TEMPLATES['portfolio-ug-1'];
+  return FALLBACK_TEMPLATES['salon-ug-1'];
+}
+
 function parseJSON(raw: string) {
-  const cleaned = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
+  let cleaned = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
   const start = cleaned.indexOf('{');
   const end = cleaned.lastIndexOf('}');
-  if (start === -1 || end === -1) throw new Error('No JSON object found in model output: ' + cleaned.slice(0,200));
-  return JSON.parse(cleaned.slice(start, end + 1));
+  if (start === -1 || end === -1) throw new Error('No JSON');
+  let jsonStr = cleaned.slice(start, end + 1);
+  const open = (jsonStr.match(/\{/g) || []).length;
+  const close = (jsonStr.match(/\}/g) || []).length;
+  if (open > close) jsonStr += '}'.repeat(open - close);
+  return JSON.parse(jsonStr);
 }
 
 export async function POST(req: Request) {
   try {
     const { description } = await req.json();
     if (!description || description.length < 5) {
-      return Response.json({ error: 'Describe your business (e.g. Salon in Wandegeya)' }, { status: 400 });
+      return Response.json({ error: 'Describe your business' }, { status: 400 });
     }
 
     const key = process.env.OPENROUTER_API_KEY;
     if (!key || !key.startsWith('sk-or-v1-')) {
-      return Response.json({ error: 'OPENROUTER_API_KEY missing or invalid in .env.local. Get free key at openrouter.ai/keys - should start with sk-or-v1-' }, { status: 500 });
+      const fallback = getClosestTemplate(description);
+      return Response.json({ ...JSON.parse(JSON.stringify(fallback)), id: `fallback-${Date.now()}`, _fallback: true });
     }
 
-    // UPDATED FREE MODELS 2026 - Working list (OpenRouter retired some)
     const models = [
-      'meta-llama/llama-3.3-70b-instruct:free', // NEW best free
+      'meta-llama/llama-3.3-70b-instruct:free',
       'meta-llama/llama-3.1-70b-instruct:free',
-      'meta-llama/llama-3.1-8b-instruct:free',
-      'google/gemini-2.0-flash-exp:free', // Gemini free works great for JSON
-      'deepseek/deepseek-r1:free',
-      'qwen/qwen-2.5-72b-instruct:free',
-      'mistralai/mistral-small-24b-instruct-2501:free', // replacement for 7b
-      'openchat/openchat-7b:free',
+      'google/gemini-2.0-flash-exp:free',
     ];
 
-    let attempts: string[] = [];
     for (const model of models) {
       try {
-        console.log(`Trying model: ${model}`);
         const res = await fetch(OPENROUTER_URL, {
           method: 'POST',
           headers: {
@@ -81,46 +145,37 @@ export async function POST(req: Request) {
             model,
             messages: [
               { role: 'system', content: SYSTEM_PROMPT },
-              { role: 'user', content: `Business Description: ${description}` },
+              { role: 'user', content: `Business: ${description}. Full JSON 5 blocks, short, valid.` },
             ],
             temperature: 0.7,
-            max_tokens: 2500,
+            max_tokens: 4000,
           }),
         });
 
-        if (!res.ok) {
-          const body = await res.text();
-          attempts.push(`${model}: HTTP ${res.status} - ${body.slice(0,200)}`);
-          continue; // try next model
-        }
-
+        if (!res.ok) continue;
         const data = await res.json();
         const content = data.choices?.[0]?.message?.content;
-        if (!content) {
-          attempts.push(`${model}: empty content`);
-          continue;
-        }
-
+        if (!content) continue;
         const json = parseJSON(content);
-        if (!json.blocks || !Array.isArray(json.blocks)) {
-          attempts.push(`${model}: invalid blocks`);
-          continue;
-        }
-
-        // Success!
+        if (!json.blocks || !Array.isArray(json.blocks)) continue;
         return Response.json(json);
-      } catch (e: any) {
-        attempts.push(`${model}: ${e.message}`);
-      }
+      } catch {}
     }
 
-    // All failed - return detailed error
-    return Response.json({ 
-      error: `All models failed. Your key might be invalid or rate limited. Attempts: ${attempts.join(' | ').slice(0, 1000)}`,
-      attempts 
-    }, { status: 500 });
+    const fallback = getClosestTemplate(description);
+    return Response.json({
+      ...JSON.parse(JSON.stringify(fallback)),
+      id: `fallback-${Date.now()}`,
+      name: description.slice(0, 35),
+      _fallback: true,
+    });
 
   } catch (e: any) {
-    return Response.json({ error: e.message }, { status: 500 });
+    try {
+      const fallback = FALLBACK_TEMPLATES['salon-ug-1'];
+      return Response.json({ ...JSON.parse(JSON.stringify(fallback)), id: `fallback-${Date.now()}`, _fallback: true });
+    } catch {
+      return Response.json({ error: 'Try shorter description' }, { status: 500 });
+    }
   }
 }

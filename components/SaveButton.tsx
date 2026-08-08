@@ -1,33 +1,33 @@
 "use client";
 import { useState } from 'react';
+import { Save, Link2, Check } from 'lucide-react';
 import { Template } from '../lib/types';
-import { saveProject } from '../lib/projects';
+import { saveProject, generateShareLink } from '../lib/projects';
 
 export default function SaveButton({ template }: { template: Template }) {
   const [saving, setSaving] = useState(false);
   const [savedId, setSavedId] = useState<string | null>(null);
+  const [shareLink, setShareLink] = useState<string | null>(null);
 
   const handleSave = async () => {
     setSaving(true);
     try {
       const project = await saveProject(template);
+      const link = generateShareLink(project);
       setSavedId(project.id);
-      // Copy share link
-      const link = `${window.location.origin}/p/${project.id}`;
+      setShareLink(link);
       await navigator.clipboard.writeText(link);
     } catch (e) {
-      alert('Save failed, but copied JSON to console');
       console.log(template);
     }
     setSaving(false);
   };
 
-  if (savedId) {
+  if (savedId && shareLink) {
     return (
-      <div className="flex items-center gap-2">
-        <span className="text-xs bg-green-100 text-green-700 px-3 py-2 rounded-full">✓ Saved!</span>
-        <a href={`/p/${savedId}`} target="_blank" className="text-xs bg-gray-900 text-white px-3 py-2 rounded-lg">View Link</a>
-        <a href="/dashboard" className="text-xs bg-white border px-3 py-2 rounded-lg">Dashboard</a>
+      <div className="flex items-center gap-1">
+        <span className="hidden md:inline-flex text-[10px] bg-green-50 text-green-700 border border-green-200 px-2 py-1 rounded-full items-center gap-1"><Check className="w-3 h-3" /> Saved</span>
+        <a href={shareLink} target="_blank" className="text-[11px] bg-gray-900 text-white px-2.5 py-1 rounded-full font-bold flex items-center gap-1"><Link2 className="w-3 h-3" /> View</a>
       </div>
     );
   }
@@ -36,9 +36,10 @@ export default function SaveButton({ template }: { template: Template }) {
     <button
       onClick={handleSave}
       disabled={saving}
-      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gray-900 text-white text-sm font-bold hover:bg-black disabled:opacity-50"
+      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-gray-900 text-white text-xs font-bold hover:bg-black disabled:opacity-50 transition"
     >
-      {saving ? 'Saving...' : '💾 Save & Get Link'}
+      <Save className="w-3.5 h-3.5" />
+      <span>Save</span>
     </button>
   );
 }
