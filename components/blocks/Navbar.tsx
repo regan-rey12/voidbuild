@@ -47,7 +47,7 @@ export default function Navbar({ data, style, editMode, onUpdateData }: NavbarPr
             {editMode && onUpdateData ? (
               <EditableText value={data.businessName} onChange={(v) => update('businessName', v)} editMode={editMode} as="span" className="font-semibold text-sm" />
             ) : (
-              <span className="truncate">{data.businessName} - Business site (not voidbuild bar)</span>
+              <span className="truncate">{data.businessName}</span>
             )}
           </div>
         </div>

@@ -124,7 +124,8 @@ export default function Dashboard() {
                 <div className="font-semibold mt-3 text-sm truncate">{p.business_name}</div>
                 <div className="text-[11px] text-gray-500 mt-1">{p.template_json?.blocks?.length} sections</div>
                 <div className="mt-4 flex gap-2">
-                  <a href={`/p/${p.id}`} className="flex-1 text-center px-3 py-2 rounded-lg bg-gray-900 text-white text-xs font-bold">View Live</a>
+                  <a href={`/p/${p.id}`} className="flex-1 text-center px-3 py-2 rounded-lg bg-gray-100 text-xs font-medium">View Live</a>
+                  <a href={`/builder?editId=${p.id}`} className="flex-1 text-center px-3 py-2 rounded-lg bg-gray-900 text-white text-xs font-bold">Edit Again</a>
                   <button onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/p/${p.id}`); alert('Link copied'); }} className="px-3 py-2 rounded-lg bg-gray-100 text-xs font-medium">Copy</button>
                 </div>
               </div>

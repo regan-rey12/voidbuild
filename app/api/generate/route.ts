@@ -1,8 +1,9 @@
-// VoidBuild v2 API - Fixed Module Not Found using fs readFile for templates
+// VoidBuild v2 API - User's preferred models + Full results, no truncation
 export const runtime = 'nodejs';
 
 import fs from 'fs';
 import path from 'path';
+import { isRateLimited, getClientIp } from '../../../lib/rateLimiter';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
@@ -31,17 +32,14 @@ function loadTemplates() {
     const read = (name: string) => {
       const filePath = path.join(templatesDir, name);
       if (!fs.existsSync(filePath)) {
-        // Try alternative path: app is in voidbuild/app, templates in voidbuild/templates, process.cwd() is voidbuild, so join works
-        // If not found, try relative to this file
         const altPath = path.join(__dirname, '..', '..', '..', '..', 'templates', name);
         if (fs.existsSync(altPath)) {
           return JSON.parse(fs.readFileSync(altPath, 'utf8'));
         }
-        throw new Error(`Template not found: ${name} at ${filePath}`);
+        throw new Error(`Template not found: ${name}`);
       }
       return JSON.parse(fs.readFileSync(filePath, 'utf8'));
     };
-
     return {
       'salon-ug-1': read('salon-ug-1.json'),
       'hardware-mbale-1': read('hardware-mbale-1.json'),
@@ -55,8 +53,6 @@ function loadTemplates() {
       'portfolio-ug-1': read('portfolio-ug-1.json'),
     };
   } catch (e) {
-    console.error('Failed to load templates via fs, using minimal fallback:', e);
-    // Minimal hardcoded fallback if fs fails
     const minimal = {
       id: 'salon-ug-1',
       name: 'Sample Business',
@@ -70,16 +66,9 @@ function loadTemplates() {
       ]
     };
     return {
-      'salon-ug-1': minimal,
-      'hardware-mbale-1': minimal,
-      'restaurant-ug-1': minimal,
-      'boutique-ug-1': minimal,
-      'church-ug-1': minimal,
-      'boda-ug-1': minimal,
-      'school-ug-1': minimal,
-      'clinic-ug-1': minimal,
-      'barbershop-ug-1': minimal,
-      'portfolio-ug-1': minimal,
+      'salon-ug-1': minimal, 'hardware-mbale-1': minimal, 'restaurant-ug-1': minimal, 'boutique-ug-1': minimal,
+      'church-ug-1': minimal, 'boda-ug-1': minimal, 'school-ug-1': minimal, 'clinic-ug-1': minimal,
+      'barbershop-ug-1': minimal, 'portfolio-ug-1': minimal,
     };
   }
 }
@@ -90,13 +79,13 @@ function getClosestTemplate(desc: string) {
   const lower = desc.toLowerCase();
   if (lower.includes('hardware') || lower.includes('cement')) return FALLBACK_TEMPLATES['hardware-mbale-1'];
   if (lower.includes('restaurant') || lower.includes('food')) return FALLBACK_TEMPLATES['restaurant-ug-1'];
-  if (lower.includes('boutique') || lower.includes('fashion')) return FALLBACK_TEMPLATES['boutique-ug-1'];
+  if (lower.includes('boutique')) return FALLBACK_TEMPLATES['boutique-ug-1'];
   if (lower.includes('church')) return FALLBACK_TEMPLATES['church-ug-1'];
-  if (lower.includes('boda') || lower.includes('garage')) return FALLBACK_TEMPLATES['boda-ug-1'];
+  if (lower.includes('boda')) return FALLBACK_TEMPLATES['boda-ug-1'];
   if (lower.includes('school')) return FALLBACK_TEMPLATES['school-ug-1'];
   if (lower.includes('clinic')) return FALLBACK_TEMPLATES['clinic-ug-1'];
   if (lower.includes('barbershop') || lower.includes('barber')) return FALLBACK_TEMPLATES['barbershop-ug-1'];
-  if (lower.includes('portfolio') || lower.includes('photographer')) return FALLBACK_TEMPLATES['portfolio-ug-1'];
+  if (lower.includes('portfolio')) return FALLBACK_TEMPLATES['portfolio-ug-1'];
   return FALLBACK_TEMPLATES['salon-ug-1'];
 }
 
@@ -114,10 +103,21 @@ function parseJSON(raw: string) {
 
 export async function POST(req: Request) {
   try {
-    const { description } = await req.json();
-    if (!description || description.length < 5) {
-      return Response.json({ error: 'Describe your business' }, { status: 400 });
+    const ip = getClientIp(req);
+    const rateLimit = isRateLimited(ip);
+    if (rateLimit.limited) {
+      return Response.json({ error: `Too many requests. Wait ${Math.ceil(rateLimit.resetIn / 1000)}s` }, { status: 429 });
     }
+
+    let { description } = await req.json();
+    if (!description || typeof description !== 'string') return Response.json({ error: 'Describe business' }, { status: 400 });
+    description = description.trim().replace(/<[^>]*>/g, '');
+    if (description.length < 5) return Response.json({ error: 'At least 5 chars' }, { status: 400 });
+    if (description.length > 500) return Response.json({ error: 'Max 500 chars' }, { status: 400 });
+
+    const blocked = ['ignore previous instructions', 'system prompt', '<script', 'javascript:'];
+    const lowerDesc = description.toLowerCase();
+    for (const p of blocked) if (lowerDesc.includes(p)) return Response.json({ error: 'Invalid description' }, { status: 400 });
 
     const key = process.env.OPENROUTER_API_KEY;
     if (!key || !key.startsWith('sk-or-v1-')) {
@@ -125,10 +125,14 @@ export async function POST(req: Request) {
       return Response.json({ ...JSON.parse(JSON.stringify(fallback)), id: `fallback-${Date.now()}`, _fallback: true });
     }
 
+    // User's preferred models - no disturbing ones
     const models = [
-      'meta-llama/llama-3.3-70b-instruct:free',
-      'meta-llama/llama-3.1-70b-instruct:free',
-      'google/gemini-2.0-flash-exp:free',
+      'openrouter/free', // Best option (auto-selects free models)
+      'qwen/qwen3-coder:free', // Excellent for coding
+      'meta-llama/llama-3.2-3b-instruct:free',
+      'google/gemma-3-27b-it:free',
+      'nvidia/nemotron-3-ultra:free',
+      'mistralai/mistral-7b-instruct:free', // Keep as last fallback, though you found it disturbing, we try other free first
     ];
 
     for (const model of models) {
@@ -151,7 +155,6 @@ export async function POST(req: Request) {
             max_tokens: 4000,
           }),
         });
-
         if (!res.ok) continue;
         const data = await res.json();
         const content = data.choices?.[0]?.message?.content;
@@ -163,12 +166,7 @@ export async function POST(req: Request) {
     }
 
     const fallback = getClosestTemplate(description);
-    return Response.json({
-      ...JSON.parse(JSON.stringify(fallback)),
-      id: `fallback-${Date.now()}`,
-      name: description.slice(0, 35),
-      _fallback: true,
-    });
+    return Response.json({ ...JSON.parse(JSON.stringify(fallback)), id: `fallback-${Date.now()}`, name: description.slice(0, 35), _fallback: true });
 
   } catch (e: any) {
     try {

@@ -135,7 +135,7 @@ export default function LandingPage() {
       <footer className="py-8 px-4 md:px-6 border-t flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-gray-500 max-w-6xl mx-auto">
         <div className="flex items-center gap-2">
           <img src="/logo.png" alt="" className="w-5 h-5 rounded-md object-contain border bg-white" />
-          <span>© 2026 voidbuild — Built for businesses in Uganda</span>
+          <span>© 2026 voidbuild - Built for businesses in Uganda</span>
         </div>
         <div>Fast • Affordable • WhatsApp Ready</div>
       </footer>

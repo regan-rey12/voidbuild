@@ -49,9 +49,9 @@ export default function PublicPage() {
     <div>
       <div className="bg-yellow-100 border-b text-center text-xs py-2 px-4">
         {isFallback ? (
-          <span>Shared via link with data (works without Supabase) • Built with <a href="/" className="font-bold underline">VoidBuild</a></span>
+          <span>Shared via link with data (works without Supabase) - Built with <a href="/" className="font-bold underline">VoidBuild</a></span>
         ) : (
-          <span>This site built with <a href="/" className="font-bold underline">VoidBuild.com</a> — AI for Ugandan SMEs</span>
+          <span>This site built with <a href="/" className="font-bold underline">VoidBuild.com</a> - AI for Ugandan SMEs</span>
         )}
       </div>
       <TemplateRenderer template={project.template_json} />

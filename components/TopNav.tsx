@@ -53,7 +53,6 @@ export default function TopNav({ currentPage = 'home', showBuilderActions = fals
           </div>
         </div>
 
-        {/* Mobile second row for builder actions if needed */}
         {showBuilderActions && builderActions && (
           <div className="md:hidden px-3 pb-2.5 flex items-center gap-2 overflow-x-auto">
             {builderActions}
@@ -61,7 +60,6 @@ export default function TopNav({ currentPage = 'home', showBuilderActions = fals
         )}
       </nav>
 
-      {/* Mobile drawer - left side, consistent across all pages */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/40" onClick={() => setMobileMenuOpen(false)}></div>
@@ -70,22 +68,16 @@ export default function TopNav({ currentPage = 'home', showBuilderActions = fals
               <div className="flex items-center gap-2"><img src="/logo.png" alt="" className="w-7 h-7 rounded-lg object-contain border" /><span className="font-bold text-sm">voidbuild</span></div>
               <button onClick={() => setMobileMenuOpen(false)} className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center"><X className="w-5 h-5" /></button>
             </div>
-            <div className="flex-1 overflow-y-auto p-4 space-y-5">
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Navigation</div>
-                <div className="space-y-1">
-                  <Link href="/" className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm ${currentPage === 'home' ? 'bg-gray-100 font-medium' : 'hover:bg-gray-50'}`} onClick={() => setMobileMenuOpen(false)}>Home</Link>
-                  <Link href="/builder" className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm ${currentPage === 'builder' ? 'bg-gray-100 font-medium' : 'hover:bg-gray-50'}`} onClick={() => setMobileMenuOpen(false)}>Builder</Link>
-                  <Link href="/dashboard" className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm ${currentPage === 'dashboard' ? 'bg-gray-100 font-medium' : 'hover:bg-gray-50'}`} onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
-                  <Link href="/pricing" className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm ${currentPage === 'pricing' ? 'bg-gray-100 font-medium' : 'hover:bg-gray-50'}`} onClick={() => setMobileMenuOpen(false)}>Pricing</Link>
-                </div>
-              </div>
-              <div className="pt-4 border-t">
-                <div className="text-xs text-gray-500 leading-relaxed">VoidBuild - AI Website Builder for Uganda. Build shop网站 in 30 seconds, UGX pricing, WhatsApp ready.</div>
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="space-y-1">
+                <Link href="/" className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm ${currentPage === 'home' ? 'bg-gray-100 font-medium' : 'hover:bg-gray-50'}`} onClick={() => setMobileMenuOpen(false)}>Home</Link>
+                <Link href="/builder" className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm ${currentPage === 'builder' ? 'bg-gray-100 font-medium' : 'hover:bg-gray-50'}`} onClick={() => setMobileMenuOpen(false)}>Builder</Link>
+                <Link href="/dashboard" className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm ${currentPage === 'dashboard' ? 'bg-gray-100 font-medium' : 'hover:bg-gray-50'}`} onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
+                <Link href="/pricing" className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm ${currentPage === 'pricing' ? 'bg-gray-100 font-medium' : 'hover:bg-gray-50'}`} onClick={() => setMobileMenuOpen(false)}>Pricing</Link>
               </div>
             </div>
-            <div className="p-4 border-t bg-gray-50">
-              <AuthButton />
+            <div className="p-4 border-t">
+              <div className="text-[11px] text-gray-400">© 2026 voidbuild</div>
             </div>
           </div>
         </div>

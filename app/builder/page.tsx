@@ -1,6 +1,6 @@
 "use client";
-import { useState } from 'react';
-import { Menu, X, Edit3, Check, Plus, AlertTriangle, RefreshCw } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Menu, X, Edit3, Check, Plus, Loader2, Sparkles } from 'lucide-react';
 import TemplateRenderer from '../../components/TemplateRenderer';
 import SaveButton from '../../components/SaveButton';
 import EditorSidebar from '../../components/editor/EditorSidebar';
@@ -18,11 +18,30 @@ export default function BuilderPage() {
   const [showLeftDrawer, setShowLeftDrawer] = useState(false);
   const [fallbackMessage, setFallbackMessage] = useState<string | null>(null);
   
-  const steps = ['Understanding...', 'Crafting...', 'Building...'];
+  const steps = ['Understanding your business...', 'Crafting UGX pricing...', 'Adding WhatsApp & MoMo...', 'Building your professional site...'];
 
-  const generate = async (forceRetry = false) => {
+  useEffect(() => {
+    // Check if editing existing project from dashboard ?editId=xxx
+    const params = new URLSearchParams(window.location.search);
+    const editId = params.get('editId');
+    if (editId) {
+      try {
+        const raw = localStorage.getItem('voidbuild_projects_v2');
+        if (raw) {
+          const projects = JSON.parse(raw);
+          const found = projects.find((p: any) => p.id === editId);
+          if (found && found.template_json) {
+            setTemplate(found.template_json);
+            setEditMode(true);
+          }
+        }
+      } catch {}
+    }
+  }, []);
+
+  const generate = async () => {
     if (!input.trim() || input.length < 5) {
-      alert('Describe your business, e.g. Salon in Wandegeya');
+      alert('Describe your business, e.g. Salon in Wandegeya called Aisha');
       return;
     }
     setLoading(true);
@@ -37,20 +56,14 @@ export default function BuilderPage() {
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
-      
-      // Check if fallback was used - show user that generation failed but showing closest template
       if (data._fallback) {
-        setFallbackMessage(data._message || 'AI was busy, showing closest template from our gallery. Your description: "' + input.slice(0, 50) + '". Try again in 30 seconds for AI version or edit this template.');
-      } else {
-        setFallbackMessage(null);
+        setFallbackMessage(data._message || 'AI was busy, showing closest template. Try again in 30 seconds.');
       }
-      
       setTemplate(data);
-      if (!data._fallback) setEditMode(true);
+      setEditMode(true);
+      setInput('');
     } catch (e: any) {
-      // Even on catch, try to show closest template as fallback, but tell user it failed
-      setFallbackMessage(`Generation failed: ${e.message}. Showing closest template instead. Please try again with shorter description.`);
-      // Try to get fallback via API with fallback flag - already handled in API, but if network error, keep current template
+      setFallbackMessage(`Generation failed: ${e.message}. Showing closest template. Try again.`);
     } finally {
       clearInterval(interval);
       setLoading(false);
@@ -123,36 +136,15 @@ export default function BuilderPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Describe business: Salon Wandegeya Aisha braids 35k"
-            className="flex-1 px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-sm outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900"
+            disabled={loading}
+            className="flex-1 px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-sm outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 disabled:opacity-50 disabled:bg-gray-50"
             onKeyDown={(e) => { if (e.key === 'Enter') generate(); }}
           />
-          <button onClick={() => generate()} disabled={loading} className="px-5 py-2.5 rounded-xl bg-gray-900 text-white font-bold text-sm disabled:opacity-50 hover:bg-black">
-            {loading ? '...' : 'Generate'}
+          <button onClick={() => generate()} disabled={loading} className="px-5 py-2.5 rounded-xl bg-gray-900 text-white font-bold text-sm disabled:opacity-50 hover:bg-black flex items-center gap-2">
+            {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating...</> : <><Sparkles className="w-4 h-4" /> Generate</>}
           </button>
         </div>
-        {loading && <div className="max-w-[1600px] mx-auto px-4 pb-2 text-[11px] text-gray-500">{steps[step]}</div>}
       </div>
-
-      {/* Fallback banner - Shows when generation failed and closest template shown */}
-      {fallbackMessage && (
-        <div className="bg-yellow-50 border-b border-yellow-200 px-4 py-3">
-          <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-            <div className="flex gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0"><AlertTriangle className="w-4 h-4" /></div>
-              <div>
-                <div className="font-bold text-sm text-yellow-900">AI Generation Failed - Showing Closest Template</div>
-                <div className="text-xs text-yellow-800 mt-1 max-w-3xl">{fallbackMessage}</div>
-              </div>
-            </div>
-            <div className="flex gap-2 flex-shrink-0">
-              <button onClick={() => generate(true)} className="px-4 py-2 rounded-full bg-yellow-400 text-black text-xs font-bold hover:bg-yellow-500 flex items-center gap-1.5">
-                <RefreshCw className="w-3.5 h-3.5" /> Try Again
-              </button>
-              <button onClick={() => setFallbackMessage(null)} className="px-4 py-2 rounded-full bg-white border text-xs font-bold">Dismiss</button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {showLeftDrawer && (
         <div className="fixed inset-0 z-50">
@@ -167,7 +159,7 @@ export default function BuilderPage() {
                 <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Navigation</div>
                 <div className="space-y-1">
                   <Link href="/" className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 text-sm" onClick={() => setShowLeftDrawer(false)}>Home</Link>
-                  <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gray-100 text-sm font-medium" onClick={() => setShowLeftDrawer(false)}>Dashboard</Link>
+                  <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gray-100 text-sm font-medium" onClick={() => setShowLeftDrawer(false)}>Dashboard - Edit Again</Link>
                   <Link href="/pricing" className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 text-sm" onClick={() => setShowLeftDrawer(false)}>Pricing</Link>
                 </div>
               </div>
@@ -176,6 +168,7 @@ export default function BuilderPage() {
                 <div className="bg-gray-50 border rounded-xl p-3">
                   <div className="font-bold text-sm truncate">{template.name}</div>
                   <div className="text-xs text-gray-500 mt-1">{template.category} • {template.blocks.length} sections</div>
+                  <div className="text-[11px] text-gray-400 mt-2">You can come back and edit anytime via Dashboard → Edit</div>
                 </div>
               </div>
               <div>
@@ -204,6 +197,43 @@ export default function BuilderPage() {
         </div>
       )}
 
+      {loading && (
+        <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border shadow-2xl rounded-2xl p-8 max-w-sm w-full text-center">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-gray-900 text-white flex items-center justify-center">
+              <Loader2 className="w-8 h-8 animate-spin" />
+            </div>
+            <div className="font-bold mt-4">Generating your website...</div>
+            <div className="text-sm text-gray-600 mt-2 flex items-center justify-center gap-2">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              {steps[step]}
+            </div>
+            <div className="mt-4 w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+              <div className="h-full bg-gray-900 transition-all duration-1000" style={{ width: `${((step + 1) / steps.length) * 100}%` }}></div>
+            </div>
+            <div className="mt-3 text-xs text-gray-400">This takes 5-10 seconds • You can edit text and images after</div>
+          </div>
+        </div>
+      )}
+
+      {fallbackMessage && (
+        <div className="bg-yellow-50 border-b border-yellow-200 px-4 py-3">
+          <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+            <div className="flex gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0">!</div>
+              <div>
+                <div className="font-bold text-sm text-yellow-900">Showing closest template - AI was busy</div>
+                <div className="text-xs text-yellow-800 mt-1 max-w-3xl">{fallbackMessage}</div>
+              </div>
+            </div>
+            <div className="flex gap-2 flex-shrink-0">
+              <button onClick={() => generate()} className="px-4 py-2 rounded-full bg-yellow-400 text-black text-xs font-bold hover:bg-yellow-500">Try Again</button>
+              <button onClick={() => setFallbackMessage(null)} className="px-4 py-2 rounded-full bg-white border text-xs font-bold">Dismiss</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-1 overflow-hidden">
         {editMode && (
           <div className="hidden md:block w-[280px] border-r bg-white sticky top-[96px] h-[calc(100vh-96px)] overflow-y-auto flex-shrink-0">
@@ -215,7 +245,6 @@ export default function BuilderPage() {
             <div className="text-xs flex items-center gap-2 min-w-0">
               <span className="font-bold truncate">{template.name}</span>
               <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-gray-100 hidden md:inline-flex">{template.category} • {template.blocks.length} sections</span>
-              {fallbackMessage && <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-yellow-100 border border-yellow-200 text-yellow-800 hidden md:inline-flex">Fallback template</span>}
             </div>
             <SaveButton template={template} />
           </div>

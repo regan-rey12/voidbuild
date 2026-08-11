@@ -17,8 +17,15 @@ export default function SaveButton({ template }: { template: Template }) {
       setSavedId(project.id);
       setShareLink(link);
       await navigator.clipboard.writeText(link);
-    } catch (e) {
-      console.log(template);
+    } catch (e: any) {
+      // Show limit reached error
+      if (e.message && e.message.includes('allows')) {
+        alert(e.message + '\n\nGo to Dashboard to upgrade via MTN MoMo (Pesapal).');
+        window.location.href = '/dashboard';
+      } else {
+        console.log(template);
+        alert('Failed to save: ' + (e.message || 'Unknown error'));
+      }
     }
     setSaving(false);
   };

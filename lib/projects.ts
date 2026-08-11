@@ -47,6 +47,22 @@ export async function saveProject(template: Template, phone?: string): Promise<S
   const supabase = getSupabase();
   const userId = getUserIdSync();
 
+  // Enforce plan limits - Free 1 site, Starter 1, Business 3, Pro 10
+  try {
+    const { canCreateProject, getUserPlan, PLANS } = await import('./payments');
+    if (!canCreateProject()) {
+      const plan = getUserPlan();
+      const limit = PLANS[plan].limit;
+      throw new Error(`Free plan allows ${limit} website. You have reached limit. Upgrade to Business (3 sites) or Pro (10 sites) to create more. Go to Dashboard -> Paywall to upgrade via MTN MoMo.`);
+    }
+  } catch (e: any) {
+    // If error is about limit, re-throw it to show to user
+    if (e.message && e.message.includes('allows')) {
+      throw e;
+    }
+    // Otherwise ignore and continue saving
+  }
+
   const project: SavedProject = {
     id: template.id + '-' + Date.now().toString(36),
     business_name: template.name,
