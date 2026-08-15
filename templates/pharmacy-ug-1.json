@@ -1,0 +1,231 @@
+{
+  "id": "pharmacy-ug-1",
+  "name": "GoodLife Pharmacy & Drug Shop Ntinda",
+  "category": "pharmacy",
+  "description": "Licensed retail pharmacy in Kampala - prescription drugs, diabetes & BP care, baby formulas, and home delivery",
+  "meta": { "target": "Pharmacy in Ntinda, Kampala, Uganda", "language": "en" },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": {
+        "businessName": "GoodLife Pharmacy",
+        "phone": "+256 701 333444",
+        "whatsapp": "+256701333444",
+        "links": [
+          { "label": "Medicines", "href": "#services" },
+          { "label": "Prescription Refill", "href": "#pricing" },
+          { "label": "Pharmacy Look", "href": "#gallery" },
+          { "label": "Reviews", "href": "#testimonials" },
+          { "label": "Location", "href": "#map" },
+          { "label": "Order Delivery", "href": "#contact" }
+        ]
+      },
+      "style": { "primaryColor": "#059669" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "NDA Licensed • 100% Genuine Certified Medicines • 30-Min Kampala Delivery",
+        "title": "Your Trusted Community Pharmacy for Health & Wellness",
+        "subtitle": "National Drug Authority (NDA) licensed pharmacy. Genuine antibiotics, blood pressure & diabetes maintenance refills, pediatric syrups, baby care formulas, first aid, and vitamins. Send your doctor's prescription on WhatsApp for instant doorstep delivery.",
+        "ctaText": "Order Medicine on WhatsApp",
+        "ctaLink": "#contact",
+        "image": "african pharmacist doctor pharmacy medicine dispensary kampala"
+      },
+      "style": { "primaryColor": "#059669", "alignment": "left" }
+    },
+    {
+      "id": "stats-1",
+      "type": "stats",
+      "data": {
+        "heading": "Standards You Can Trust",
+        "stats": [
+          { "number": "100%", "label": "NDA Approved Genuine Pharmaceuticals" },
+          { "number": "30 Mins", "label": "Fast Delivery across Ntinda, Bukoto & Kisaasi" },
+          { "number": "24/7", "label": "Pharmacist Consultation via WhatsApp" }
+        ]
+      },
+      "style": { "primaryColor": "#059669" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "Medicines, Baby Care & Healthcare Essentials",
+        "subheading": "All medications stored in temperature-controlled environments. Send your prescription photo for instant price quotation.",
+        "phone": "+256 701 333444",
+        "whatsapp": "+256701333444",
+        "services": [
+          {
+            "name": "Malaria & Fever Relief Kit",
+            "price": "UGX 15,000",
+            "description": "Coartem / Duo-cotecxin, paracetamol pain relief, and rehydration salts with dosage instructions.",
+            "image": "pharmacy medicine blister pack pills fever"
+          },
+          {
+            "name": "Hypertension & Diabetes Refills",
+            "price": "From UGX 25,000",
+            "description": "Monthly chronic maintenance tablets (Amlodipine, Losartan, Metformin, Glimepiride) with free BP check.",
+            "image": "blood pressure monitor pharmacist check"
+          },
+          {
+            "name": "Pediatric & Baby Formulas",
+            "price": "UGX 45,000",
+            "description": "NAN, SMA, Cow & Gate infant formulas, baby gripe water, teething gel, and cough syrups.",
+            "image": "baby formula milk powder pharmacy"
+          },
+          {
+            "name": "Immunity & Multivitamin Supplements",
+            "price": "UGX 20,000",
+            "description": "High-potency Vitamin C (1000mg), Zinc, Vitamin D3, Cod Liver Oil, and prenatal folic acid tablets.",
+            "image": "vitamin supplements bottles pharmacy"
+          },
+          {
+            "name": "Home First Aid & Wound Dressing",
+            "price": "UGX 12,000",
+            "description": "Antiseptic Dettol, sterile gauze, surgical tape, bandages, and hydrogen peroxide spray.",
+            "image": "first aid kit medical supplies gauze"
+          },
+          {
+            "name": "Digital BP & Glucose Monitors",
+            "price": "UGX 85,000",
+            "description": "Accurate automated arm blood pressure monitor and digital blood sugar meter with 50 test strips.",
+            "image": "digital blood glucose meter diabetes test"
+          }
+        ]
+      },
+      "style": { "primaryColor": "#059669" }
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery",
+      "data": {
+        "heading": "Our Pharmacy & Dispensary",
+        "subheading": "Clean, modern, air-conditioned retail premises with certified pharmacy technicians.",
+        "images": [
+          "pharmacy interior shelves medicines",
+          "pharmacist dispensing prescription tablets",
+          "blood pressure test patient smiling",
+          "baby care products pharmacy shelves",
+          "vitamins supplements display counter",
+          "pharmacy delivery courier motorcycle"
+        ]
+      },
+      "style": { "primaryColor": "#059669" }
+    },
+    {
+      "id": "pricing-1",
+      "type": "pricing",
+      "data": {
+        "heading": "Monthly Refill & Delivery Plans",
+        "subheading": "Save time and never miss a dose with our automatic scheduled prescription refills.",
+        "phone": "+256 701 333444",
+        "whatsapp": "+256701333444",
+        "plans": [
+          {
+            "name": "Express Boda Delivery",
+            "price": "UGX 4,000",
+            "sub": "within 30 minutes",
+            "features": [
+              "Same-day doorstep delivery in Kampala",
+              "Discreet opaque waterproof packaging",
+              "Payment via MTN MoMo / Airtel / Cash",
+              "Pharmacist dosage guide included"
+            ],
+            "popular": true
+          },
+          {
+            "name": "Elderly Care Monthly Refill",
+            "price": "UGX 60,000+",
+            "sub": "custom monthly bundle",
+            "features": [
+              "Monthly automatic home medicine dispatch",
+              "Free monthly in-home Blood Pressure check",
+              "Dedicated pharmacist phone consultation",
+              "Free reminder SMS when pills run low"
+            ],
+            "popular": false
+          },
+          {
+            "name": "Family First Aid Bundle",
+            "price": "UGX 45,000",
+            "sub": "complete home box",
+            "features": [
+              "Digital fever thermometer",
+              "Antiseptic liquid, gauze & bandages",
+              "Paracetamol, ibuprofen & allergy syrup",
+              "Burn relief ointment & emergency guide"
+            ],
+            "popular": false
+          }
+        ]
+      },
+      "style": { "primaryColor": "#059669" }
+    },
+    {
+      "id": "testimonials-1",
+      "type": "testimonials",
+      "data": {
+        "heading": "What Our Customers Say",
+        "subheading": "Real feedback from residents in Ntinda, Bukoto, and Kisaasi.",
+        "testimonials": [
+          {
+            "name": "Grace N.",
+            "role": "Ntinda Resident",
+            "text": "Sent a photo of my son's prescription on WhatsApp at 9 PM. Medicine arrived at our gate in 25 minutes. Lifesavers!",
+            "rating": 5
+          },
+          {
+            "name": "Dr. Joseph M.",
+            "role": "Consultant Physician",
+            "text": "Always recommend GoodLife Pharmacy to my patients. Their stock is 100% authentic and the pharmacists are knowledgeable.",
+            "rating": 5
+          },
+          {
+            "name": "Hellen A.",
+            "role": "Mother of two, Kisaasi",
+            "text": "The monthly refill program for my mother's blood pressure tablets has made life so easy. Thank you for the great service.",
+            "rating": 5
+          }
+        ]
+      },
+      "style": { "primaryColor": "#059669" }
+    },
+    {
+      "id": "map-1",
+      "type": "map",
+      "data": {
+        "heading": "Visit Our Ntinda Dispensary",
+        "subheading": "Located along Ntinda-Kisaasi Road, right opposite Quality Supermarket.",
+        "location": "Ntinda-Kisaasi Road, Opposite Quality Supermarket, Ntinda, Kampala",
+        "phone": "+256 701 333444"
+      },
+      "style": { "primaryColor": "#059669" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": {
+        "heading": "Send Prescription or Inquire on WhatsApp",
+        "phone": "+256 701 333444",
+        "whatsapp": "+256701333444",
+        "location": "Ntinda-Kisaasi Road, Opposite Quality Supermarket, Ntinda, Kampala",
+        "hours": "Mon-Sun: 7:30am - 10:30pm (Open Every Day including Holidays)",
+        "email": "orders@goodlifepharmacy.ug"
+      },
+      "style": { "primaryColor": "#059669" }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "businessName": "GoodLife Pharmacy & Drug Shop",
+        "tagline": "NDA Licensed • Genuine Medicines • Express Home Delivery • Ntinda, Kampala",
+        "year": 2026
+      },
+      "style": { "primaryColor": "#059669" }
+    }
+  ]
+}

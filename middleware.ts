@@ -4,61 +4,66 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const hostname = request.headers.get('host') || '';
+  const pathname = url.pathname;
   
   // Security headers
   const response = NextResponse.next();
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
-  // Handle subdomain hosting: {business}.voidbuild.com -> /s/{business}
-  // For local dev: {business}.localhost:3000 -> /s/{business}
+
+  // Skip all API routes, internal Next.js paths, static assets, and main application routes
+  const isExcludedPath = 
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/builder') ||
+    pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/pricing') ||
+    pathname.startsWith('/auth') ||
+    pathname.startsWith('/privacy') ||
+    pathname.startsWith('/terms') ||
+    pathname.startsWith('/p/') ||
+    pathname.startsWith('/s/') ||
+    pathname.includes('.');
+
+  if (isExcludedPath) {
+    return response;
+  }
+
+  // Handle subdomain routing: {shop}.voidbuild.com -> /s/{shop}
   if (hostname) {
-    const isLocalhost = hostname.includes('localhost');
-    const isVoidbuildDomain = hostname.includes('voidbuild.com') || hostname.includes('voidbuild.') || isLocalhost;
+    const hostWithoutPort = hostname.split(':')[0].toLowerCase();
     
-    if (isVoidbuildDomain) {
-      // Extract subdomain
-      let subdomain = '';
-      
-      if (isLocalhost) {
-        // For localhost: mybusiness.localhost:3000 -> mybusiness
-        const parts = hostname.split('.');
-        if (parts.length > 1 && parts[0] !== 'www' && parts[0] !== 'localhost') {
-          subdomain = parts[0];
-        } else if (parts.length > 2) {
-          subdomain = parts[0];
-        }
-      } else {
-        // For voidbuild.com: mybusiness.voidbuild.com -> mybusiness
-        // Remove port if present
-        const hostWithoutPort = hostname.split(':')[0];
-        const parts = hostWithoutPort.split('.');
-        // voidbuild.com has 2 parts, subdomain.voidbuild.com has 3 parts
-        if (parts.length >= 3) {
-          const potentialSubdomain = parts[0];
-          // Ignore www
-          if (potentialSubdomain !== 'www' && potentialSubdomain !== 'voidbuild') {
-            subdomain = potentialSubdomain;
-          }
-        }
-      }
+    // Ignore direct IP addresses (127.0.0.1, 0.0.0.0, etc.)
+    const isIpAddress = /^(\d{1,3}\.){3}\d{1,3}$/.test(hostWithoutPort);
+    if (isIpAddress || hostWithoutPort === 'localhost') {
+      return response;
+    }
 
-      // If we have a subdomain and path is / (root of subdomain), rewrite to /s/{subdomain}
-      // So mybusiness.voidbuild.com/ -> /s/mybusiness
-      // But keep /builder, /dashboard, /pricing, /auth etc as is for main domain
-      const path = url.pathname;
-      const isMainPath = path.startsWith('/builder') || path.startsWith('/dashboard') || path.startsWith('/pricing') || path.startsWith('/auth') || path.startsWith('/api') || path.startsWith('/p/') || path.startsWith('/s/') || path === '/_next' || path.includes('.');
+    let subdomain = '';
 
-      if (subdomain && !isMainPath && (path === '/' || path === '')) {
-        // Rewrite subdomain root to /s/[subdomain]
-        url.pathname = `/s/${subdomain}`;
-        const rewriteResponse = NextResponse.rewrite(url);
-        // Add security headers to rewrite response too
-        rewriteResponse.headers.set('X-Frame-Options', 'DENY');
-        rewriteResponse.headers.set('X-Content-Type-Options', 'nosniff');
-        return rewriteResponse;
+    // Handle local dev testing: shop.localhost -> shop
+    if (hostWithoutPort.endsWith('.localhost')) {
+      const sub = hostWithoutPort.replace('.localhost', '');
+      if (sub && sub !== 'www') {
+        subdomain = sub;
       }
+    } 
+    // Handle production: shop.voidbuild.com -> shop
+    else if (hostWithoutPort.endsWith('.voidbuild.com')) {
+      const sub = hostWithoutPort.replace('.voidbuild.com', '');
+      if (sub && sub !== 'www') {
+        subdomain = sub;
+      }
+    }
+
+    // Only rewrite root path of subdomains (e.g. shop.voidbuild.com/ -> /s/shop)
+    if (subdomain && (pathname === '/' || pathname === '')) {
+      url.pathname = `/s/${subdomain}`;
+      const rewriteResponse = NextResponse.rewrite(url);
+      rewriteResponse.headers.set('X-Frame-Options', 'DENY');
+      rewriteResponse.headers.set('X-Content-Type-Options', 'nosniff');
+      return rewriteResponse;
     }
   }
 
@@ -66,5 +71,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|logo.png).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|logo.png|.*\\..*).*)'],
 };

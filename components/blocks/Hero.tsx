@@ -2,6 +2,7 @@
 import React from 'react';
 import EditableText from '../editor/EditableText';
 import EditableImage from '../editor/EditableImage';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
 interface HeroProps {
   data: {
@@ -30,8 +31,22 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
     }
   };
 
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, target: string) => {
+    if (editMode) return;
+    if (target.startsWith('#')) {
+      e.preventDefault();
+      const targetId = target.replace('#', '');
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  const targetLink = data.ctaLink || '#contact';
+
   return (
-    <section className={`relative overflow-hidden bg-white ${align === 'center' ? 'text-center' : ''}`}>
+    <section id="hero" className={`relative overflow-hidden bg-white ${align === 'center' ? 'text-center' : ''}`}>
       <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-50 pointer-events-none" />
       
       <div className="relative max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-20 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
@@ -70,17 +85,25 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
           {data.ctaText && (
             <div className="mt-6 flex flex-col sm:flex-row gap-3">
               <a
-                href={data.ctaLink || '#contact'}
-                className="inline-flex items-center justify-center px-6 py-3 rounded-xl text-white font-bold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+                href={targetLink}
+                onClick={(e) => handleSmoothScroll(e, targetLink)}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-bold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
                 style={{ backgroundColor: primary }}
               >
                 {editMode ? (
                   <EditableText value={data.ctaText} onChange={(v) => update('ctaText', v)} editMode={editMode!} as="span" className="text-sm" />
                 ) : (
-                  data.ctaText
+                  <>
+                    <span>{data.ctaText}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
                 )}
               </a>
-              <a href="#services" className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 font-semibold text-sm hover:bg-gray-50 transition">
+              <a
+                href="#services"
+                onClick={(e) => handleSmoothScroll(e, '#services')}
+                className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 font-semibold text-sm hover:bg-gray-50 transition"
+              >
                 View Services
               </a>
             </div>

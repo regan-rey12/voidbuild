@@ -1,6 +1,6 @@
 // Debug endpoint to test Pesapal auth - GET returns token if configured
 export const runtime = 'nodejs';
-import { getPesapalToken } from '../../../lib/pesapal';
+import { getPesapalToken } from '@/lib/pesapal';
 
 export async function GET() {
   try {

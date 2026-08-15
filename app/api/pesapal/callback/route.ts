@@ -1,7 +1,7 @@
 // VoidBuild Pesapal Callback - Handles redirect and IPN after payment
 export const runtime = 'nodejs';
 
-import { getPesapalToken, getPesapalTransactionStatus } from '../../../../lib/pesapal';
+import { getPesapalToken, getPesapalTransactionStatus } from '@/lib/pesapal';
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

@@ -1,59 +1,231 @@
 {
-  "id": "boutique-kampala-1",
-  "name": "Trendy Boutique Ntinda",
+  "id": "boutique-ug-1",
+  "name": "Zari Fashion Boutique Ntinda",
   "category": "boutique",
-  "description": "Women clothes boutique Ntinda",
-  "meta": { "target": "Boutique Ntinda", "language": "en" },
+  "description": "Women clothes, Ankara dresses, corporate suits, shoes and bags in Kampala",
+  "meta": { "target": "Women fashion boutique in Kampala", "language": "en" },
   "blocks": [
     {
       "id": "nav-1",
       "type": "navbar",
-      "data": { "businessName": "Trendy Boutique", "phone": "+256 703 222333", "whatsapp": "+256703222333" },
-      "style": { "primaryColor": "#EC4899" }
+      "data": {
+        "businessName": "Zari Boutique",
+        "phone": "+256 703 222333",
+        "whatsapp": "+256703222333",
+        "links": [
+          { "label": "New Arrivals", "href": "#gallery" },
+          { "label": "Catalog", "href": "#services" },
+          { "label": "Delivery Plans", "href": "#pricing" },
+          { "label": "Reviews", "href": "#testimonials" },
+          { "label": "Location", "href": "#map" },
+          { "label": "Order", "href": "#contact" }
+        ]
+      },
+      "style": { "primaryColor": "#BE185D" }
     },
     {
       "id": "hero-1",
       "type": "hero",
       "data": {
-        "badge": "👗 New Stock Weekly - Delivery in Kampala",
-        "title": "Look Fab with Trendy Boutique",
-        "subtitle": "Dresses, bags, shoes - UGX 30k-80k. Order via WhatsApp, pay MoMo, we deliver.",
-        "ctaText": "Shop on WhatsApp",
+        "badge": "New Arrivals Every Thursday • UK Sizes 8 to 22 • Same-Day Kampala Delivery",
+        "title": "Look Confident, Elegant & Effortlessly Chic",
+        "subtitle": "Discover luxury Ankara maxi dresses, tailored corporate pant suits, designer handbags, evening gowns, and party heels. Sized UK 8 to 22. Order via WhatsApp, pay with MTN MoMo, we deliver right to your doorstep.",
+        "ctaText": "Shop Collection on WhatsApp",
         "ctaLink": "#contact",
-        "image": "fashion boutique women clothes"
+        "image": "african woman ankara fashion dress boutique elegance"
       },
-      "style": { "primaryColor": "#EC4899" }
+      "style": { "primaryColor": "#BE185D", "alignment": "left" }
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery",
+      "data": {
+        "heading": "Featured Arrivals & Lookbook",
+        "subheading": "Swipe through our latest lookbook. All pieces available in limited quantities at our Ntinda showroom.",
+        "images": [
+          "african ankara maxi dress",
+          "women corporate pant suit",
+          "designer leather handbag",
+          "women high heels shoes",
+          "african statement jewelry gold",
+          "women casual jumpsuit style"
+        ]
+      },
+      "style": { "primaryColor": "#BE185D" }
+    },
+    {
+      "id": "stats-1",
+      "type": "stats",
+      "data": {
+        "heading": "Why Kampala Fashion Lovers Choose Us",
+        "stats": [
+          { "number": "3,800+", "label": "Happy Clients Dressed across Uganda" },
+          { "number": "UK 8–22", "label": "Inclusive Sizing for All African Silhouettes" },
+          { "number": "2 Hours", "label": "Express Same-Day Boda Delivery in Kampala" }
+        ]
+      },
+      "style": { "primaryColor": "#BE185D" }
     },
     {
       "id": "services-1",
       "type": "services",
       "data": {
-        "heading": "New Arrivals",
+        "heading": "Our Wardrobe Categories & Prices",
+        "subheading": "All garments are premium quality with durable stitching and breathable fabrics.",
+        "phone": "+256 703 222333",
+        "whatsapp": "+256703222333",
         "services": [
-          { "name": "Dresses", "price": "UGX 50,000", "description": "Ankara & casual", "icon": "👗" },
-          { "name": "Bags & Shoes", "price": "UGX 40,000", "description": "Matching sets", "icon": "👜" },
-          { "name": "Accessories", "price": "UGX 15,000", "description": "Jewelry, belts", "icon": "💍" }
+          {
+            "name": "Ankara Flare & Maxi Dresses",
+            "price": "UGX 65,000",
+            "description": "Vibrant 100% cotton wax print dresses with flattering modern cuts and matching headwraps.",
+            "image": "african wax print ankara dress"
+          },
+          {
+            "name": "Executive Corporate Suits",
+            "price": "UGX 95,000",
+            "description": "Double-breasted blazers and slim-fit trousers designed for Kampala's corporate power women.",
+            "image": "women corporate business suit blazer"
+          },
+          {
+            "name": "Designer Leather Handbags",
+            "price": "UGX 45,000",
+            "description": "Structured everyday tote bags, crossbody pouches, and evening clutches with metallic hardware.",
+            "image": "women luxury leather handbag tote"
+          },
+          {
+            "name": "Evening Gala & Dinner Gowns",
+            "price": "UGX 110,000",
+            "description": "Silk, satin, and sequin floor-length gowns ideal for weddings, galas, and special milestones.",
+            "image": "women evening gown dinner dress"
+          },
+          {
+            "name": "Block Heels & Strappy Sandals",
+            "price": "UGX 55,000",
+            "description": "Comfortable 3-inch cushioned heels for all-day office comfort and weekend events.",
+            "image": "women high heels sandals footwear"
+          },
+          {
+            "name": "African Statement Jewelry",
+            "price": "UGX 20,000",
+            "description": "Handcrafted brass earrings, beaded necklaces, and cuffs to complete any outfit.",
+            "image": "african handcrafted brass jewelry"
+          }
         ]
       },
-      "style": { "primaryColor": "#EC4899" }
+      "style": { "primaryColor": "#BE185D" }
     },
     {
-      "id": "gallery-1",
-      "type": "gallery",
-      "data": { "heading": "See Our Collection", "images": ["fashion", "dress", "boutique", "shoes", "bag", "women"] },
-      "style": { "primaryColor": "#EC4899" }
+      "id": "pricing-1",
+      "type": "pricing",
+      "data": {
+        "heading": "Delivery & VIP Styling",
+        "subheading": "Fast, discreet packaging with flexible payment on delivery options in Kampala.",
+        "phone": "+256 703 222333",
+        "whatsapp": "+256703222333",
+        "plans": [
+          {
+            "name": "Kampala Same-Day Boda",
+            "price": "UGX 5,000",
+            "sub": "within 2 hours",
+            "features": [
+              "Delivered to your office or home",
+              "Try-on while rider waits (5 mins)",
+              "Pay via MTN MoMo / Airtel / Cash",
+              "Free exchange if size doesn't fit"
+            ],
+            "popular": true
+          },
+          {
+            "name": "Upcountry Bus Parcel",
+            "price": "UGX 12,000",
+            "sub": "next-day collection",
+            "features": [
+              "Mbarara, Gulu, Jinja, Mbale, Fort Portal",
+              "Secure bus courier tracking code",
+              "Same-day dispatch from Kampala",
+              "Discreet waterproof packaging"
+            ],
+            "popular": false
+          },
+          {
+            "name": "VIP Fitting Session",
+            "price": "Free",
+            "sub": "at Ntinda showroom",
+            "features": [
+              "Private dressing room reservation",
+              "Personal stylist assistance",
+              "Free cup of brewed coffee or tea",
+              "Instant tailoring alterations available"
+            ],
+            "popular": false
+          }
+        ]
+      },
+      "style": { "primaryColor": "#BE185D" }
+    },
+    {
+      "id": "testimonials-1",
+      "type": "testimonials",
+      "data": {
+        "heading": "What Kampala Queens Say",
+        "subheading": "Real feedback from corporate executives, business owners, and fashion lovers.",
+        "testimonials": [
+          {
+            "name": "Sheila A.",
+            "role": "Corporate Lawyer, Nakasero",
+            "text": "The executive suits fit like custom bespoke tailoring. The fabric does not crease during long court days. 10/10!",
+            "rating": 5
+          },
+          {
+            "name": "Brendah K.",
+            "role": "Bank Manager, Ntinda",
+            "text": "Ordered an Ankara maxi dress at 11 AM and had it delivered to my office by 1 PM. Loved the complimentary packaging.",
+            "rating": 5
+          },
+          {
+            "name": "Christine M.",
+            "role": "Bride, Kololo",
+            "text": "Got all my bridesmaid dresses and dinner gowns from Zari Boutique. Quality was exceptional and prices were very fair.",
+            "rating": 5
+          }
+        ]
+      },
+      "style": { "primaryColor": "#BE185D" }
+    },
+    {
+      "id": "map-1",
+      "type": "map",
+      "data": {
+        "heading": "Visit Our Ntinda Showroom",
+        "subheading": "Conveniently located inside Ntinda Complex on the ground floor.",
+        "location": "Ntinda Complex, Shop B12, Ground Floor, Ntinda, Kampala",
+        "phone": "+256 703 222333"
+      },
+      "style": { "primaryColor": "#BE185D" }
     },
     {
       "id": "contact-1",
       "type": "contact",
       "data": {
+        "heading": "Order or Inquire on WhatsApp",
         "phone": "+256 703 222333",
         "whatsapp": "+256703222333",
-        "location": "Ntinda Complex, Shop B12, Kampala",
-        "hours": "Mon-Sat 9am-7pm"
+        "location": "Ntinda Complex, Shop B12, Ground Floor, Ntinda, Kampala",
+        "hours": "Mon-Sat: 9:00am - 7:30pm, Sunday: 12:00pm - 5:00pm",
+        "email": "orders@zariboutique.ug"
       },
-      "style": { "primaryColor": "#EC4899" }
+      "style": { "primaryColor": "#BE185D" }
     },
-    { "id": "footer-1", "type": "footer", "data": { "businessName": "Trendy Boutique Ntinda", "tagline": "Dresses • Bags • Shoes - Ntinda", "year": 2026 }, "style": { "primaryColor": "#EC4899" } }
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "businessName": "Zari Fashion Boutique",
+        "tagline": "Dresses • Corporate Suits • Handbags • Shoes • Ntinda, Kampala",
+        "year": 2026
+      },
+      "style": { "primaryColor": "#BE185D" }
+    }
   ]
 }

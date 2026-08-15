@@ -1,0 +1,231 @@
+{
+  "id": "gym-ug-1",
+  "name": "PowerFit Gym & Fitness Centre Wandegeya",
+  "category": "gym",
+  "description": "State-of-the-art gym, aerobics, Zumba, heavy free weights, steam bath, and personal training in Kampala",
+  "meta": { "target": "Gym and fitness centre in Wandegeya, Kampala", "language": "en" },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": {
+        "businessName": "PowerFit Gym",
+        "phone": "+256 705 444666",
+        "whatsapp": "+256705444666",
+        "links": [
+          { "label": "Workouts", "href": "#services" },
+          { "label": "Gym Floor", "href": "#gallery" },
+          { "label": "Memberships", "href": "#pricing" },
+          { "label": "Transformations", "href": "#testimonials" },
+          { "label": "Location", "href": "#map" },
+          { "label": "Join Now", "href": "#contact" }
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "Open 5:30 AM – 10:00 PM • Heavy Free Weights • Steam & Sauna Included",
+        "title": "Transform Your Body, Build Strength & Level Up Your Fitness",
+        "subtitle": "Kampala's premier strength and functional fitness facility in Wandegeya. Olympic barbells, imported cardio treadmills, daily high-energy Zumba & Aerobics, certified personal trainers, clean showers, and detox steam bath.",
+        "ctaText": "Get Free Trial Pass on WhatsApp",
+        "ctaLink": "#contact",
+        "image": "african fitness gym training workout bodybuilding kampala"
+      },
+      "style": { "primaryColor": "#EA580C", "alignment": "left" }
+    },
+    {
+      "id": "stats-1",
+      "type": "stats",
+      "data": {
+        "heading": "Results That Speak",
+        "stats": [
+          { "number": "2,400+", "label": "Active Gym Members & Athletes" },
+          { "number": "15+", "label": "Weekly Zumba, Aerobics & HIIT Classes" },
+          { "number": "5:30 AM", "label": "Early Morning Open for Busy Professionals" }
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "Gym Facilities, Classes & Training",
+        "subheading": "All memberships include full access to weights floor, cardio machines, locker rooms, and steam bath.",
+        "phone": "+256 705 444666",
+        "whatsapp": "+256705444666",
+        "services": [
+          {
+            "name": "Heavy Iron & Olympic Free Weights",
+            "price": "Included in Membership",
+            "description": "Dumbbells up to 50kg, power squat racks, Olympic bench presses, deadlift platforms, and cable machines.",
+            "image": "gym free weights dumbbells barbells workout"
+          },
+          {
+            "name": "High-Energy Zumba & Aerobics",
+            "price": "Free for Members",
+            "description": "Daily evening calorie-burning cardio dance and step aerobics led by energetic certified instructors.",
+            "image": "zumba aerobics group fitness class dance"
+          },
+          {
+            "name": "1-on-1 Personal Body Transformation",
+            "price": "UGX 150,000 / month",
+            "description": "Customized workout plan, body fat tracking, nutrition guidance, and dedicated coach for fast results.",
+            "image": "personal trainer coaching client gym workout"
+          },
+          {
+            "name": "Cardio Deck & Treadmills",
+            "price": "Included in Membership",
+            "description": "Commercial running treadmills, cross trainers, rowing machines, and stationary spin bikes with heart rate monitors.",
+            "image": "gym cardio treadmills running fitness"
+          },
+          {
+            "name": "Detox Herbal Steam Bath & Sauna",
+            "price": "Free for Members",
+            "description": "Post-workout eucalyptus steam bath for muscle recovery, joint pain relief, and skin detoxification.",
+            "image": "spa steam bath sauna wellness relaxation"
+          },
+          {
+            "name": "Protein Shake & Smoothie Bar",
+            "price": "From UGX 8,000",
+            "description": "Post-workout whey protein shakes, fresh fruit smoothies, pre-workout energy boosters, and chilled water.",
+            "image": "protein shake smoothie fitness nutrition"
+          }
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery",
+      "data": {
+        "heading": "Inside PowerFit Gym",
+        "subheading": "Spacious, clean, well-ventilated training floors and high-energy workout sessions.",
+        "images": [
+          "gym weights training floor modern",
+          "african woman workout fitness gym",
+          "african man lifting weights barbell",
+          "zumba fitness class group smiling",
+          "steam bath sauna interior wooden",
+          "cardio treadmills gym runners"
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "pricing-1",
+      "type": "pricing",
+      "data": {
+        "heading": "Flexible Membership Plans (UGX)",
+        "subheading": "No joining fees. Pay conveniently via MTN MoMo or Airtel Money.",
+        "phone": "+256 705 444666",
+        "whatsapp": "+256705444666",
+        "plans": [
+          {
+            "name": "Daily Drop-In Pass",
+            "price": "UGX 10,000",
+            "sub": "single day access",
+            "features": [
+              "Full access to weights & cardio floor",
+              "Access to any scheduled class on the day",
+              "Locker room & hot shower access",
+              "Complimentary steam bath session"
+            ],
+            "popular": false
+          },
+          {
+            "name": "Full Monthly Membership",
+            "price": "UGX 90,000",
+            "sub": "most popular plan",
+            "features": [
+              "Unlimited daily gym visits (5:30am - 10pm)",
+              "All Zumba, Aerobics & HIIT classes included",
+              "Unlimited daily steam bath access",
+              "Free fitness assessment & workout guide"
+            ],
+            "popular": true
+          },
+          {
+            "name": "Student Monthly Pass",
+            "price": "UGX 65,000",
+            "sub": "with student ID",
+            "features": [
+              "Discounted full monthly access",
+              "Weights, cardio & class access",
+              "Valid for Makerere, Kyambogo & all campuses",
+              "Lockers & shower facilities"
+            ],
+            "popular": false
+          }
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "testimonials-1",
+      "type": "testimonials",
+      "data": {
+        "heading": "Member Transformation Stories",
+        "subheading": "How our members lost weight, gained muscle, and leveled up their health.",
+        "testimonials": [
+          {
+            "name": "Arthur K.",
+            "role": "Lost 14kg in 4 Months",
+            "text": "The trainers here push you with positive energy. The combination of weights and evening Zumba helped me drop from 96kg to 82kg.",
+            "rating": 5
+          },
+          {
+            "name": "Ritah N.",
+            "role": "Makerere University Student",
+            "text": "The student discount is very affordable and the gym is super clean. The steam bath after a heavy workout is heaven!",
+            "rating": 5
+          },
+          {
+            "name": "David M.",
+            "role": "Corporate Banker",
+            "text": "Being able to workout at 6:00 AM, shower, and get to work in town by 7:30 AM has been a game-changer for my routine.",
+            "rating": 5
+          }
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "map-1",
+      "type": "map",
+      "data": {
+        "heading": "Find Our Wandegeya Fitness Centre",
+        "subheading": "Located along Bombo Road, 2nd Floor, Next to Shell Wandegeya.",
+        "location": "Bombo Road, Next to Shell Wandegeya, Kampala",
+        "phone": "+256 705 444666"
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": {
+        "heading": "Claim Your Free Day Pass on WhatsApp",
+        "phone": "+256 705 444666",
+        "whatsapp": "+256705444666",
+        "location": "Bombo Road, Next to Shell Wandegeya, Kampala",
+        "hours": "Mon-Sat: 5:30am - 10:00pm, Sunday: 7:00am - 6:00pm",
+        "email": "fit@powerfitgym.ug"
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "businessName": "PowerFit Gym & Fitness Centre",
+        "tagline": "Strength Training • Zumba • Aerobics • Steam Bath • Wandegeya, Kampala",
+        "year": 2026
+      },
+      "style": { "primaryColor": "#EA580C" }
+    }
+  ]
+}

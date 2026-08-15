@@ -3,7 +3,7 @@ export const runtime = 'nodejs';
 
 import fs from 'fs';
 import path from 'path';
-import { isRateLimited, getClientIp } from '../../../lib/rateLimiter';
+import { isRateLimited, getClientIp } from '@/lib/rateLimiter';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
@@ -26,66 +26,85 @@ STRUCTURE:
 RULES: All prices UGX, phone +256, location Uganda, short texts, 3 services max.
 `;
 
-function loadTemplates() {
-  try {
-    const templatesDir = path.join(process.cwd(), 'templates');
-    const read = (name: string) => {
-      const filePath = path.join(templatesDir, name);
-      if (!fs.existsSync(filePath)) {
-        const altPath = path.join(__dirname, '..', '..', '..', '..', 'templates', name);
-        if (fs.existsSync(altPath)) {
-          return JSON.parse(fs.readFileSync(altPath, 'utf8'));
-        }
-        throw new Error(`Template not found: ${name}`);
+function loadTemplates(): Record<string, any> {
+  const templates: Record<string, any> = {};
+  const names = [
+    'salon-ug-1',
+    'hardware-mbale-1',
+    'restaurant-ug-1',
+    'boutique-ug-1',
+    'church-ug-1',
+    'boda-ug-1',
+    'school-ug-1',
+    'clinic-ug-1',
+    'barbershop-ug-1',
+    'portfolio-ug-1',
+    'pharmacy-ug-1',
+    'bakery-ug-1',
+    'carwash-ug-1',
+    'hotel-ug-1',
+    'gym-ug-1',
+  ];
+
+  const templatesDir = path.join(process.cwd(), 'templates');
+
+  for (const name of names) {
+    try {
+      const filePath = path.join(templatesDir, `${name}.json`);
+      if (fs.existsSync(filePath)) {
+        templates[name] = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        continue;
       }
-      return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    };
-    return {
-      'salon-ug-1': read('salon-ug-1.json'),
-      'hardware-mbale-1': read('hardware-mbale-1.json'),
-      'restaurant-ug-1': read('restaurant-ug-1.json'),
-      'boutique-ug-1': read('boutique-ug-1.json'),
-      'church-ug-1': read('church-ug-1.json'),
-      'boda-ug-1': read('boda-ug-1.json'),
-      'school-ug-1': read('school-ug-1.json'),
-      'clinic-ug-1': read('clinic-ug-1.json'),
-      'barbershop-ug-1': read('barbershop-ug-1.json'),
-      'portfolio-ug-1': read('portfolio-ug-1.json'),
-    };
-  } catch (e) {
-    const minimal = {
-      id: 'salon-ug-1',
-      name: 'Sample Business',
-      category: 'salon',
-      meta: { target: 'Salon' },
-      blocks: [
-        { id: 'nav-1', type: 'navbar', data: { businessName: 'Sample', phone: '+256 700 123456' }, style: { primaryColor: '#EC4899' } },
-        { id: 'hero-1', type: 'hero', data: { title: 'Welcome', subtitle: 'Sample site', ctaText: 'Contact', image: 'business' }, style: { primaryColor: '#EC4899' } },
-        { id: 'contact-1', type: 'contact', data: { phone: '+256 700 123456', location: 'Kampala' }, style: { primaryColor: '#EC4899' } },
-        { id: 'footer-1', type: 'footer', data: { businessName: 'Sample', year: 2026 }, style: { primaryColor: '#EC4899' } },
-      ]
-    };
-    return {
-      'salon-ug-1': minimal, 'hardware-mbale-1': minimal, 'restaurant-ug-1': minimal, 'boutique-ug-1': minimal,
-      'church-ug-1': minimal, 'boda-ug-1': minimal, 'school-ug-1': minimal, 'clinic-ug-1': minimal,
-      'barbershop-ug-1': minimal, 'portfolio-ug-1': minimal,
-    };
+      const altPath = path.join(__dirname, '..', '..', '..', '..', 'templates', `${name}.json`);
+      if (fs.existsSync(altPath)) {
+        templates[name] = JSON.parse(fs.readFileSync(altPath, 'utf8'));
+        continue;
+      }
+    } catch {}
   }
+
+  // Fallback template if missing
+  const fallbackSalon = templates['salon-ug-1'] || {
+    id: 'salon-ug-1',
+    name: 'Sample Salon',
+    category: 'salon',
+    meta: { target: 'Salon' },
+    blocks: [
+      { id: 'nav-1', type: 'navbar', data: { businessName: 'Salon', phone: '+256 700 123456' }, style: { primaryColor: '#EC4899' } },
+      { id: 'hero-1', type: 'hero', data: { title: 'Welcome to Our Salon', subtitle: 'Professional beauty and braiding services in Kampala.', ctaText: 'Book on WhatsApp', image: 'african salon braids' }, style: { primaryColor: '#EC4899' } },
+      { id: 'services-1', type: 'services', data: { heading: 'Our Services', services: [{ name: 'Box Braids', price: 'UGX 35,000', description: 'Neat, long-lasting braids' }] }, style: { primaryColor: '#EC4899' } },
+      { id: 'contact-1', type: 'contact', data: { phone: '+256 700 123456', location: 'Kampala' }, style: { primaryColor: '#EC4899' } },
+      { id: 'footer-1', type: 'footer', data: { businessName: 'Salon', year: 2026 }, style: { primaryColor: '#EC4899' } },
+    ]
+  };
+
+  for (const name of names) {
+    if (!templates[name]) {
+      templates[name] = fallbackSalon;
+    }
+  }
+
+  return templates;
 }
 
 const FALLBACK_TEMPLATES = loadTemplates();
 
 function getClosestTemplate(desc: string) {
   const lower = desc.toLowerCase();
-  if (lower.includes('hardware') || lower.includes('cement')) return FALLBACK_TEMPLATES['hardware-mbale-1'];
-  if (lower.includes('restaurant') || lower.includes('food')) return FALLBACK_TEMPLATES['restaurant-ug-1'];
-  if (lower.includes('boutique')) return FALLBACK_TEMPLATES['boutique-ug-1'];
-  if (lower.includes('church')) return FALLBACK_TEMPLATES['church-ug-1'];
-  if (lower.includes('boda')) return FALLBACK_TEMPLATES['boda-ug-1'];
-  if (lower.includes('school')) return FALLBACK_TEMPLATES['school-ug-1'];
-  if (lower.includes('clinic')) return FALLBACK_TEMPLATES['clinic-ug-1'];
-  if (lower.includes('barbershop') || lower.includes('barber')) return FALLBACK_TEMPLATES['barbershop-ug-1'];
-  if (lower.includes('portfolio')) return FALLBACK_TEMPLATES['portfolio-ug-1'];
+  if (lower.includes('pharmacy') || lower.includes('drug') || lower.includes('medicine')) return FALLBACK_TEMPLATES['pharmacy-ug-1'];
+  if (lower.includes('bakery') || lower.includes('cake') || lower.includes('pastry') || lower.includes('bread')) return FALLBACK_TEMPLATES['bakery-ug-1'];
+  if (lower.includes('car wash') || lower.includes('carwash') || lower.includes('detailing') || lower.includes('auto spa')) return FALLBACK_TEMPLATES['carwash-ug-1'];
+  if (lower.includes('hotel') || lower.includes('lodge') || lower.includes('cottage') || lower.includes('resort') || lower.includes('jinja')) return FALLBACK_TEMPLATES['hotel-ug-1'];
+  if (lower.includes('gym') || lower.includes('fitness') || lower.includes('workout') || lower.includes('zumba') || lower.includes('aerobics')) return FALLBACK_TEMPLATES['gym-ug-1'];
+  if (lower.includes('hardware') || lower.includes('cement') || lower.includes('iron sheet') || lower.includes('mbale')) return FALLBACK_TEMPLATES['hardware-mbale-1'];
+  if (lower.includes('restaurant') || lower.includes('food') || lower.includes('luwombo') || lower.includes('tilapia') || lower.includes('pilau') || lower.includes('rolex')) return FALLBACK_TEMPLATES['restaurant-ug-1'];
+  if (lower.includes('boutique') || lower.includes('dress') || lower.includes('ankara') || lower.includes('suit') || lower.includes('handbag')) return FALLBACK_TEMPLATES['boutique-ug-1'];
+  if (lower.includes('church') || lower.includes('fellowship') || lower.includes('ministry') || lower.includes('pastor')) return FALLBACK_TEMPLATES['church-ug-1'];
+  if (lower.includes('boda') || lower.includes('motorcycle') || lower.includes('mechanic') || lower.includes('garage')) return FALLBACK_TEMPLATES['boda-ug-1'];
+  if (lower.includes('school') || lower.includes('academy') || lower.includes('nursery') || lower.includes('primary') || lower.includes('uneb')) return FALLBACK_TEMPLATES['school-ug-1'];
+  if (lower.includes('clinic') || lower.includes('hospital') || lower.includes('doctor') || lower.includes('maternity') || lower.includes('lab')) return FALLBACK_TEMPLATES['clinic-ug-1'];
+  if (lower.includes('barbershop') || lower.includes('barber') || lower.includes('fade') || lower.includes('haircut') || lower.includes('shave')) return FALLBACK_TEMPLATES['barbershop-ug-1'];
+  if (lower.includes('portfolio') || lower.includes('photography') || lower.includes('photographer') || lower.includes('wedding')) return FALLBACK_TEMPLATES['portfolio-ug-1'];
   return FALLBACK_TEMPLATES['salon-ug-1'];
 }
 

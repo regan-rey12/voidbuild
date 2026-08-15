@@ -13,8 +13,6 @@ import Pricing from './blocks/Pricing';
 import MapBlock from './blocks/Map';
 import Stats from './blocks/Stats';
 import BlockToolbar from './editor/BlockToolbar';
-import EditableText from './editor/EditableText';
-import EditableImage from './editor/EditableImage';
 
 const BLOCK_MAP: Record<string, React.ComponentType<any>> = {
   navbar: Navbar,
@@ -39,7 +37,14 @@ interface Props {
   onDeleteBlock?: (blockId: string) => void;
 }
 
-export default function TemplateRenderer({ template, editMode = false, onUpdateBlock, onMoveBlock, onDuplicateBlock, onDeleteBlock }: Props) {
+export default function TemplateRenderer({ 
+  template, 
+  editMode = false, 
+  onUpdateBlock, 
+  onMoveBlock, 
+  onDuplicateBlock, 
+  onDeleteBlock 
+}: Props) {
   return (
     <div className="min-h-screen bg-white antialiased">
       {template.blocks.map((block, index) => {
@@ -55,28 +60,34 @@ export default function TemplateRenderer({ template, editMode = false, onUpdateB
           );
         }
 
-        // Edit mode wrapper with toolbar
+        // Edit mode wrapper
         if (editMode) {
+          const isNavbar = block.type === 'navbar';
+
           return (
             <div key={block.id} className="relative group">
-              {/* Hover toolbar */}
-              <div className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition">
-                <BlockToolbar
-                  canMoveUp={index > 0}
-                  canMoveDown={index < template.blocks.length - 1}
-                  onMoveUp={() => onMoveBlock?.(block.id, 'up')}
-                  onMoveDown={() => onMoveBlock?.(block.id, 'down')}
-                  onDuplicate={() => onDuplicateBlock?.(block.id)}
-                  onDelete={() => onDeleteBlock?.(block.id)}
-                />
-              </div>
+              {/* Floating Toolbar - Only for body sections (Omitted from Navbar to avoid obscuring header elements) */}
+              {!isNavbar && (
+                <div className="absolute right-3 top-2 z-30 opacity-0 group-hover:opacity-100 transition shadow-lg rounded-full">
+                  <BlockToolbar
+                    canMoveUp={index > 1}
+                    canMoveDown={index < template.blocks.length - 1}
+                    onMoveUp={() => onMoveBlock?.(block.id, 'up')}
+                    onMoveDown={() => onMoveBlock?.(block.id, 'down')}
+                    onDuplicate={() => onDuplicateBlock?.(block.id)}
+                    onDelete={() => onDeleteBlock?.(block.id)}
+                  />
+                </div>
+              )}
 
-              {/* Block type label */}
-              <div className="absolute top-2 left-2 z-20 bg-gray-900 text-white text-[9px] px-2 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition">
-                {block.type.toUpperCase()} #{index + 1}
-              </div>
+              {/* Block type label - Only for non-navbar sections */}
+              {!isNavbar && (
+                <div className="hidden md:block absolute top-2 left-3 z-20 bg-gray-900/90 text-white text-[9px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition shadow">
+                  {block.type} #{index + 1}
+                </div>
+              )}
 
-              {/* Editable block - pass editMode and onUpdate */}
+              {/* Editable block */}
               <div className="group-hover:outline group-hover:outline-2 group-hover:outline-dashed group-hover:outline-blue-400 group-hover:outline-offset-[-2px]">
                 <Component 
                   data={block.data} 

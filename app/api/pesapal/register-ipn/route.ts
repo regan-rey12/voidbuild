@@ -3,7 +3,7 @@
 // GET /api/pesapal/register-ipn?url=https://yourdomain.com/api/pesapal/callback
 
 export const runtime = 'nodejs';
-import { getPesapalToken, registerPesapalIPN } from '../../../../lib/pesapal';
+import { getPesapalToken, registerPesapalIPN } from '@/lib/pesapal';
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

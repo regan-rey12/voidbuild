@@ -2,6 +2,8 @@
 import React from 'react';
 import EditableText from '../editor/EditableText';
 import EditableImage from '../editor/EditableImage';
+import { Trash2, Plus, MessageCircle } from 'lucide-react';
+import { recordWhatsAppClick } from '../../lib/projects';
 
 const DEFAULT_SERVICE_IMAGES = [
   'african salon braids',
@@ -16,6 +18,8 @@ interface ServicesProps {
   data: {
     heading?: string;
     subheading?: string;
+    phone?: string;
+    whatsapp?: string;
     services: {
       name: string;
       price?: string;
@@ -32,6 +36,7 @@ interface ServicesProps {
 
 export default function Services({ data, style, editMode, onUpdateData }: ServicesProps) {
   const primary = style?.primaryColor || '#111827';
+  const waNumber = (data.whatsapp || data.phone || '').replace(/[^0-9]/g, '');
   
   const updateField = (field: string, value: string) => {
     if (onUpdateData) onUpdateData({ ...data, [field]: value });
@@ -44,18 +49,36 @@ export default function Services({ data, style, editMode, onUpdateData }: Servic
   };
   const addService = () => {
     if (!onUpdateData) return;
-    onUpdateData({ ...data, services: [...data.services, { name: 'New Service', price: 'UGX 20,000', description: 'Describe service', image: 'business service' }] });
+    onUpdateData({
+      ...data,
+      services: [
+        ...(data.services || []),
+        { name: 'New Service', price: 'UGX 20,000', description: 'Quality service for your needs', image: 'business service' }
+      ]
+    });
   };
   const removeService = (idx: number) => {
     if (!onUpdateData) return;
-    if (!confirm('Delete?')) return;
     onUpdateData({ ...data, services: data.services.filter((_, i) => i !== idx) });
+  };
+
+  const handleServiceOrderClick = (e: React.MouseEvent<HTMLAnchorElement>, serviceName: string, servicePrice?: string) => {
+    if (editMode) return;
+    recordWhatsAppClick();
+    if (!waNumber) {
+      // Smooth scroll to contact section if phone is not directly on block
+      e.preventDefault();
+      const el = document.getElementById('contact');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   return (
     <section id="services" className="py-12 md:py-16 px-4 md:px-6 bg-gray-50">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-xl md:text-2xl font-bold text-center">
+        <h2 className="text-xl md:text-2xl font-bold text-center text-gray-900">
           {editMode && onUpdateData ? (
             <EditableText value={data.heading || 'Our Services'} onChange={(v) => updateField('heading', v)} editMode={editMode} as="span" className="text-xl md:text-2xl font-bold" />
           ) : (
@@ -76,43 +99,68 @@ export default function Services({ data, style, editMode, onUpdateData }: Servic
           {data.services?.map((service, i) => {
             const placeholder = DEFAULT_SERVICE_IMAGES[i % DEFAULT_SERVICE_IMAGES.length];
             const imageToShow = service.image || placeholder;
+            const itemText = encodeURIComponent(`Hello! I saw your website and I would like to order/book ${service.name} (${service.price || ''})`);
+            const itemWaLink = waNumber ? `https://wa.me/${waNumber}?text=${itemText}` : '#contact';
+
             return (
-              <div key={i} className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg hover:border-gray-300 transition-all flex flex-col">
-                <div className="relative aspect-[16/9] md:aspect-[4/3] bg-gray-100">
-                  {editMode && onUpdateData ? (
-                    <EditableImage imageKeyword={imageToShow} alt={service.name} editMode={editMode} onChange={(url) => updateService(i, 'image', url)} className="w-full h-full object-cover" />
-                  ) : (
-                    <img src={imageToShow.startsWith('http') || imageToShow.startsWith('data:') ? imageToShow : `https://source.unsplash.com/600x450/?${encodeURIComponent(imageToShow)}`} alt={service.name} className="w-full h-full object-cover" loading="lazy" />
-                  )}
-                  {service.price && (
-                    <div className="absolute top-2.5 right-2.5 px-2 py-1 rounded-full text-[11px] font-bold bg-gray-900 text-white shadow">
-                      {editMode && onUpdateData ? (
-                        <EditableText value={service.price} onChange={(v) => updateService(i, 'price', v)} editMode={editMode} as="span" className="text-[11px]" />
-                      ) : (
-                        service.price
-                      )}
-                    </div>
-                  )}
-                  {editMode && onUpdateData && (
-                    <button onClick={() => removeService(i)} className="absolute top-2.5 left-2.5 w-6 h-6 rounded-full bg-red-500 text-white text-xs opacity-0 group-hover:opacity-100 transition">✕</button>
-                  )}
-                </div>
-                <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="font-bold text-sm">
+              <div key={i} className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg hover:border-gray-300 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="relative aspect-[16/9] md:aspect-[4/3] bg-gray-100">
                     {editMode && onUpdateData ? (
-                      <EditableText value={service.name} onChange={(v) => updateService(i, 'name', v)} editMode={editMode} as="span" className="font-bold text-sm" />
+                      <EditableImage imageKeyword={imageToShow} alt={service.name} editMode={editMode} onChange={(url) => updateService(i, 'image', url)} className="w-full h-full object-cover" />
                     ) : (
-                      service.name
+                      <img src={imageToShow.startsWith('http') || imageToShow.startsWith('data:') ? imageToShow : `https://source.unsplash.com/600x450/?${encodeURIComponent(imageToShow)}`} alt={service.name} className="w-full h-full object-cover" loading="lazy" />
                     )}
-                  </h3>
-                  <div className="mt-1 text-xs text-gray-600 flex-1">
-                    {editMode && onUpdateData ? (
-                      <EditableText value={service.description || ''} onChange={(v) => updateService(i, 'description', v)} editMode={editMode} as="span" multiline className="text-xs" />
-                    ) : (
-                      service.description
+                    {service.price && (
+                      <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-gray-900 text-white shadow">
+                        {editMode && onUpdateData ? (
+                          <EditableText value={service.price} onChange={(v) => updateService(i, 'price', v)} editMode={editMode} as="span" className="text-[11px]" />
+                        ) : (
+                          service.price
+                        )}
+                      </div>
+                    )}
+                    {editMode && onUpdateData && (
+                      <button
+                        onClick={() => removeService(i)}
+                        className="absolute top-2.5 left-2.5 w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow"
+                        title="Remove Service"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     )}
                   </div>
-                  <button className="mt-3 w-full py-2 rounded-lg text-white text-xs font-bold" style={{ backgroundColor: primary }}>Book on WhatsApp</button>
+                  
+                  <div className="p-5">
+                    <h3 className="font-bold text-sm text-gray-900">
+                      {editMode && onUpdateData ? (
+                        <EditableText value={service.name} onChange={(v) => updateService(i, 'name', v)} editMode={editMode} as="span" className="font-bold text-sm" />
+                      ) : (
+                        service.name
+                      )}
+                    </h3>
+                    <div className="mt-1.5 text-xs text-gray-600 leading-relaxed">
+                      {editMode && onUpdateData ? (
+                        <EditableText value={service.description || ''} onChange={(v) => updateService(i, 'description', v)} editMode={editMode} as="span" multiline className="text-xs" />
+                      ) : (
+                        service.description
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-5 pt-0">
+                  <a
+                    href={itemWaLink}
+                    target={waNumber ? '_blank' : '_self'}
+                    rel={waNumber ? 'noopener noreferrer' : undefined}
+                    onClick={(e) => handleServiceOrderClick(e, service.name, service.price)}
+                    className="w-full py-2.5 rounded-xl text-white text-xs font-bold text-center transition flex items-center justify-center gap-1.5 shadow-sm hover:opacity-95"
+                    style={{ backgroundColor: primary }}
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>Order / Book on WhatsApp</span>
+                  </a>
                 </div>
               </div>
             );
@@ -120,8 +168,14 @@ export default function Services({ data, style, editMode, onUpdateData }: Servic
         </div>
         {editMode && onUpdateData && (
           <div className="mt-6 text-center">
-            <button onClick={addService} className="px-4 py-2 rounded-full bg-white border text-xs font-semibold">+ Add Service with Photo</button>
-            <div className="mt-2 text-[11px] text-gray-500">Real photos show how your services will look - upload your own in Edit Mode</div>
+            <button
+              onClick={addService}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-gray-300 hover:bg-gray-50 text-xs font-semibold shadow-sm transition"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add Service with Photo</span>
+            </button>
+            <div className="mt-2 text-[11px] text-gray-500">Real photos show how your services will look — upload your own in Edit Mode</div>
           </div>
         )}
       </div>

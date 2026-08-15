@@ -49,7 +49,7 @@ export default function PrivacyPage() {
               <li>We do NOT sell your data to third parties</li>
               <li>We do NOT store MoMo PIN, card numbers - payments handled by Pesapal (PCI compliant)</li>
               <li>Images you upload: public read (since website is public), but only you can upload/update/delete your own via user_id</li>
-              <li>Right to be forgotten: Email support@voidbuild.com or delete account in dashboard (coming) to delete all your projects, feedback, payments data</li>
+              <li>Right to be forgotten: Email hello@voidbuild.com or delete account in dashboard (coming) to delete all your projects, feedback, payments data</li>
               <li>Data retention: Projects kept until you delete, feedback kept 1 year for improving AI, payments kept 7 years for URA tax compliance</li>
             </ul>
           </section>
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
             <ul className="mt-2 list-disc pl-5 space-y-1">
               <li>Access: View your data in dashboard</li>
               <li>Edit: Click text/image to edit in builder, changes save instantly</li>
-              <li>Delete: Delete project in dashboard, or email support@voidbuild.com to delete account and all data</li>
+              <li>Delete: Delete project in dashboard, or email hello@voidbuild.com to delete account and all data</li>
               <li>Export: Copy share link /p/id?d=base64 contains full site JSON, or contact support for full export</li>
               <li>Complaint: If you believe your data rights violated, contact NITA-U or Uganda Data Protection Office</li>
             </ul>
@@ -72,7 +72,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="font-bold text-base">7. Contact</h2>
-            <p className="mt-2">For privacy questions, data deletion, or complaints: Email support@voidbuild.com or WhatsApp +256 774 919318. We respond within 24 hours.</p>
+            <p className="mt-2">For privacy questions, data deletion, or complaints: Email hello@voidbuild.com or WhatsApp +256 751 391318. We respond within 24 hours.</p>
           </section>
         </div>
 

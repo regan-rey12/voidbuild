@@ -1,48 +1,231 @@
 {
-  "id": "barbershop-wandegeya-1",
-  "name": "Fresh Cuts Barbershop Wandegeya",
+  "id": "barbershop-ug-1",
+  "name": "VIP Kigozi Barbershop Kabalagala",
   "category": "barbershop",
-  "description": "Barbershop Wandegeya",
-  "meta": { "target": "Barbershop Wandegeya", "language": "en" },
+  "description": "Executive haircuts, beard grooming, dreadlocks, facials, and grooming packages in Kabalagala, Kampala",
+  "meta": { "target": "Barbershop in Kabalagala, Kampala", "language": "en" },
   "blocks": [
     {
       "id": "nav-1",
       "type": "navbar",
-      "data": { "businessName": "Fresh Cuts", "phone": "+256 702 777888", "whatsapp": "+256702777888" },
-      "style": { "primaryColor": "#111827" }
+      "data": {
+        "businessName": "VIP Kigozi Barber",
+        "phone": "+256 702 777888",
+        "whatsapp": "+256702777888",
+        "links": [
+          { "label": "Grooming Menu", "href": "#services" },
+          { "label": "Fades Gallery", "href": "#gallery" },
+          { "label": "VIP Packages", "href": "#pricing" },
+          { "label": "Reviews", "href": "#testimonials" },
+          { "label": "Location", "href": "#map" },
+          { "label": "Book Cut", "href": "#contact" }
+        ]
+      },
+      "style": { "primaryColor": "#0F172A" }
     },
     {
       "id": "hero-1",
       "type": "hero",
       "data": {
-        "badge": "💈 Walk-ins Welcome - Student Discount 10%",
-        "title": "Stay Fresh - Best Cuts in Wandegeya",
-        "subtitle": "Haircuts, beard trim, dreadlocks. UGX 5k-15k. Open 8am-9pm. MoMo accepted.",
-        "ctaText": "Book on WhatsApp",
+        "badge": "Walk-ins & Appointments • Clean Sterilized Blades • Open Late (Until 10:30 PM)",
+        "title": "Sharp Fades, Master Beard Sculpting & Executive Grooming",
+        "subtitle": "Kabalagala's premier barbershop lounge. Expert low & high taper skin fades, hot steam towel beard sculpting, dreadlocks washing & retwist, kids gentle cuts, and activated charcoal facial spa. Air-conditioned lounge with live Premier League football.",
+        "ctaText": "Book Appointment on WhatsApp",
         "ctaLink": "#contact",
-        "image": "barbershop haircut man"
+        "image": "african men haircut fade barbershop styling kampala"
       },
-      "style": { "primaryColor": "#111827" }
+      "style": { "primaryColor": "#0F172A", "alignment": "left" }
+    },
+    {
+      "id": "stats-1",
+      "type": "stats",
+      "data": {
+        "heading": "Why Kampala Gentlemen Trust Kigozi",
+        "stats": [
+          { "number": "6,000+", "label": "Sharp Cuts & Beard Lineups Delivered" },
+          { "number": "100%", "label": "UV-Sterilized Single-Use Razor Blades" },
+          { "number": "10:30 PM", "label": "Open Late Every Night for After-Work Cuts" }
+        ]
+      },
+      "style": { "primaryColor": "#0F172A" }
     },
     {
       "id": "services-1",
       "type": "services",
       "data": {
-        "heading": "Services - UGX",
+        "heading": "Grooming Menu & UGX Prices",
+        "subheading": "Every cut includes a relaxing hair wash, antiseptic scalp spray, and luxury aftershave cologne.",
+        "phone": "+256 702 777888",
+        "whatsapp": "+256702777888",
         "services": [
-          { "name": "Haircut", "price": "UGX 8,000", "description": "Fade, clean", "icon": "💈" },
-          { "name": "Beard + Haircut", "price": "UGX 12,000", "description": "Beard trim & lineup", "icon": "🧔" },
-          { "name": "Dreadlocks", "price": "UGX 15,000", "description": "Retwist & style", "icon": "✊" }
+          {
+            "name": "Classic Skin Fade & Razor Lineup",
+            "price": "UGX 10,000",
+            "description": "Low, mid, or high taper fade with razor-sharp hairline finish and warm soothing wash.",
+            "image": "african men skin fade haircut lineup"
+          },
+          {
+            "name": "Hot Towel Beard Sculpt & Herbal Oil",
+            "price": "UGX 8,000",
+            "description": "Steam towel therapy, straight razor contouring, and organic tea tree beard oil treatment.",
+            "image": "men beard grooming hot towel shave"
+          },
+          {
+            "name": "Dreadlocks Herbal Wash & Retwist",
+            "price": "UGX 35,000",
+            "description": "Deep cleansing herbal shampoo, palm rolling retwist, and scalp moisture nourishment.",
+            "image": "men dreadlocks styling retwist"
+          },
+          {
+            "name": "Kids Gentle Clean Fade",
+            "price": "UGX 7,000",
+            "description": "Patient, gentle haircuts for boys with kid-friendly booster seats and clean clippers.",
+            "image": "kids boy haircut barbershop smile"
+          },
+          {
+            "name": "Organic Hair Blackening Dye & Bleach",
+            "price": "UGX 20,000",
+            "description": "Natural black beard/hair color tinting or stylish blonde/caramel highlights.",
+            "image": "men hair dye coloring barbershop"
+          },
+          {
+            "name": "Activated Charcoal Scrub & Facial Spa",
+            "price": "UGX 25,000",
+            "description": "Exfoliating black mask, dead skin removal, and invigorating face massage for glowing skin.",
+            "image": "men facial massage skincare spa"
+          }
         ]
       },
-      "style": { "primaryColor": "#111827" }
+      "style": { "primaryColor": "#0F172A" }
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery",
+      "data": {
+        "heading": "Our Master Cuts & Lineups",
+        "subheading": "Real photos of clients groomed daily by our master barbers in Kabalagala.",
+        "images": [
+          "african skin fade haircut",
+          "beard grooming lineup",
+          "dreadlocks men style",
+          "kids clean haircut",
+          "barbershop chair interior",
+          "men sharp razor hairline"
+        ]
+      },
+      "style": { "primaryColor": "#0F172A" }
+    },
+    {
+      "id": "pricing-1",
+      "type": "pricing",
+      "data": {
+        "heading": "VIP Grooming Packages",
+        "subheading": "Bundle your services and save with our special executive packages.",
+        "phone": "+256 702 777888",
+        "whatsapp": "+256702777888",
+        "plans": [
+          {
+            "name": "Student Glow Special",
+            "price": "UGX 8,000",
+            "sub": "with student ID",
+            "features": [
+              "Haircut & Skin Fade",
+              "Precision razor lineup",
+              "Head wash & mint scalp spray",
+              "Available Monday to Thursday"
+            ],
+            "popular": false
+          },
+          {
+            "name": "Executive Gentleman Combo",
+            "price": "UGX 25,000",
+            "sub": "most popular choice",
+            "features": [
+              "Master Haircut + Beard Sculpt",
+              "Hot steam towel therapy",
+              "Hair wash & relaxing scalp massage",
+              "Free cold soda or bottled water"
+            ],
+            "popular": true
+          },
+          {
+            "name": "Groom's Wedding Squad",
+            "price": "UGX 150,000",
+            "sub": "up to 5 gentlemen",
+            "features": [
+              "Full haircuts & beard trims for 5",
+              "Charcoal facial mask for the groom",
+              "Dedicated private VIP lounge seating",
+              "Pre-wedding toast drinks & photo styling"
+            ],
+            "popular": false
+          }
+        ]
+      },
+      "style": { "primaryColor": "#0F172A" }
+    },
+    {
+      "id": "testimonials-1",
+      "type": "testimonials",
+      "data": {
+        "heading": "What Kampala Gentlemen Say",
+        "subheading": "Reviews from corporate executives, campus students, and wedding grooms.",
+        "testimonials": [
+          {
+            "name": "Denis M.",
+            "role": "Corporate Executive, Acacia",
+            "text": "Kigozi gives the sharpest skin fade in Kampala. The hot towel beard treatment after a long work week is unmatched.",
+            "rating": 5
+          },
+          {
+            "name": "Kenneth O.",
+            "role": "Kampala International University",
+            "text": "Best student discount in town. The barbers are fast, friendly, and the clippers are always thoroughly sanitized.",
+            "rating": 5
+          },
+          {
+            "name": "Ronnie T.",
+            "role": "Wedding Groom, Kansanga",
+            "text": "Brought my 4 groomsmen here on my wedding morning. We walked out looking like royalty. Incredible service!",
+            "rating": 5
+          }
+        ]
+      },
+      "style": { "primaryColor": "#0F172A" }
+    },
+    {
+      "id": "map-1",
+      "type": "map",
+      "data": {
+        "heading": "Visit Our Kabalagala Lounge",
+        "subheading": "Conveniently located along Ggaba Road with ample secure parking.",
+        "location": "Ggaba Road, Opposite Capital Shoppers, Kabalagala, Kampala",
+        "phone": "+256 702 777888"
+      },
+      "style": { "primaryColor": "#0F172A" }
     },
     {
       "id": "contact-1",
       "type": "contact",
-      "data": { "phone": "+256 702 777888", "whatsapp": "+256702777888", "location": "Wandegeya Market, Second Floor, Kampala", "hours": "Daily 8am-9pm" },
-      "style": { "primaryColor": "#111827" }
+      "data": {
+        "heading": "Book Your Cut or Walk-In",
+        "phone": "+256 702 777888",
+        "whatsapp": "+256702777888",
+        "location": "Ggaba Road, Opposite Capital Shoppers, Kabalagala, Kampala",
+        "hours": "Mon-Sun: 7:30am - 10:30pm (Open Late Every Night)",
+        "email": "fresh@kigozibarber.ug"
+      },
+      "style": { "primaryColor": "#0F172A" }
     },
-    { "id": "footer-1", "type": "footer", "data": { "businessName": "Fresh Cuts Barbershop", "tagline": "Wandegeya - Stay Fresh", "year": 2026 }, "style": { "primaryColor": "#111827" } }
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "businessName": "VIP Kigozi Barbershop",
+        "tagline": "Master Fades • Beard Sculpting • Dreadlocks • Kabalagala, Kampala",
+        "year": 2026
+      },
+      "style": { "primaryColor": "#0F172A" }
+    }
   ]
 }

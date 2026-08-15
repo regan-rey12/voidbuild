@@ -1,9 +1,9 @@
 {
   "id": "salon-ug-1",
-  "name": "Aisha's Beauty Salon",
+  "name": "Aisha's Beauty Braids & Salon Wandegeya",
   "category": "salon",
-  "description": "Salon Wandegeya - braids with real photos",
-  "meta": { "target": "Salon in Wandegeya, Kampala", "language": "en" },
+  "description": "Knotless braids, box braids, natural hair treatments, nails & makeup in Wandegeya Market, Kampala",
+  "meta": { "target": "Beauty Salon in Wandegeya, Kampala", "language": "en" },
   "blocks": [
     {
       "id": "nav-1",
@@ -14,117 +14,217 @@
         "whatsapp": "+256700123456",
         "links": [
           { "label": "Services", "href": "#services" },
-          { "label": "Gallery", "href": "#gallery" },
-          { "label": "Contact", "href": "#contact" }
+          { "label": "Portfolio", "href": "#gallery" },
+          { "label": "Combos", "href": "#pricing" },
+          { "label": "Find Us", "href": "#map" },
+          { "label": "Book", "href": "#contact" }
         ]
       },
-      "style": { "primaryColor": "#EC4899" }
+      "style": { "primaryColor": "#E11D48" }
     },
     {
       "id": "hero-1",
       "type": "hero",
       "data": {
-        "badge": "🔥 #1 Rated in Wandegeya - Real Photos",
-        "title": "Slay Every Day at Aisha's Beauty Salon",
-        "subtitle": "Braids, natural hair, nails & makeup. See real work photos below. Affordable prices, MTN MoMo accepted. Open 7am - 9pm.",
-        "ctaText": "Book on WhatsApp",
+        "badge": "Top Rated Salon in Wandegeya • Walk-ins & Appointments",
+        "title": "Slay Every Day with Flawless Braids & Natural Hair Care",
+        "subtitle": "Kampala's trusted salon for neat, pain-free Knotless Braids, Bohemian Curls, Deep Steaming Treatments, Gel Nails, and Soft Glam Makeup. Free hair wash included. MTN MoMo & Airtel Money accepted.",
+        "ctaText": "Book Appointment on WhatsApp",
         "ctaLink": "#contact",
-        "image": "african salon braids beautiful woman Kampala"
+        "image": "african woman knotless braids salon beauty hairstyle kampala"
       },
-      "style": { "primaryColor": "#EC4899", "alignment": "left" }
+      "style": { "primaryColor": "#E11D48", "alignment": "left" }
+    },
+    {
+      "id": "stats-1",
+      "type": "stats",
+      "data": {
+        "heading": "Why Kampala Queens Trust Us",
+        "stats": [
+          { "number": "4,500+", "label": "Happy Clients Braided & Styled" },
+          { "number": "100%", "label": "Pain-Free & Edge Protection Guarantee" },
+          { "number": "7 Days", "label": "Free Retouch Policy on All Braids" }
+        ]
+      },
+      "style": { "primaryColor": "#E11D48" }
     },
     {
       "id": "services-1",
       "type": "services",
       "data": {
-        "heading": "Our Services - Real Photos, Fair Prices",
-        "subheading": "All services include wash & style. Real photos of our work. Students get 10% off. Click image to upload your own.",
+        "heading": "Hair & Beauty Services with UGX Prices",
+        "subheading": "All braiding packages include hair wash, blowdry, and scalp oil massage at no extra cost.",
+        "phone": "+256 700 123456",
+        "whatsapp": "+256700123456",
         "services": [
           {
-            "name": "Box Braids",
+            "name": "Knotless Box Braids (Mid-Back)",
             "price": "UGX 35,000",
-            "description": "Neat, long-lasting braids. 3-4 hours. See real photo.",
-            "icon": "💇🏾‍♀️",
-            "image": "african box braids long beautiful"
+            "description": "Lightweight, tension-free braids with clean parting. Lasts 5 to 7 weeks comfortably.",
+            "image": "african woman knotless braids beautiful"
           },
           {
-            "name": "Natural Hair Treatment",
-            "price": "UGX 20,000",
-            "description": "Deep conditioning & styling for natural hair.",
-            "icon": "✨",
-            "image": "african natural hair treatment"
+            "name": "Bohemian Goddess Curls",
+            "price": "UGX 50,000",
+            "description": "Trendy textured braids with bouncy French curly tendrils for an effortless luxury look.",
+            "image": "african bohemian goddess braids curls"
           },
           {
-            "name": "Nails + Makeup",
+            "name": "Deep Conditioning & Steam Treatment",
             "price": "UGX 25,000",
-            "description": "Gel nails + soft glam makeup for events.",
-            "icon": "💅",
-            "image": "nails makeup african woman"
+            "description": "Organic shea butter and peppermint hot steam treatment to repair dry, damaged natural hair.",
+            "image": "african natural hair treatment wash"
           },
           {
-            "name": "Bridal Package",
-            "price": "UGX 80,000",
-            "description": "Full bridal look + trial. Real bridal photos.",
-            "icon": "👰🏾",
-            "image": "african bridal makeup wedding"
+            "name": "Long-Lasting Gel Nails & Art",
+            "price": "UGX 25,000",
+            "description": "Cuticle care, builder gel extension, matte/glossy polish, and customized nail art.",
+            "image": "gel nails polish manicure african woman"
           },
           {
-            "name": "Kids Braids",
+            "name": "Soft Glam Event Makeup",
+            "price": "UGX 30,000",
+            "description": "Flawless skin match, sculpted brows, long-wear foundation, and mink lashes for events.",
+            "image": "soft glam makeup african woman face"
+          },
+          {
+            "name": "Kids School Holiday Braids",
             "price": "UGX 15,000",
-            "description": "Gentle & quick for school kids. See real kids braids.",
-            "icon": "👧🏾",
-            "image": "kids african braids children"
-          },
-          {
-            "name": "Men's Haircut",
-            "price": "UGX 10,000",
-            "description": "Clean cuts, beard trim for men.",
-            "icon": "💈",
-            "image": "african men haircut barbershop"
+            "description": "Gentle, quick, and neat cornrows or twists with colorful beads for school children.",
+            "image": "african kids girl braids beads smile"
           }
         ]
       },
-      "style": { "primaryColor": "#EC4899" }
+      "style": { "primaryColor": "#E11D48" }
     },
     {
       "id": "gallery-1",
       "type": "gallery",
       "data": {
-        "heading": "Real Work - Our Portfolio",
-        "subheading": "Real photos from our salon in Wandegeya - not stock. Click any image to upload your own work.",
+        "heading": "Our Real Salon Portfolio",
+        "subheading": "See genuine styles done on our clients in Wandegeya. Click any image to upload your own in Edit Mode.",
         "images": [
-          "african box braids",
-          "african natural hair",
-          "nails art",
-          "african bridal",
-          "kids braids",
-          "barbershop haircut"
+          "african knotless braids long",
+          "african natural afro hair care",
+          "gel nail art manicure",
+          "african soft glam makeup wedding",
+          "kids braids beads colorful",
+          "bohemian goddess curls braids"
         ]
       },
-      "style": { "primaryColor": "#EC4899" }
+      "style": { "primaryColor": "#E11D48" }
+    },
+    {
+      "id": "pricing-1",
+      "type": "pricing",
+      "data": {
+        "heading": "Popular Salon Combos",
+        "subheading": "Save up to UGX 20,000 when you combine hair, nails, and treatments together.",
+        "phone": "+256 700 123456",
+        "whatsapp": "+256700123456",
+        "plans": [
+          {
+            "name": "Student Glow Package",
+            "price": "UGX 35,000",
+            "sub": "with student ID",
+            "features": [
+              "Knotless Braids or Lines",
+              "Free Hair Wash & Blowdry",
+              "Free Scalp Peppermint Oil",
+              "Available Monday to Thursday"
+            ],
+            "popular": false
+          },
+          {
+            "name": "Queen Glam Package",
+            "price": "UGX 75,000",
+            "sub": "most popular combo",
+            "features": [
+              "Knotless Braids (any length)",
+              "Gel Nails & Manicure",
+              "Soft Glam Makeup + Lashes",
+              "Complimentary chilled beverage"
+            ],
+            "popular": true
+          },
+          {
+            "name": "Bridal Full Squad",
+            "price": "UGX 250,000",
+            "sub": "bride + 3 bridesmaids",
+            "features": [
+              "Bridal hair styling & veil set",
+              "High-definition wedding makeup",
+              "Gel nails for full bridal party",
+              "On-location home or hotel service"
+            ],
+            "popular": false
+          }
+        ]
+      },
+      "style": { "primaryColor": "#E11D48" }
+    },
+    {
+      "id": "testimonials-1",
+      "type": "testimonials",
+      "data": {
+        "heading": "What Kampala Queens Say",
+        "subheading": "Real reviews from campus students and working professionals.",
+        "testimonials": [
+          {
+            "name": "Amina S.",
+            "role": "Makerere Law Student",
+            "text": "Aisha's knotless braids are 100% pain-free. I can sleep comfortably on night one without any headache!",
+            "rating": 5
+          },
+          {
+            "name": "Phiona N.",
+            "role": "Acacia Mall Executive",
+            "text": "Fastest braiders in Kampala. 3 braiders worked on my mid-back braids and I was done in just 2.5 hours.",
+            "rating": 5
+          },
+          {
+            "name": "Joanita M.",
+            "role": "Bride, Wandegeya",
+            "text": "She did my Kwanjula bridal hair and makeup. The photos turned out stunning. Thank you Aisha!",
+            "rating": 5
+          }
+        ]
+      },
+      "style": { "primaryColor": "#E11D48" }
+    },
+    {
+      "id": "map-1",
+      "type": "map",
+      "data": {
+        "heading": "Find Us in Wandegeya Market",
+        "subheading": "Easy to find on the second floor, right near the Shell petrol station.",
+        "location": "Wandegeya Market, Second Floor, Shop 12A, Kampala",
+        "phone": "+256 700 123456"
+      },
+      "style": { "primaryColor": "#E11D48" }
     },
     {
       "id": "contact-1",
       "type": "contact",
       "data": {
-        "heading": "Find Us in Wandegeya",
+        "heading": "Book Your Slot Today",
         "phone": "+256 700 123456",
         "whatsapp": "+256700123456",
-        "location": "Wandegeya Market, Shop 12A, Near Shell, Kampala",
-        "hours": "Mon-Sun: 7am - 9pm. Walk-ins welcome.",
-        "email": "aisha@beauty.ug"
+        "location": "Wandegeya Market, Second Floor, Shop 12A (Near Shell Petrol Station), Kampala",
+        "hours": "Mon-Sun: 7:00am - 9:30pm (Open Every Day)",
+        "email": "aisha@beautybraids.ug"
       },
-      "style": { "primaryColor": "#EC4899" }
+      "style": { "primaryColor": "#E11D48" }
     },
     {
       "id": "footer-1",
       "type": "footer",
       "data": {
-        "businessName": "Aisha's Beauty Salon",
-        "tagline": "Real Photos • Braids • Natural Hair • Nails • Wandegeya, Kampala",
+        "businessName": "Aisha's Beauty Braids & Salon",
+        "tagline": "Knotless Braids • Natural Hair • Nails • Makeup • Wandegeya, Kampala",
         "year": 2026
       },
-      "style": { "primaryColor": "#EC4899" }
+      "style": { "primaryColor": "#E11D48" }
     }
   ]
 }
