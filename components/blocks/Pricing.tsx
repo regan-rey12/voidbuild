@@ -1,8 +1,8 @@
 "use client";
 import React from 'react';
-import EditableText from '../editor/EditableText';
+import EditableText from '@/components/editor/EditableText';
 import { Check, MessageCircle, Sparkles } from 'lucide-react';
-import { recordWhatsAppClick } from '../../lib/projects';
+import { recordWhatsAppClick } from '@/lib/projects';
 
 interface PricingProps {
   data: {

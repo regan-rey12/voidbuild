@@ -1,7 +1,7 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import TopNav from '../components/TopNav';
+import TopNav from '@/components/TopNav';
 import { 
   Sparkles, 
   MessageCircle, 
@@ -40,6 +40,12 @@ interface TemplateItem {
 
 export default function LandingPage() {
   const [activeFilter, setActiveFilter] = useState<'all' | 'beauty_health' | 'food_bakery' | 'retail_auto' | 'community_hotel'>('all');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash && window.location.hash.includes('access_token')) {
+      window.location.href = `/auth/callback${window.location.hash}`;
+    }
+  }, []);
 
   const templates: TemplateItem[] = [
     { id: 'salon', name: "Aisha's Salon", desc: 'Braids, Natural Hair & Nails', color: '#E11D48', price: 'UGX 35k', category: 'beauty_health', icon: Scissors, highlight: 'Wandegeya' },
@@ -137,7 +143,7 @@ export default function LandingPage() {
               <div className="p-4 md:p-5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <img src="/logo.png" alt="" className="w-7 h-7 rounded-lg object-contain border bg-white p-0.5" />
+                    <img src="/logo.png" alt="" className="w-7 h-7 object-contain flex-shrink-0" />
                     <div>
                       <div className="font-bold text-sm text-gray-900">Aisha Beauty Braids</div>
                       <div className="text-[10px] text-gray-500">Wandegeya Market • Open 7am - 9pm</div>
@@ -392,7 +398,7 @@ export default function LandingPage() {
 
       {/* CTA Footer Section */}
       <section className="py-12 md:py-16 px-4 md:px-6 text-center max-w-3xl mx-auto">
-        <img src="/logo.png" alt="VoidBuild" className="w-10 h-10 rounded-xl mx-auto border shadow-sm object-contain bg-white p-1" />
+        <img src="/logo.png" alt="VoidBuild" className="w-10 h-10 object-contain mx-auto" />
         <h2 className="mt-5 text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">
           Your Ugandan business deserves a website.
         </h2>
@@ -411,7 +417,7 @@ export default function LandingPage() {
       {/* Footer with Privacy & Terms links for Uganda Data Protection Act */}
       <footer className="py-8 px-4 md:px-6 border-t flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 max-w-6xl mx-auto">
         <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="" className="w-5 h-5 rounded-md object-contain border bg-white" />
+          <img src="/logo.png" alt="VoidBuild" className="w-5 h-5 object-contain flex-shrink-0" />
           <span>© 2026 voidbuild — Built for businesses in Uganda</span>
         </div>
         <div className="flex items-center gap-4 text-xs">

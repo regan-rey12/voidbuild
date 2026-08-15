@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { Menu, X, Edit3, Check, Plus, Loader2, Sparkles, AlertCircle, Info } from 'lucide-react';
-import TemplateRenderer from '../../components/TemplateRenderer';
-import SaveButton from '../../components/SaveButton';
-import EditorSidebar from '../../components/editor/EditorSidebar';
-import { Template, TemplateBlock, BlockType } from '../../lib/types';
-import sampleTemplate from '../../templates/salon-ug-1.json';
-import { getTemplateByKey } from '../../lib/templates';
-import AuthButton from '../../components/AuthButton';
+import TemplateRenderer from '@/components/TemplateRenderer';
+import SaveButton from '@/components/SaveButton';
+import EditorSidebar from '@/components/editor/EditorSidebar';
+import { Template, TemplateBlock, BlockType } from '@/lib/types';
+import sampleTemplate from '@/templates/salon-ug-1.json';
+import { getTemplateByKey } from '@/lib/templates';
+import AuthButton from '@/components/AuthButton';
 import Link from 'next/link';
 
 export default function BuilderPage() {
@@ -130,8 +130,9 @@ export default function BuilderPage() {
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col">
       <div className="sticky top-0 z-40 bg-white border-b">
-        <div className="max-w-[1600px] mx-auto px-3 md:px-4 h-12 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="max-w-[1600px] mx-auto px-3 md:px-4 h-12 flex items-center justify-between gap-2">
+          {/* Brand & Menu */}
+          <div className="flex items-center gap-2 min-w-0 flex-shrink">
             <button
               onClick={() => setShowLeftDrawer(!showLeftDrawer)}
               className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-700 flex-shrink-0"
@@ -143,21 +144,26 @@ export default function BuilderPage() {
               <img
                 src="/logo.png"
                 alt="VoidBuild Logo"
-                className="w-7 h-7 rounded-lg object-contain border bg-white flex-shrink-0"
+                className="w-7 h-7 object-contain flex-shrink-0"
               />
               <span className="font-bold text-sm text-gray-900 tracking-tight">voidbuild</span>
             </Link>
           </div>
           
-          <div className="flex items-center gap-2">
+          {/* Actions & Auth */}
+          <div className="flex items-center gap-1.5 md:gap-2 flex-shrink-0">
             <Link href="/dashboard" className="hidden md:inline-flex text-xs text-gray-600 hover:text-black px-3 py-1.5 rounded-full hover:bg-gray-50 font-medium">Dashboard</Link>
-            <button onClick={() => setEditMode(!editMode)} className={'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border ' + (editMode ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-black border-gray-200')}>
-              {editMode ? <><Check className="w-3.5 h-3.5" /> Edit ON</> : <><Edit3 className="w-3.5 h-3.5" /> Edit</>}
+            <button
+              onClick={() => setEditMode(!editMode)}
+              className={'inline-flex items-center gap-1 px-2.5 py-1 md:px-3.5 md:py-1.5 rounded-full text-xs font-bold border transition whitespace-nowrap ' + (editMode ? 'bg-gray-900 text-white border-gray-900 shadow-sm' : 'bg-white text-black border-gray-200 hover:bg-gray-50')}
+            >
+              {editMode ? <><Check className="w-3.5 h-3.5" /> <span>Edit ON</span></> : <><Edit3 className="w-3.5 h-3.5" /> <span>Edit</span></>}
             </button>
             <AuthButton />
           </div>
         </div>
         
+        {/* Business Generator Prompt Bar */}
         <div className="max-w-[1600px] mx-auto px-3 md:px-4 pb-3">
           <div className="flex gap-2">
             <input
@@ -208,7 +214,7 @@ export default function BuilderPage() {
           <div className="absolute left-0 top-0 h-full w-[82%] max-w-[300px] bg-white shadow-2xl flex flex-col">
             <div className="p-4 border-b flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <img src="/logo.png" alt="" className="w-7 h-7 rounded-lg object-contain border bg-white" />
+                <img src="/logo.png" alt="VoidBuild" className="w-7 h-7 object-contain flex-shrink-0" />
                 <span className="font-bold text-sm text-gray-900">voidbuild</span>
               </div>
               <button onClick={() => setShowLeftDrawer(false)} className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-600"><X className="w-5 h-5" /></button>

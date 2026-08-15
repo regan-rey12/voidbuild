@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { getProjects, SavedProject, recordPageView } from '../../../lib/projects';
-import TemplateRenderer from '../../../components/TemplateRenderer';
-import { slugify } from '../../../lib/slugify';
+import { getProjects, SavedProject, recordPageView } from '@/lib/projects';
+import TemplateRenderer from '@/components/TemplateRenderer';
+import { slugify } from '@/lib/slugify';
 import Link from 'next/link';
 
 export default function SubdomainPage() {
@@ -54,7 +54,7 @@ export default function SubdomainPage() {
   if (!project) {
     return (
       <div className="min-h-screen flex items-center justify-center flex-col gap-3 px-6 text-center bg-gray-50">
-        <img src="/logo.png" alt="" className="w-12 h-12 rounded-xl border object-contain bg-white p-1 shadow-sm" />
+        <img src="/logo.png" alt="VoidBuild" className="w-12 h-12 object-contain mx-auto" />
         <div className="font-bold text-lg text-gray-900">Website not found: {slug}.voidbuild.com</div>
         <div className="text-xs text-gray-500 max-w-md leading-relaxed">
           This subdomain has not been registered yet. Build your shop website in 30 seconds and claim your custom voidbuild.com subdomain for free.
@@ -69,6 +69,7 @@ export default function SubdomainPage() {
   return (
     <div>
       <div className="bg-gray-900 text-white text-center text-[11px] py-1.5 px-4 flex items-center justify-center gap-2">
+        <img src="/logo.png" alt="VoidBuild" className="w-3.5 h-3.5 object-contain flex-shrink-0" />
         <span className="font-bold">{project.business_name}</span>
         <span>•</span>
         <span className="text-gray-300">{slug}.voidbuild.com</span>

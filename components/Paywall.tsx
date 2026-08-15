@@ -1,6 +1,6 @@
 "use client";
 import { useState } from 'react';
-import { PLANS, Plan, PlanInfo, getUserPlan } from '../lib/payments';
+import { PLANS, Plan, PlanInfo, getUserPlan } from '@/lib/payments';
 import { Sparkles, Check, ArrowRight, ShieldCheck, Trash2, X, AlertCircle } from 'lucide-react';
 
 interface PaywallProps {

@@ -1,8 +1,8 @@
 "use client";
 import { useState } from 'react';
 import Link from 'next/link';
-import TopNav from '../../components/TopNav';
-import { PLANS, Plan, PlanInfo } from '../../lib/payments';
+import TopNav from '@/components/TopNav';
+import { PLANS, Plan, PlanInfo } from '@/lib/payments';
 import { Check, Sparkles, ShieldCheck, ArrowRight, AlertCircle } from 'lucide-react';
 
 export default function PricingPage() {
@@ -41,7 +41,7 @@ export default function PricingPage() {
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-16">
         <div className="text-center max-w-2xl mx-auto">
-          <img src="/logo.png" alt="VoidBuild" className="w-10 h-10 rounded-xl mx-auto border object-contain bg-white p-1 shadow-sm" />
+          <img src="/logo.png" alt="VoidBuild" className="w-10 h-10 object-contain mx-auto" />
           <h1 className="mt-4 text-2xl md:text-4xl font-extrabold tracking-tight text-gray-900">
             Simple, Transparent Pricing
           </h1>

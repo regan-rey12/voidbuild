@@ -1,5 +1,5 @@
 "use client";
-import EditableImage from '../editor/EditableImage';
+import EditableImage from '@/components/editor/EditableImage';
 
 interface Props {
   data: {

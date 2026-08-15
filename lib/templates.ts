@@ -1,19 +1,19 @@
 import { Template } from './types';
-import salonTemplate from '../templates/salon-ug-1.json';
-import hardwareTemplate from '../templates/hardware-mbale-1.json';
-import restaurantTemplate from '../templates/restaurant-ug-1.json';
-import boutiqueTemplate from '../templates/boutique-ug-1.json';
-import churchTemplate from '../templates/church-ug-1.json';
-import bodaTemplate from '../templates/boda-ug-1.json';
-import schoolTemplate from '../templates/school-ug-1.json';
-import clinicTemplate from '../templates/clinic-ug-1.json';
-import barbershopTemplate from '../templates/barbershop-ug-1.json';
-import portfolioTemplate from '../templates/portfolio-ug-1.json';
-import pharmacyTemplate from '../templates/pharmacy-ug-1.json';
-import bakeryTemplate from '../templates/bakery-ug-1.json';
-import carwashTemplate from '../templates/carwash-ug-1.json';
-import hotelTemplate from '../templates/hotel-ug-1.json';
-import gymTemplate from '../templates/gym-ug-1.json';
+import salonTemplate from '@/templates/salon-ug-1.json';
+import hardwareTemplate from '@/templates/hardware-mbale-1.json';
+import restaurantTemplate from '@/templates/restaurant-ug-1.json';
+import boutiqueTemplate from '@/templates/boutique-ug-1.json';
+import churchTemplate from '@/templates/church-ug-1.json';
+import bodaTemplate from '@/templates/boda-ug-1.json';
+import schoolTemplate from '@/templates/school-ug-1.json';
+import clinicTemplate from '@/templates/clinic-ug-1.json';
+import barbershopTemplate from '@/templates/barbershop-ug-1.json';
+import portfolioTemplate from '@/templates/portfolio-ug-1.json';
+import pharmacyTemplate from '@/templates/pharmacy-ug-1.json';
+import bakeryTemplate from '@/templates/bakery-ug-1.json';
+import carwashTemplate from '@/templates/carwash-ug-1.json';
+import hotelTemplate from '@/templates/hotel-ug-1.json';
+import gymTemplate from '@/templates/gym-ug-1.json';
 
 export const TEMPLATES_MAP: Record<string, Template> = {
   salon: salonTemplate as Template,

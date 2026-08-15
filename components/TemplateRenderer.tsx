@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { Template, TemplateBlock } from '../lib/types';
+import { Template, TemplateBlock } from '@/lib/types';
 import Navbar from './blocks/Navbar';
 import Hero from './blocks/Hero';
 import Services from './blocks/Services';

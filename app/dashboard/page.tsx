@@ -8,11 +8,11 @@ import {
   updateProjectSubdomain,
   validateSubdomain,
   claimLocalProjects
-} from '../../lib/projects';
-import { getEffectiveUser, User } from '../../lib/auth';
-import { getUserPlan, PLANS, Plan, canCreateProject, setUserPlan, getRemainingSites, syncUserPlanWithCloud } from '../../lib/payments';
-import TopNav from '../../components/TopNav';
-import Paywall from '../../components/Paywall';
+} from '@/lib/projects';
+import { getEffectiveUser, User } from '@/lib/auth';
+import { getUserPlan, PLANS, Plan, canCreateProject, setUserPlan, getRemainingSites, syncUserPlanWithCloud } from '@/lib/payments';
+import TopNav from '@/components/TopNav';
+import Paywall from '@/components/Paywall';
 import Link from 'next/link';
 import { 
   Plus, 
@@ -166,7 +166,7 @@ export default function Dashboard() {
     return (
       <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
         <div className="bg-white border rounded-2xl p-8 max-w-md w-full text-center shadow-sm">
-          <img src="/logo.png" alt="" className="w-10 h-10 rounded-xl mx-auto border object-contain bg-white p-1" />
+          <img src="/logo.png" alt="VoidBuild" className="w-10 h-10 object-contain mx-auto" />
           <h1 className="mt-4 font-bold text-lg text-gray-900">Sign in required</h1>
           <p className="text-sm text-gray-600 mt-2">Dashboard is only accessible after sign in.</p>
           <Link href="/auth" className="mt-6 inline-flex px-5 py-2.5 rounded-full bg-gray-900 text-white text-sm font-bold hover:bg-black transition">Sign In</Link>
@@ -316,7 +316,7 @@ export default function Dashboard() {
             </div>
           ) : projects.length === 0 ? (
             <div className="text-center border-2 border-dashed rounded-2xl p-10 md:p-14 bg-white">
-              <img src="/logo.png" alt="" className="w-12 h-12 rounded-xl mx-auto border object-contain bg-white p-1.5 shadow-sm" />
+              <img src="/logo.png" alt="VoidBuild" className="w-12 h-12 object-contain mx-auto" />
               <div className="font-bold text-base mt-4 text-gray-900">No websites built yet</div>
               <div className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
                 Generate your first professional Ugandan shop website in 30 seconds.
@@ -459,8 +459,8 @@ export default function Dashboard() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl border overflow-hidden">
             <div className="p-5 border-b flex items-center justify-between bg-gray-900 text-white">
-              <div className="flex items-center gap-2">
-                <Globe className="w-5 h-5 text-yellow-400" />
+              <div className="flex items-center gap-2.5">
+                <img src="/logo.png" alt="VoidBuild" className="w-6 h-6 object-contain flex-shrink-0" />
                 <h3 className="font-bold text-sm">Manage Website Link &amp; Domain</h3>
               </div>
               <button

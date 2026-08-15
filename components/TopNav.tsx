@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import AuthButton from './AuthButton';
+import AuthButton from '@/components/AuthButton';
 
 interface TopNavProps {
   currentPage?: 'home' | 'builder' | 'dashboard' | 'pricing' | 'auth';
@@ -45,7 +45,7 @@ export default function TopNav({ currentPage = 'home', showBuilderActions = fals
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
             <Link href="/" className="flex items-center gap-2">
-              <img src="/logo.png" alt="VoidBuild" className="w-7 h-7 rounded-lg object-contain border bg-white" />
+              <img src="/logo.png" alt="VoidBuild" className="w-7 h-7 object-contain flex-shrink-0" />
               <span className="font-bold text-sm">voidbuild</span>
             </Link>
             {currentPage !== 'home' && (
@@ -92,7 +92,7 @@ export default function TopNav({ currentPage = 'home', showBuilderActions = fals
           <div className="absolute left-0 top-0 h-full w-[82%] max-w-[300px] bg-white shadow-2xl flex flex-col">
             <div className="p-4 border-b flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <img src="/logo.png" alt="" className="w-7 h-7 rounded-lg object-contain border" />
+                <img src="/logo.png" alt="VoidBuild" className="w-7 h-7 object-contain flex-shrink-0" />
                 <span className="font-bold text-sm">voidbuild</span>
               </div>
               <button onClick={() => setMobileMenuOpen(false)} className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500"><X className="w-5 h-5" /></button>

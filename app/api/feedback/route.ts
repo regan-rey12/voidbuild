@@ -1,7 +1,7 @@
 // VoidBuild Feedback API - Saves feedback to Supabase + localStorage fallback
 export const runtime = 'nodejs';
 
-import { getSupabase } from '../../../lib/supabase';
+import { getSupabase } from '@/lib/supabase';
 
 export async function POST(req: Request) {
   try {

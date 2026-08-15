@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import TopNav from '../../components/TopNav';
+import TopNav from '@/components/TopNav';
 
 export default function TermsPage() {
   return (
@@ -73,10 +73,16 @@ export default function TermsPage() {
           </section>
         </div>
 
-        <div className="mt-12 pt-6 border-t flex gap-4 text-xs">
-          <Link href="/" className="hover:underline">← Home</Link>
-          <Link href="/privacy" className="hover:underline">Privacy</Link>
-          <Link href="/builder" className="hover:underline">Builder</Link>
+        <div className="mt-12 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="VoidBuild" className="w-5 h-5 object-contain flex-shrink-0" />
+            <span>© 2026 voidbuild — Built for Uganda</span>
+          </div>
+          <div className="flex gap-4">
+            <Link href="/" className="hover:underline">Home</Link>
+            <Link href="/privacy" className="hover:underline">Privacy</Link>
+            <Link href="/pricing" className="hover:underline">Pricing</Link>
+          </div>
         </div>
       </div>
     </main>

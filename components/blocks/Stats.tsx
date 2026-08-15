@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import EditableText from '../editor/EditableText';
+import EditableText from '@/components/editor/EditableText';
 
 interface StatsProps {
   data: {

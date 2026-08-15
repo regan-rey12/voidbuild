@@ -1,6 +1,6 @@
 "use client";
 import { useState } from 'react';
-import { Template, BlockType } from '../../lib/types';
+import { Template, BlockType } from '@/lib/types';
 
 const BLOCK_TYPES: { type: BlockType; label: string; desc: string }[] = [
   { type: 'hero', label: 'Hero', desc: 'Title + image + CTA' },

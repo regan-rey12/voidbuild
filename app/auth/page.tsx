@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { signInWithEmail, signInWithGoogle, getCurrentUser } from '../../lib/auth';
-import { getSupabase } from '../../lib/supabase';
+import { signInWithEmail, signInWithGoogle, getCurrentUser } from '@/lib/auth';
+import { getSupabase } from '@/lib/supabase';
 
 export default function AuthPage() {
   const [email, setEmail] = useState('');
@@ -52,12 +52,12 @@ export default function AuthPage() {
     <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md bg-white rounded-2xl border shadow-sm p-6 md:p-8">
         <div className="text-center">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <img src="/logo.png" alt="VoidBuild" className="w-9 h-9 rounded-xl border shadow-sm object-contain bg-white p-1" />
-            <span className="font-bold">voidbuild</span>
+          <Link href="/" className="inline-flex items-center gap-2.5 mx-auto hover:opacity-90 transition">
+            <img src="/logo.png" alt="VoidBuild" className="w-10 h-10 object-contain flex-shrink-0" />
+            <span className="font-extrabold text-xl tracking-tight text-gray-900">voidbuild</span>
           </Link>
-          <h1 className="mt-6 text-xl font-bold tracking-tight">Welcome to VoidBuild</h1>
-          <p className="mt-1.5 text-sm text-gray-600">Sign in to save your websites. Free.</p>
+          <h1 className="mt-5 text-xl font-bold tracking-tight text-gray-900">Welcome to VoidBuild</h1>
+          <p className="mt-1.5 text-sm text-gray-600">Sign in to save your websites. Free forever.</p>
         </div>
 
         {step === 'form' && (

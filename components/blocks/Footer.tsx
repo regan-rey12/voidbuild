@@ -11,7 +11,7 @@ export default function Footer({ data }: FooterProps) {
     <footer className="mt-8 border-t bg-white">
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 flex flex-col md:flex-row justify-between gap-4 text-xs">
         <div className="flex items-center gap-2.5">
-          <img src="/logo.png" alt="VoidBuild" className="w-6 h-6 rounded-lg border" />
+          <img src="/logo.png" alt="VoidBuild" className="w-6 h-6 object-contain flex-shrink-0" />
           <div>
             <div className="font-semibold text-gray-900">{data.businessName} © {data.year || new Date().getFullYear()}</div>
             <div className="mt-1 text-gray-500 max-w-sm">{data.tagline || 'Built with VoidBuild'}</div>
@@ -26,7 +26,7 @@ export default function Footer({ data }: FooterProps) {
         </div>
       </div>
       <div className="text-center py-3 border-t text-[10px] text-gray-400 flex items-center justify-center gap-2">
-        <img src="/logo.png" alt="" className="w-4 h-4 rounded" />
+        <img src="/logo.png" alt="" className="w-4 h-4 object-contain flex-shrink-0" />
         <span>Powered by voidbuild.com</span>
       </div>
     </footer>

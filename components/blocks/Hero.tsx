@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
-import EditableText from '../editor/EditableText';
-import EditableImage from '../editor/EditableImage';
+import EditableText from '@/components/editor/EditableText';
+import EditableImage from '@/components/editor/EditableImage';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 interface HeroProps {

@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from 'react';
-import EditableImage from '../editor/EditableImage';
-import EditableText from '../editor/EditableText';
+import EditableImage from '@/components/editor/EditableImage';
+import EditableText from '@/components/editor/EditableText';
 import { Menu, X, MessageCircle } from 'lucide-react';
-import { recordWhatsAppClick } from '../../lib/projects';
+import { recordWhatsAppClick } from '@/lib/projects';
 
 interface NavbarProps {
   data: {
@@ -56,7 +56,7 @@ export default function Navbar({ data, style, editMode, onUpdateData }: NavbarPr
             ) : data.logo && (data.logo.startsWith('http') || data.logo.startsWith('data:')) ? (
               <img src={data.logo} alt="Logo" className="w-full h-full object-contain" />
             ) : (
-              <img src="/logo.png" alt="VoidBuild" className="w-full h-full object-contain p-1" />
+              <img src="/logo.png" alt="VoidBuild" className="w-full h-full object-contain" />
             )}
           </div>
           <div className="font-semibold text-sm text-gray-900 truncate max-w-[140px] md:max-w-none">

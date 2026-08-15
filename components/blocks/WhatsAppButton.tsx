@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
-import { recordWhatsAppClick } from '../../lib/projects';
+import { recordWhatsAppClick } from '@/lib/projects';
 
 export default function WhatsAppButton({ data, style }: { data: { phone: string; message?: string }, style?: { primaryColor?: string } }) {
   if (!data.phone) return null;

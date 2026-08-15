@@ -90,7 +90,10 @@ export default function FeedbackButton() {
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)}></div>
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border">
             <div className="p-5 border-b flex items-center justify-between">
-              <h3 className="font-bold text-sm text-gray-900">Feedback — Help us improve VoidBuild</h3>
+              <div className="flex items-center gap-2.5">
+                <img src="/logo.png" alt="VoidBuild" className="w-6 h-6 object-contain flex-shrink-0" />
+                <h3 className="font-bold text-sm text-gray-900">Feedback — Help us improve VoidBuild</h3>
+              </div>
               <button onClick={() => setOpen(false)} className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500 hover:text-black"><X className="w-5 h-5" /></button>
             </div>
 

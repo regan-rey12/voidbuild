@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { Star } from 'lucide-react';
-import EditableText from '../editor/EditableText';
+import EditableText from '@/components/editor/EditableText';
 
 interface TestimonialsProps {
   data: {

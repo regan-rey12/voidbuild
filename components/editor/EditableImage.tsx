@@ -1,6 +1,6 @@
 "use client";
 import { useState } from 'react';
-import { getSupabase } from '../../lib/supabase';
+import { getSupabase } from '@/lib/supabase';
 import ImagePickerModal from './ImagePickerModal';
 
 interface Props {

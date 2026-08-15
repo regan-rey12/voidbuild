@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { MapPin, Phone, Clock, MessageCircle, AlertCircle, Check } from 'lucide-react';
-import { recordWhatsAppClick } from '../../lib/projects';
+import { recordWhatsAppClick } from '@/lib/projects';
 
 interface ContactProps {
   data: {
