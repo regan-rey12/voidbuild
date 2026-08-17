@@ -84,7 +84,14 @@ export default function Dashboard() {
       window.history.replaceState({}, '', '/dashboard');
     }
 
-    getEffectiveUser().then(u => {
+    const checkUser = async () => {
+      let u = await getEffectiveUser();
+      if (!u) {
+        // Brief retry to allow local session storage to hydrate
+        await new Promise(r => setTimeout(r, 350));
+        u = await getEffectiveUser();
+      }
+
       setUser(u);
       setAuthChecked(true);
       if (!u) {
@@ -92,7 +99,9 @@ export default function Dashboard() {
         return;
       }
       fetchUserProjects(u);
-    });
+    };
+
+    checkUser();
   }, []);
 
   const handleCopyLink = async (url: string, id: string) => {

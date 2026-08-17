@@ -11,9 +11,22 @@ export async function getCurrentUser(): Promise<User | null> {
   const supabase = getSupabase();
   if (!supabase) return null;
   try {
-    const { data } = await supabase.auth.getUser();
-    return data.user ? { id: data.user.id, email: data.user.email, phone: data.user.phone } as User : null;
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (user && !error) {
+      return { id: user.id, email: user.email, phone: user.phone };
+    }
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      return { id: session.user.id, email: session.user.email, phone: session.user.phone };
+    }
+    return null;
   } catch {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        return { id: session.user.id, email: session.user.email, phone: session.user.phone };
+      }
+    } catch {}
     return null;
   }
 }

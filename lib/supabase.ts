@@ -17,7 +17,15 @@ export function getSupabase(): SupabaseClient | null {
   
   if (!supabase) {
     try {
-      supabase = createClient(cleanUrl, cleanKey);
+      supabase = createClient(cleanUrl, cleanKey, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+          storageKey: 'voidbuild_supabase_auth',
+        },
+      });
     } catch {
       return null;
     }
