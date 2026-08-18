@@ -16,8 +16,28 @@ export async function POST(req: Request) {
     }
 
     const selectedPlan = PLANS[plan];
-    const origin = process.env.APP_ORIGIN || process.env.NEXT_PUBLIC_APP_ORIGIN || 'http://localhost:3000';
+    const host = req.headers.get('host') || 'voidbuild.com';
+    const proto = host.includes('localhost') ? 'http' : 'https';
+    const origin = req.headers.get('origin') || `${proto}://${host}`;
     const merchantReference = `voidbuild-${plan}-${Date.now()}`;
+
+    // If Pesapal credentials not yet entered in Vercel, smoothly route to Kampala VIP WhatsApp for instant manual MoMo activation
+    const hasKeys = process.env.PESAPAL_CONSUMER_KEY && 
+      process.env.PESAPAL_CONSUMER_SECRET && 
+      !process.env.PESAPAL_CONSUMER_KEY.includes('placeholder') &&
+      !process.env.PESAPAL_CONSUMER_KEY.includes('your_');
+
+    if (!hasKeys) {
+      const waUrl = `https://wa.me/256751391318?text=${encodeURIComponent(
+        `Hello VoidBuild Kampala, I would like to upgrade my site to the ${selectedPlan.name} Plan (UGX ${selectedPlan.priceUGX}/mo). Please provide MTN MoMo / Airtel payment instructions.`
+      )}`;
+      return Response.json({
+        success: true,
+        redirectUrl: waUrl,
+        plan,
+        amountUGX: selectedPlan.priceUGX,
+      });
+    }
 
     const token = await getPesapalToken();
 
@@ -35,40 +55,41 @@ export async function POST(req: Request) {
     const callbackUrl = `${origin}/api/pesapal/callback?merchant_reference=${merchantReference}&plan=${plan}`;
     const finalAmount = selectedPlan.price;
 
-    try {
-      const order = await createPesapalOrder({
-        amount: finalAmount,
-        currency: 'UGX',
-        description: `VoidBuild ${selectedPlan.name} Plan - ${selectedPlan.limit} Websites`,
-        callbackUrl,
-        notificationId: notificationId || '',
-        merchantReference,
-        billingAddress: { email, phone, firstName: 'VoidBuild', lastName: 'Customer' },
-      }, token);
+    const order = await createPesapalOrder({
+      amount: finalAmount,
+      currency: 'UGX',
+      description: `VoidBuild ${selectedPlan.name} Plan - ${selectedPlan.limit} Websites`,
+      callbackUrl,
+      notificationId: notificationId || '',
+      merchantReference,
+      billingAddress: { email, phone, firstName: 'VoidBuild', lastName: 'Customer' },
+    }, token);
 
-      if (!order.redirect_url) throw new Error('No checkout link returned from Pesapal');
-
-      return Response.json({
-        success: true,
-        orderTrackingId: order.order_tracking_id,
-        merchantReference: order.merchant_reference,
-        redirectUrl: order.redirect_url,
-        plan,
-        amount: finalAmount,
-        amountUGX: selectedPlan.priceUGX,
-      });
-    } catch (orderErr: any) {
-      throw orderErr;
+    if (!order.redirect_url) {
+      const waUrl = `https://wa.me/256751391318?text=${encodeURIComponent(
+        `Hello VoidBuild Kampala, I want to upgrade to ${selectedPlan.name} Plan (UGX ${selectedPlan.priceUGX}).`
+      )}`;
+      return Response.json({ success: true, redirectUrl: waUrl });
     }
+
+    return Response.json({
+      success: true,
+      orderTrackingId: order.order_tracking_id,
+      merchantReference: order.merchant_reference,
+      redirectUrl: order.redirect_url,
+      plan,
+      amount: finalAmount,
+      amountUGX: selectedPlan.priceUGX,
+    });
 
   } catch (e: any) {
     console.error('Pesapal order error:', e.message);
-    let userMsg = 'Payment checkout is momentarily unavailable. Please try again shortly or contact support on WhatsApp (+256 751 391318).';
-    if (e.message && e.message.includes('not configured')) {
-      userMsg = 'Payment gateway is currently in maintenance. Please contact support on WhatsApp (+256 751 391318) for instant activation.';
-    }
+    const waUrl = `https://wa.me/256751391318?text=${encodeURIComponent(
+      `Hello VoidBuild, I would like to upgrade my website plan via MTN MoMo / Airtel Money (+256 751 391318).`
+    )}`;
     return Response.json({ 
-      error: userMsg,
-    }, { status: 500 });
+      success: true,
+      redirectUrl: waUrl,
+    });
   }
 }

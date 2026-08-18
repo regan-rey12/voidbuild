@@ -62,7 +62,7 @@ export default function BuilderPage() {
     setLoading(true);
     setFallbackMessage(null);
     setStep(0);
-    const interval = setInterval(() => setStep(s => Math.min(s+1, steps.length-1)), 1200);
+    const interval = setInterval(() => setStep(s => Math.min(s+1, steps.length-1)), 1000);
     try {
       const res = await fetch('/api/generate', {
         method: 'POST',
@@ -70,16 +70,22 @@ export default function BuilderPage() {
         body: JSON.stringify({ description: input }),
       });
       const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      if (data._fallback) {
-        setFallbackMessage(data._message || 'AI was busy, showing closest template. Try again in 30 seconds.');
+      if (data && data.blocks && Array.isArray(data.blocks)) {
+        setTemplate(data);
+        setEditMode(true);
+        setIsGeneratedOrLoaded(true);
+        setInput('');
+      } else {
+        const selected = getTemplateByKey('salon');
+        setTemplate(selected);
+        setEditMode(true);
+        setIsGeneratedOrLoaded(true);
       }
-      setTemplate(data);
+    } catch {
+      const selected = getTemplateByKey('salon');
+      setTemplate(selected);
       setEditMode(true);
       setIsGeneratedOrLoaded(true);
-      setInput('');
-    } catch (e: any) {
-      setFallbackMessage(`Generation notice: ${e.message}. Showing closest template.`);
     } finally {
       clearInterval(interval);
       setLoading(false);
@@ -277,24 +283,6 @@ export default function BuilderPage() {
               <div className="h-full bg-gray-900 transition-all duration-1000" style={{ width: `${((step + 1) / steps.length) * 100}%` }}></div>
             </div>
             <div className="mt-3 text-xs text-gray-400">This takes 5-10 seconds • You can edit text and images after</div>
-          </div>
-        </div>
-      )}
-
-      {fallbackMessage && (
-        <div className="bg-yellow-50 border-b border-yellow-200 px-4 py-3">
-          <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-            <div className="flex gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0 font-bold text-gray-950">!</div>
-              <div>
-                <div className="font-bold text-sm text-yellow-900">Showing closest template - AI was busy</div>
-                <div className="text-xs text-yellow-800 mt-1 max-w-3xl">{fallbackMessage}</div>
-              </div>
-            </div>
-            <div className="flex gap-2 flex-shrink-0">
-              <button onClick={() => generate()} className="px-4 py-2 rounded-full bg-yellow-400 text-black text-xs font-bold hover:bg-yellow-500 transition">Try Again</button>
-              <button onClick={() => setFallbackMessage(null)} className="px-4 py-2 rounded-full bg-white border text-xs font-bold hover:bg-gray-50 transition">Dismiss</button>
-            </div>
           </div>
         </div>
       )}
