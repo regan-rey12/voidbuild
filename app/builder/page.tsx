@@ -17,12 +17,17 @@ export default function BuilderPage() {
   const [step, setStep] = useState(0);
   const [editMode, setEditMode] = useState(false);
   const [showLeftDrawer, setShowLeftDrawer] = useState(false);
-  const [fallbackMessage, setFallbackMessage] = useState<string | null>(null);
+  const [generationError, setGenerationError] = useState<string | null>(null);
   const [inputError, setInputError] = useState<string | null>(null);
   const [isGeneratedOrLoaded, setIsGeneratedOrLoaded] = useState(false);
   const [dismissSampleBanner, setDismissSampleBanner] = useState(false);
   
-  const steps = ['Understanding your business...', 'Crafting UGX pricing...', 'Adding WhatsApp & MoMo...', 'Building your professional site...'];
+  const steps = [
+    'Analyzing your Ugandan business...', 
+    'Crafting UGX pricing & services...', 
+    'Connecting WhatsApp ordering & MTN MoMo...', 
+    'Finalizing professional website layout...'
+  ];
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -55,37 +60,37 @@ export default function BuilderPage() {
 
   const generate = async () => {
     if (!input.trim() || input.length < 5) {
-      setInputError('Please describe your business with at least 5 characters (e.g. Salon in Wandegeya called Aisha)');
+      setInputError('Please describe your business with at least 5 characters (e.g. Salon in Wandegeya Aisha braids 35k)');
       return;
     }
     setInputError(null);
+    setGenerationError(null);
     setLoading(true);
-    setFallbackMessage(null);
     setStep(0);
-    const interval = setInterval(() => setStep(s => Math.min(s+1, steps.length-1)), 1000);
+    const interval = setInterval(() => setStep(s => Math.min(s + 1, steps.length - 1)), 1200);
+
     try {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ description: input }),
       });
+
       const data = await res.json();
+      if (!res.ok && data.error) {
+        throw new Error(data.error);
+      }
+
       if (data && data.blocks && Array.isArray(data.blocks)) {
         setTemplate(data);
         setEditMode(true);
         setIsGeneratedOrLoaded(true);
         setInput('');
       } else {
-        const selected = getTemplateByKey('salon');
-        setTemplate(selected);
-        setEditMode(true);
-        setIsGeneratedOrLoaded(true);
+        throw new Error('Could not parse website layout. Please try a simpler description.');
       }
-    } catch {
-      const selected = getTemplateByKey('salon');
-      setTemplate(selected);
-      setEditMode(true);
-      setIsGeneratedOrLoaded(true);
+    } catch (e: any) {
+      setGenerationError(e.message || 'Generation failed. Please try again.');
     } finally {
       clearInterval(interval);
       setLoading(false);
@@ -93,8 +98,12 @@ export default function BuilderPage() {
   };
 
   const updateBlockData = (blockId: string, newData: any) => {
-    setTemplate(prev => ({ ...prev, blocks: prev.blocks.map(b => b.id === blockId ? { ...b, data: newData } : b) }));
+    setTemplate(prev => ({
+      ...prev,
+      blocks: prev.blocks.map(b => b.id === blockId ? { ...b, data: newData } : b)
+    }));
   };
+
   const moveBlock = (blockId: string, direction: 'up' | 'down') => {
     setTemplate(prev => {
       const idx = prev.blocks.findIndex(b => b.id === blockId);
@@ -108,6 +117,7 @@ export default function BuilderPage() {
       return { ...prev, blocks: newBlocks };
     });
   };
+
   const duplicateBlock = (blockId: string) => {
     setTemplate(prev => {
       const idx = prev.blocks.findIndex(b => b.id === blockId);
@@ -119,9 +129,14 @@ export default function BuilderPage() {
       return { ...prev, blocks: newBlocks };
     });
   };
+
   const deleteBlock = (blockId: string) => {
-    setTemplate(prev => ({ ...prev, blocks: prev.blocks.filter(b => b.id !== blockId) }));
+    setTemplate(prev => ({
+      ...prev,
+      blocks: prev.blocks.filter(b => b.id !== blockId)
+    }));
   };
+
   const addBlock = (type: BlockType) => {
     const newBlock: TemplateBlock = {
       id: type + '-' + Date.now(),
@@ -129,7 +144,10 @@ export default function BuilderPage() {
       data: { heading: 'New Section' },
       style: { primaryColor: template.blocks[0]?.style?.primaryColor || '#111827' }
     };
-    setTemplate(prev => ({ ...prev, blocks: [...prev.blocks.slice(0, -1), newBlock, prev.blocks[prev.blocks.length - 1]] }));
+    setTemplate(prev => ({
+      ...prev,
+      blocks: [...prev.blocks.slice(0, -1), newBlock, prev.blocks[prev.blocks.length - 1]]
+    }));
     setShowLeftDrawer(false);
   };
 
@@ -177,26 +195,36 @@ export default function BuilderPage() {
               onChange={(e) => {
                 setInput(e.target.value);
                 if (inputError) setInputError(null);
+                if (generationError) setGenerationError(null);
               }}
-              placeholder="Describe business: Salon Wandegeya Aisha braids 35k"
+              placeholder="Describe business: Salon in Wandegeya Aisha braids 35k"
               disabled={loading}
               className="flex-1 px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-sm outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 disabled:opacity-50 disabled:bg-gray-50"
               onKeyDown={(e) => { if (e.key === 'Enter') generate(); }}
             />
-            <button onClick={() => generate()} disabled={loading} className="px-5 py-2.5 rounded-xl bg-gray-900 text-white font-bold text-sm disabled:opacity-50 hover:bg-black flex items-center gap-2 flex-shrink-0">
+            <button onClick={() => generate()} disabled={loading} className="px-5 py-2.5 rounded-xl bg-gray-900 text-white font-bold text-sm disabled:opacity-50 hover:bg-black flex items-center gap-2 flex-shrink-0 shadow-sm">
               {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating...</> : <><Sparkles className="w-4 h-4" /> Generate</>}
             </button>
           </div>
           {inputError && (
-            <div className="mt-1.5 flex items-center gap-1.5 text-xs text-red-600">
+            <div className="mt-2 flex items-center gap-1.5 text-xs text-red-600 bg-red-50 p-2 rounded-lg border border-red-200">
               <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
               <span>{inputError}</span>
+            </div>
+          )}
+          {generationError && (
+            <div className="mt-2 flex items-center justify-between text-xs text-red-700 bg-red-50 p-2.5 rounded-xl border border-red-200">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{generationError}</span>
+              </div>
+              <button onClick={() => setGenerationError(null)} className="text-red-900 font-bold underline ml-2">Dismiss</button>
             </div>
           )}
         </div>
       </div>
 
-      {/* Subtle Sample Guidance Banner (Only shown when first opening sample template) */}
+      {/* Sample Guidance Banner */}
       {!isGeneratedOrLoaded && !dismissSampleBanner && (
         <div className="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-amber-500/10 border-b border-amber-200/80 px-4 py-2 text-xs text-amber-950 flex items-center justify-between">
           <div className="flex items-center gap-2 max-w-4xl">

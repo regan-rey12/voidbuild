@@ -1,4 +1,4 @@
-// VoidBuild Pesapal Order - Automated payments for Uganda SMEs (MTN MoMo, Airtel, Cards)
+// VoidBuild Pesapal Order API - Direct Automated Payments (MTN MoMo, Airtel, Cards)
 export const runtime = 'nodejs';
 
 import { getPesapalToken, createPesapalOrder, registerPesapalIPN } from '@/lib/pesapal';
@@ -8,8 +8,8 @@ export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
     const plan = (body.plan || 'business') as Plan;
-    const email = body.email || 'hello@voidbuild.com';
-    const phone = body.phone || '256751391318';
+    const email = (body.email || 'hello@voidbuild.com').trim();
+    const phone = (body.phone || '0751391318').trim();
 
     if (!PLANS[plan] || PLANS[plan].price === 0) {
       return Response.json({ error: 'Please select a paid plan to upgrade' }, { status: 400 });
@@ -21,40 +21,25 @@ export async function POST(req: Request) {
     const origin = req.headers.get('origin') || `${proto}://${host}`;
     const merchantReference = `voidbuild-${plan}-${Date.now()}`;
 
-    // If Pesapal credentials not yet entered in Vercel, smoothly route to Kampala VIP WhatsApp for instant manual MoMo activation
-    const hasKeys = process.env.PESAPAL_CONSUMER_KEY && 
-      process.env.PESAPAL_CONSUMER_SECRET && 
-      !process.env.PESAPAL_CONSUMER_KEY.includes('placeholder') &&
-      !process.env.PESAPAL_CONSUMER_KEY.includes('your_');
-
-    if (!hasKeys) {
-      const waUrl = `https://wa.me/256751391318?text=${encodeURIComponent(
-        `Hello VoidBuild Kampala, I would like to upgrade my site to the ${selectedPlan.name} Plan (UGX ${selectedPlan.priceUGX}/mo). Please provide MTN MoMo / Airtel payment instructions.`
-      )}`;
-      return Response.json({
-        success: true,
-        redirectUrl: waUrl,
-        plan,
-        amountUGX: selectedPlan.priceUGX,
-      });
-    }
-
+    // 1. Get Pesapal Access Token
     const token = await getPesapalToken();
 
-    let notificationId = process.env.PESAPAL_IPN_ID || process.env.NEXT_PUBLIC_PESAPAL_IPN_ID || '';
-    if (!notificationId || notificationId.includes('placeholder')) {
+    // 2. Resolve IPN Notification ID
+    let notificationId = (process.env.PESAPAL_IPN_ID || process.env.NEXT_PUBLIC_PESAPAL_IPN_ID || '').trim();
+    if (!notificationId || notificationId.includes('placeholder') || notificationId.includes('your_')) {
       try {
         const callbackUrl = `${origin}/api/pesapal/callback`;
         const ipnResult = await registerPesapalIPN(callbackUrl, token);
         notificationId = ipnResult.ipn_id || ipnResult.ipnId || '';
-      } catch {
-        notificationId = '';
+      } catch (ipnErr: any) {
+        console.warn('Auto IPN register note:', ipnErr.message);
       }
     }
 
     const callbackUrl = `${origin}/api/pesapal/callback?merchant_reference=${merchantReference}&plan=${plan}`;
     const finalAmount = selectedPlan.price;
 
+    // 3. Submit Pesapal Order
     const order = await createPesapalOrder({
       amount: finalAmount,
       currency: 'UGX',
@@ -66,10 +51,7 @@ export async function POST(req: Request) {
     }, token);
 
     if (!order.redirect_url) {
-      const waUrl = `https://wa.me/256751391318?text=${encodeURIComponent(
-        `Hello VoidBuild Kampala, I want to upgrade to ${selectedPlan.name} Plan (UGX ${selectedPlan.priceUGX}).`
-      )}`;
-      return Response.json({ success: true, redirectUrl: waUrl });
+      throw new Error(`Pesapal order created but no redirect URL returned: ${JSON.stringify(order)}`);
     }
 
     return Response.json({
@@ -84,12 +66,8 @@ export async function POST(req: Request) {
 
   } catch (e: any) {
     console.error('Pesapal order error:', e.message);
-    const waUrl = `https://wa.me/256751391318?text=${encodeURIComponent(
-      `Hello VoidBuild, I would like to upgrade my website plan via MTN MoMo / Airtel Money (+256 751 391318).`
-    )}`;
     return Response.json({ 
-      success: true,
-      redirectUrl: waUrl,
-    });
+      error: e.message || 'Payment initiation failed. Please check Pesapal settings.',
+    }, { status: 500 });
   }
 }
