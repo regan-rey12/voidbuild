@@ -8,12 +8,14 @@ export function getSupabase(): SupabaseClient | null {
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   
   if (!url || !anonKey) return null;
-  if (url.includes('placeholder') || url.includes('[')) return null;
+  if (url.includes('placeholder') || anonKey.includes('placeholder') || anonKey.includes('YOUR_ANON_KEY')) return null;
   
-  const cleanUrl = url.replace(/^\[/, '').replace(/\]\(.*\)$/, '').trim();
-  const cleanKey = anonKey.replace(/^\[/, '').trim();
+  // Clean leading/trailing quotes, brackets, whitespace, and 'Bearer ' prefix
+  const cleanUrl = url.replace(/^['"`\[\s]+/, '').replace(/['"`\]\s]+$/, '').trim();
+  const cleanKey = anonKey.replace(/^['"`\[\s]+/, '').replace(/['"`\]\s]+$/, '').replace(/^Bearer\s+/i, '').trim();
   
   if (!cleanUrl.startsWith('http')) return null;
+  if (!cleanKey || cleanKey.length < 20) return null;
   
   if (!supabase) {
     try {

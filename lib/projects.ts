@@ -41,11 +41,11 @@ export function validateSubdomain(slug: string): { valid: boolean; error?: strin
 function getUserIdSync(): string | null {
   try {
     if (typeof window === 'undefined') return null;
-    const rawUser = localStorage.getItem('voidbuild_user_demo') || localStorage.getItem('sb-xrqvdbjoezyszlvhffwj-auth-token');
-    if (rawUser) {
+    const authSession = localStorage.getItem('voidbuild_supabase_auth');
+    if (authSession) {
       try {
-        const parsed = JSON.parse(rawUser);
-        return parsed?.user?.id || parsed?.id || null;
+        const parsed = JSON.parse(authSession);
+        if (parsed?.user?.id) return parsed.user.id;
       } catch {}
     }
     const demo = localStorage.getItem('voidbuild_user_demo');
@@ -53,6 +53,13 @@ function getUserIdSync(): string | null {
       try {
         const d = JSON.parse(demo);
         return d.id || null;
+      } catch {}
+    }
+    const sbLegacy = localStorage.getItem('sb-xrqvdbjoezyszlvhffwj-auth-token');
+    if (sbLegacy) {
+      try {
+        const p = JSON.parse(sbLegacy);
+        return p?.user?.id || p?.id || null;
       } catch {}
     }
     return null;
