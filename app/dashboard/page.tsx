@@ -10,7 +10,7 @@ import {
   claimLocalProjects
 } from '@/lib/projects';
 import { getEffectiveUser, User } from '@/lib/auth';
-import { getUserPlan, PLANS, Plan, canCreateProject, setUserPlan, getRemainingSites, syncUserPlanWithCloud } from '@/lib/payments';
+import { getUserPlan, PLANS, Plan, canCreateProject, getRemainingSites, refreshUserPlanFromCloud } from '@/lib/payments';
 import TopNav from '@/components/TopNav';
 import Paywall from '@/components/Paywall';
 import Link from 'next/link';
@@ -44,6 +44,7 @@ export default function Dashboard() {
   const [deleting, setDeleting] = useState(false);
   const [paywallDismissed, setPaywallDismissed] = useState(false);
   const [statusNotification, setStatusNotification] = useState<string | null>(null);
+  const [currentPlan, setCurrentPlan] = useState<Plan>(getUserPlan());
 
   // Subdomain & Link Manager Modal State
   const [managingProj, setManagingProj] = useState<SavedProject | null>(null);
@@ -57,7 +58,8 @@ export default function Dashboard() {
     if (currentUser?.id) {
       try {
         await claimLocalProjects(currentUser.id);
-        await syncUserPlanWithCloud(currentUser.id);
+        const refreshedPlan = await refreshUserPlanFromCloud(currentUser.id);
+        setCurrentPlan(refreshedPlan);
       } catch {}
     }
     getProjects().then(p => {
@@ -74,13 +76,14 @@ export default function Dashboard() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const payment = params.get('payment');
-    const plan = params.get('plan') as Plan | null;
-    if (payment === 'success' && plan && PLANS[plan]) {
-      setUserPlan(plan);
-      setPaymentMsg(`Payment successful! Your ${PLANS[plan].name} plan is now active.`);
+    if (payment === 'success') {
+      setPaymentMsg('Payment successful! Your subscription is now being refreshed.');
       window.history.replaceState({}, '', '/dashboard');
     } else if (payment === 'failed') {
       setPaymentMsg('Payment was not completed. You can try again whenever you are ready.');
+      window.history.replaceState({}, '', '/dashboard');
+    } else if (payment === 'error') {
+      setPaymentMsg('We could not confirm your payment automatically. Please contact support if you were charged.');
       window.history.replaceState({}, '', '/dashboard');
     }
 
@@ -184,7 +187,6 @@ export default function Dashboard() {
     );
   }
 
-  const currentPlan = getUserPlan();
   const planInfo = PLANS[currentPlan] || PLANS.free;
   const isLimitReached = !canCreateProject();
   const remainingSites = getRemainingSites();

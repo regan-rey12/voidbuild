@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import TopNav from '@/components/TopNav';
 import { PLANS, Plan, PlanInfo } from '@/lib/payments';
+import { getAccessToken, getEffectiveUser } from '@/lib/auth';
 import { Check, Sparkles, ShieldCheck, ArrowRight, AlertCircle } from 'lucide-react';
 
 export default function PricingPage() {
@@ -13,10 +14,19 @@ export default function PricingPage() {
     setError('');
     setLoading(plan);
     try {
+      const accessToken = await getAccessToken();
+      const user = await getEffectiveUser();
+      if (!accessToken || !user?.id) {
+        throw new Error('Please sign in first before upgrading your plan.');
+      }
+
       const res = await fetch('/api/pesapal/order', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ plan, email: user.email || undefined, phone: user.phone || undefined }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Payment failed');

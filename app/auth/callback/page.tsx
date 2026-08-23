@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { getSupabase } from '@/lib/supabase';
 import { setDemoUser } from '@/lib/auth';
 import { claimLocalProjects } from '@/lib/projects';
-import { syncUserPlanWithCloud } from '@/lib/payments';
+import { refreshUserPlanFromCloud } from '@/lib/payments';
 
 export default function AuthCallback() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -141,7 +141,7 @@ export default function AuthCallback() {
       if (!isMounted) return;
       try {
         await claimLocalProjects(userId);
-        await syncUserPlanWithCloud(userId);
+        await refreshUserPlanFromCloud(userId);
       } catch {}
       setStatus('success');
       setTimeout(() => {

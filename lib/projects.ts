@@ -95,7 +95,7 @@ export async function saveProject(template: Template, phone?: string): Promise<S
     category: template.category,
     template_json: template,
     created_at: new Date().toISOString(),
-    published: false,
+    published: true,
     phone: phone || template.blocks.find(b => b.data?.phone)?.data?.phone,
     user_id: userId || undefined,
     whatsapp_clicks: 0,
