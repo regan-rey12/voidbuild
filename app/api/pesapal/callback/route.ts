@@ -9,27 +9,28 @@ export async function GET(req: Request) {
   const merchantReference = url.searchParams.get('OrderMerchantReference') || url.searchParams.get('merchant_reference') || url.searchParams.get('merchantReference');
   const plan = url.searchParams.get('plan') as any;
 
+  const host = req.headers.get('host') || 'voidbuild.com';
+  const proto = host.includes('localhost') ? 'http' : 'https';
+  const origin = req.headers.get('origin') || `${proto}://${host}`;
+
   if (!orderTrackingId) {
-    return Response.redirect(`${process.env.APP_ORIGIN || 'http://localhost:3000'}/dashboard?payment=failed`, 302);
+    return Response.redirect(`${origin}/dashboard?payment=failed`, 302);
   }
 
   try {
-    const token = await getPesapalToken();
-    const statusData = await getPesapalTransactionStatus(orderTrackingId, token);
+    const { token, baseUrl } = await getPesapalToken();
+    const statusData = await getPesapalTransactionStatus(orderTrackingId, token, baseUrl);
 
     const paymentStatus = statusData?.payment_status_description || statusData?.status || 'UNKNOWN';
     const isCompleted = paymentStatus === 'COMPLETED' || statusData?.payment_status === 1 || statusData?.status_code === 1;
 
     if (isCompleted) {
-      const origin = process.env.APP_ORIGIN || 'http://localhost:3000';
       return Response.redirect(`${origin}/dashboard?payment=success&plan=${plan || 'business'}&tracking=${orderTrackingId}&merchant=${merchantReference}`, 302);
     } else {
-      const origin = process.env.APP_ORIGIN || 'http://localhost:3000';
       return Response.redirect(`${origin}/dashboard?payment=failed&status=${paymentStatus}`, 302);
     }
   } catch (e: any) {
     console.error('Pesapal callback error:', e.message);
-    const origin = process.env.APP_ORIGIN || 'http://localhost:3000';
     return Response.redirect(`${origin}/dashboard?payment=error&message=${encodeURIComponent(e.message)}`, 302);
   }
 }

@@ -21,15 +21,15 @@ export async function POST(req: Request) {
     const origin = req.headers.get('origin') || `${proto}://${host}`;
     const merchantReference = `voidbuild-${plan}-${Date.now()}`;
 
-    // 1. Get Pesapal Access Token
-    const token = await getPesapalToken();
+    // 1. Get Pesapal Access Token with auto-environment detection
+    const { token, baseUrl } = await getPesapalToken();
 
     // 2. Resolve IPN Notification ID
     let notificationId = (process.env.PESAPAL_IPN_ID || process.env.NEXT_PUBLIC_PESAPAL_IPN_ID || '').trim();
     if (!notificationId || notificationId.includes('placeholder') || notificationId.includes('your_')) {
       try {
         const callbackUrl = `${origin}/api/pesapal/callback`;
-        const ipnResult = await registerPesapalIPN(callbackUrl, token);
+        const ipnResult = await registerPesapalIPN(callbackUrl, token, baseUrl);
         notificationId = ipnResult.ipn_id || ipnResult.ipnId || '';
       } catch (ipnErr: any) {
         console.warn('Auto IPN register note:', ipnErr.message);
@@ -48,10 +48,10 @@ export async function POST(req: Request) {
       notificationId: notificationId || '',
       merchantReference,
       billingAddress: { email, phone, firstName: 'VoidBuild', lastName: 'Customer' },
-    }, token);
+    }, token, baseUrl);
 
     if (!order.redirect_url) {
-      throw new Error(`Pesapal order created but no redirect URL returned: ${JSON.stringify(order)}`);
+      throw new Error(`Pesapal did not return a redirect URL. Response: ${JSON.stringify(order)}`);
     }
 
     return Response.json({
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
   } catch (e: any) {
     console.error('Pesapal order error:', e.message);
     return Response.json({ 
-      error: e.message || 'Payment initiation failed. Please check Pesapal settings.',
+      error: e.message || 'Payment initiation failed. Please check Pesapal credentials.',
     }, { status: 500 });
   }
 }
