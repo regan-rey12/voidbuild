@@ -1,4 +1,4 @@
-// VoidBuild Projects - With user_id isolation, base64 share fallback, and Subdomain Management
+// VoidBuild Projects - cloud-first project access with local fallback where needed
 import { Template } from './types';
 import { getSupabase } from './supabase';
 import { slugify } from './slugify';
@@ -18,12 +18,47 @@ export interface SavedProject {
   custom_domain?: string;
 }
 
+export interface LeadInput {
+  projectId: string;
+  name: string;
+  phone?: string;
+  message: string;
+  source?: string;
+}
+
 const LS_KEY = 'voidbuild_projects_v2';
 
 const RESERVED_SUBDOMAINS = [
-  'api', 'admin', 'app', 'dashboard', 'builder', 'pricing', 'auth', 
-  'www', 'voidbuild', 'mail', 'blog', 'help', 'status', 'support', 'test', 'demo'
+  'api', 'admin', 'app', 'dashboard', 'builder', 'pricing', 'auth',
+  'www', 'voidbuild', 'mail', 'blog', 'help', 'status', 'support', 'test', 'demo',
 ];
+
+function getVisitorHash(): string {
+  try {
+    if (typeof window === 'undefined') return 'server';
+    const key = 'voidbuild_visitor_hash';
+    let value = localStorage.getItem(key);
+    if (!value) {
+      value = `vh_${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`;
+      localStorage.setItem(key, value);
+    }
+    return value;
+  } catch {
+    return 'unknown';
+  }
+}
+
+async function postJson(url: string, body: Record<string, unknown>) {
+  if (typeof window === 'undefined') return;
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      keepalive: true,
+    });
+  } catch {}
+}
 
 export function validateSubdomain(slug: string): { valid: boolean; error?: string } {
   const clean = slug.toLowerCase().trim();
@@ -46,6 +81,8 @@ function getUserIdSync(): string | null {
       try {
         const parsed = JSON.parse(authSession);
         if (parsed?.user?.id) return parsed.user.id;
+        if (parsed?.currentSession?.user?.id) return parsed.currentSession.user.id;
+        if (Array.isArray(parsed) && parsed[0]?.user?.id) return parsed[0].user.id;
       } catch {}
     }
     const demo = localStorage.getItem('voidbuild_user_demo');
@@ -68,42 +105,80 @@ function getUserIdSync(): string | null {
   }
 }
 
+function mergeProjects(cloud: SavedProject[], local: SavedProject[], userId?: string | null): SavedProject[] {
+  const localFiltered = userId
+    ? local.filter((p) => !p.user_id || p.user_id === userId || p.user_id.startsWith('demo'))
+    : local;
+
+  const merged = [...cloud, ...localFiltered].slice(0, 100);
+  const seen = new Set<string>();
+  return merged.filter((p) => {
+    if (seen.has(p.id)) return false;
+    seen.add(p.id);
+    return true;
+  });
+}
+
 export async function saveProject(template: Template, phone?: string): Promise<SavedProject> {
   const supabase = getSupabase();
   const userId = getUserIdSync();
 
-  try {
-    const { canCreateProject, getUserPlan, PLANS } = await import('./payments');
-    if (!canCreateProject()) {
-      const plan = getUserPlan();
-      const limit = PLANS[plan].limit;
-      const err: any = new Error(`Limit reached: Your ${PLANS[plan].name} plan allows ${limit} website${limit === 1 ? '' : 's'}.`);
-      err.code = 'LIMIT_REACHED';
-      throw err;
+  const payments = await import('./payments');
+  let plan = payments.getUserPlan();
+
+  if (supabase && userId) {
+    try {
+      plan = await payments.refreshUserPlanFromCloud(userId);
+      const { count, error } = await supabase
+        .from('projects')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', userId);
+
+      if (!error) {
+        const limit = payments.PLANS[plan].limit;
+        if ((count || 0) >= limit) {
+          const err: any = new Error(`Limit reached: Your ${payments.PLANS[plan].name} plan allows ${limit} website${limit === 1 ? '' : 's'}.`);
+          err.code = 'LIMIT_REACHED';
+          throw err;
+        }
+      }
+    } catch (e: any) {
+      if (e.code === 'LIMIT_REACHED' || (e.message && e.message.includes('Limit reached'))) {
+        throw e;
+      }
     }
-  } catch (e: any) {
-    if (e.code === 'LIMIT_REACHED' || (e.message && e.message.includes('Limit reached'))) {
-      throw e;
+  } else {
+    try {
+      if (!payments.canCreateProject()) {
+        const limit = payments.PLANS[plan].limit;
+        const err: any = new Error(`Limit reached: Your ${payments.PLANS[plan].name} plan allows ${limit} website${limit === 1 ? '' : 's'}.`);
+        err.code = 'LIMIT_REACHED';
+        throw err;
+      }
+    } catch (e: any) {
+      if (e.code === 'LIMIT_REACHED' || (e.message && e.message.includes('Limit reached'))) {
+        throw e;
+      }
     }
   }
 
   const generatedSub = slugify(template.name || 'my-shop');
 
   const project: SavedProject = {
-    id: template.id + '-' + Date.now().toString(36),
+    id: `${template.id}-${Date.now().toString(36)}`,
     business_name: template.name,
     category: template.category,
     template_json: template,
     created_at: new Date().toISOString(),
     published: true,
-    phone: phone || template.blocks.find(b => b.data?.phone)?.data?.phone,
+    phone: phone || template.blocks.find((b) => b.data?.phone)?.data?.phone,
     user_id: userId || undefined,
     whatsapp_clicks: 0,
-    views: 1,
+    views: 0,
     subdomain: generatedSub,
   };
 
-  if (supabase) {
+  if (supabase && userId) {
     try {
       const { data, error } = await supabase
         .from('projects')
@@ -113,13 +188,15 @@ export async function saveProject(template: Template, phone?: string): Promise<S
           category: project.category,
           template_json: project.template_json,
           phone: project.phone,
-          published: false,
+          published: true,
           user_id: userId,
           subdomain: project.subdomain,
+          whatsapp_clicks: 0,
+          views: 0,
         })
         .select()
         .single();
-      
+
       if (!error && data) {
         saveToLocalStorage(data as SavedProject);
         return data as SavedProject;
@@ -154,6 +231,10 @@ export async function claimLocalProjects(userId: string): Promise<void> {
             phone: proj.phone,
             user_id: userId,
             subdomain: proj.subdomain,
+            custom_domain: proj.custom_domain,
+            published: proj.published ?? true,
+            views: proj.views || 0,
+            whatsapp_clicks: proj.whatsapp_clicks || 0,
           });
         } catch {}
       }
@@ -166,8 +247,8 @@ export async function claimLocalProjects(userId: string): Promise<void> {
 }
 
 export async function updateProjectSubdomain(
-  id: string, 
-  newSubdomain: string, 
+  id: string,
+  newSubdomain: string,
   customDomain?: string
 ): Promise<{ success: boolean; project?: SavedProject; error?: string }> {
   const val = validateSubdomain(newSubdomain);
@@ -180,18 +261,23 @@ export async function updateProjectSubdomain(
   const cleanDomain = customDomain?.toLowerCase().trim().replace(/^https?:\/\//, '').replace(/\/$/, '') || undefined;
 
   const existing = getLocalProjects();
-  const duplicate = existing.find(p => p.id !== id && (p.subdomain === cleanSub || (!p.subdomain && slugify(p.business_name) === cleanSub)));
+  const duplicate = existing.find((p) => p.id !== id && (p.subdomain === cleanSub || (!p.subdomain && slugify(p.business_name) === cleanSub)));
   if (duplicate) {
     return { success: false, error: `Subdomain "${cleanSub}" is already taken by another website.` };
   }
 
   if (supabase) {
     try {
-      await supabase.from('projects').update({ subdomain: cleanSub, custom_domain: cleanDomain }).eq('id', id);
-    } catch {}
+      const { error } = await supabase.from('projects').update({ subdomain: cleanSub, custom_domain: cleanDomain }).eq('id', id);
+      if (error) {
+        return { success: false, error: error.message };
+      }
+    } catch (e: any) {
+      return { success: false, error: e.message || 'Failed to update project link.' };
+    }
   }
 
-  const idx = existing.findIndex(p => p.id === id);
+  const idx = existing.findIndex((p) => p.id === id);
   if (idx !== -1) {
     existing[idx].subdomain = cleanSub;
     if (cleanDomain !== undefined) existing[idx].custom_domain = cleanDomain;
@@ -199,12 +285,12 @@ export async function updateProjectSubdomain(
     return { success: true, project: existing[idx] };
   }
 
-  return { success: false, error: 'Website not found' };
+  return { success: true, project: { id, business_name: '', category: '', template_json: {} as Template, subdomain: cleanSub, custom_domain: cleanDomain } as SavedProject };
 }
 
 export async function deleteProject(id: string): Promise<boolean> {
   const supabase = getSupabase();
-  
+
   if (supabase) {
     try {
       await supabase.from('projects').delete().eq('id', id);
@@ -215,7 +301,7 @@ export async function deleteProject(id: string): Promise<boolean> {
 
   try {
     const existing = getLocalProjects();
-    const filtered = existing.filter(p => p.id !== id);
+    const filtered = existing.filter((p) => p.id !== id);
     localStorage.setItem(LS_KEY, JSON.stringify(filtered));
     return true;
   } catch {
@@ -226,8 +312,9 @@ export async function deleteProject(id: string): Promise<boolean> {
 function saveToLocalStorage(project: SavedProject) {
   try {
     const existing = getLocalProjects();
-    existing.unshift(project);
-    localStorage.setItem(LS_KEY, JSON.stringify(existing.slice(0, 50)));
+    const filtered = existing.filter((p) => p.id !== project.id);
+    filtered.unshift(project);
+    localStorage.setItem(LS_KEY, JSON.stringify(filtered.slice(0, 100)));
   } catch {}
 }
 
@@ -245,42 +332,42 @@ export async function getProjects(): Promise<SavedProject[]> {
   const supabase = getSupabase();
   const userId = getUserIdSync();
   const local = getLocalProjects();
-  
+
+  if (!userId) {
+    return local;
+  }
+
   if (supabase) {
     try {
-      let query = supabase.from('projects').select('*').order('created_at', { ascending: false }).limit(50);
-      if (userId) {
-        query = query.or(`user_id.eq.${userId},user_id.is.null`);
-      }
-      const { data, error } = await query;
-      if (!error && data && data.length > 0) {
-        const merged = [...data as SavedProject[], ...local].slice(0, 50);
-        const seen = new Set();
-        return merged.filter(p => {
-          if (seen.has(p.id)) return false;
-          seen.add(p.id);
-          return true;
-        });
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (!error && data) {
+        return mergeProjects(data as SavedProject[], local, userId);
       }
     } catch (e) {
       console.warn('Supabase fetch failed, using local:', e);
     }
   }
-  
-  return local;
+
+  return local.filter((p) => !p.user_id || p.user_id === userId || p.user_id.startsWith('demo'));
 }
 
 export async function getProjectById(id: string): Promise<SavedProject | null> {
   const supabase = getSupabase();
-  
+
   if (supabase) {
     try {
       const { data } = await supabase.from('projects').select('*').eq('id', id).single();
       if (data) return data as SavedProject;
     } catch {}
   }
-  
-  const local = getLocalProjects().find(p => p.id === id);
+
+  const local = getLocalProjects().find((p) => p.id === id);
   if (local) return local;
 
   try {
@@ -307,14 +394,52 @@ export async function getProjectById(id: string): Promise<SavedProject | null> {
   return null;
 }
 
+export async function getPublicProjectBySlug(slug: string): Promise<SavedProject | null> {
+  const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
+  const supabase = getSupabase();
+
+  if (supabase) {
+    try {
+      const { data } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('subdomain', cleanSlug)
+        .eq('published', true)
+        .limit(1)
+        .maybeSingle();
+
+      if (data) return data as SavedProject;
+    } catch {}
+
+    try {
+      const { data } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('id', cleanSlug)
+        .eq('published', true)
+        .limit(1)
+        .maybeSingle();
+
+      if (data) return data as SavedProject;
+    } catch {}
+  }
+
+  const local = getLocalProjects().find((p) => {
+    const sub = (p.subdomain || '').toLowerCase().trim();
+    return p.published && (sub === cleanSlug || p.id.toLowerCase() === cleanSlug);
+  });
+
+  return local || null;
+}
+
 export function generateShareLink(project: SavedProject): string {
   const origin = typeof window !== 'undefined' ? window.location.origin : '';
   const supabase = getSupabase();
-  
+
   if (supabase) {
     return `${origin}/p/${project.id}`;
   }
-  
+
   try {
     const jsonStr = JSON.stringify(project.template_json);
     const base64 = btoa(jsonStr);
@@ -327,24 +452,15 @@ export function generateShareLink(project: SavedProject): string {
   }
 }
 
-// Analytics Tracking Helpers for SME owners
 export function recordWhatsAppClick(projectId?: string) {
   try {
     if (typeof window === 'undefined') return;
-    const globalCount = parseInt(localStorage.getItem('wb_total_whatsapp_clicks') || '0', 10) + 1;
-    localStorage.setItem('wb_total_whatsapp_clicks', globalCount.toString());
-
     if (projectId) {
-      const key = `wb_clicks_${projectId}`;
-      const count = parseInt(localStorage.getItem(key) || '0', 10) + 1;
-      localStorage.setItem(key, count.toString());
-
-      const existing = getLocalProjects();
-      const idx = existing.findIndex(p => p.id === projectId);
-      if (idx !== -1) {
-        existing[idx].whatsapp_clicks = (existing[idx].whatsapp_clicks || 0) + 1;
-        localStorage.setItem(LS_KEY, JSON.stringify(existing));
-      }
+      void postJson('/api/events/whatsapp-click', {
+        projectId,
+        visitorHash: getVisitorHash(),
+        source: 'whatsapp_cta',
+      });
     }
   } catch {}
 }
@@ -352,36 +468,41 @@ export function recordWhatsAppClick(projectId?: string) {
 export function recordPageView(projectId?: string) {
   try {
     if (typeof window === 'undefined') return;
-    const globalCount = parseInt(localStorage.getItem('wb_total_views') || '0', 10) + 1;
-    localStorage.setItem('wb_total_views', globalCount.toString());
-
     if (projectId) {
-      const key = `wb_views_${projectId}`;
-      const count = parseInt(localStorage.getItem(key) || '0', 10) + 1;
-      localStorage.setItem(key, count.toString());
-
-      const existing = getLocalProjects();
-      const idx = existing.findIndex(p => p.id === projectId);
-      if (idx !== -1) {
-        existing[idx].views = (existing[idx].views || 0) + 1;
-        localStorage.setItem(LS_KEY, JSON.stringify(existing));
-      }
+      void postJson('/api/events/view', {
+        projectId,
+        visitorHash: getVisitorHash(),
+        source: 'public_page',
+      });
     }
   } catch {}
 }
 
-export function getProjectStats(projectId?: string): { clicks: number; views: number } {
+export async function submitLead(input: LeadInput): Promise<{ success: boolean; error?: string }> {
   try {
-    if (typeof window === 'undefined') return { clicks: 0, views: 0 };
-    if (projectId) {
-      const clicks = parseInt(localStorage.getItem(`wb_clicks_${projectId}`) || '0', 10);
-      const views = parseInt(localStorage.getItem(`wb_views_${projectId}`) || '0', 10);
-      return { clicks, views: Math.max(views, clicks) };
+    const res = await fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        projectId: input.projectId,
+        name: input.name,
+        phone: input.phone,
+        message: input.message,
+        source: input.source || 'website',
+      }),
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return { success: false, error: data.error || 'Failed to submit lead' };
     }
-    const totalClicks = parseInt(localStorage.getItem('wb_total_whatsapp_clicks') || '0', 10);
-    const totalViews = parseInt(localStorage.getItem('wb_total_views') || '0', 10);
-    return { clicks: totalClicks, views: Math.max(totalViews, totalClicks) };
-  } catch {
-    return { clicks: 0, views: 0 };
+
+    return { success: true };
+  } catch (e: any) {
+    return { success: false, error: e.message || 'Failed to submit lead' };
   }
+}
+
+export function getProjectStats(): { clicks: number; views: number } {
+  return { clicks: 0, views: 0 };
 }

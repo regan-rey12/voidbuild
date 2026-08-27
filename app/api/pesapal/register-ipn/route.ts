@@ -1,8 +1,12 @@
-// VoidBuild Pesapal Register IPN - Get IPN ID
+// Protected debug endpoint to register Pesapal IPN intentionally
 export const runtime = 'nodejs';
 import { getPesapalToken, registerPesapalIPN } from '@/lib/pesapal';
+import { requireAdminDebugAccess } from '@/lib/admin-guard';
 
 export async function GET(req: Request) {
+  const denied = requireAdminDebugAccess(req);
+  if (denied) return denied;
+
   const url = new URL(req.url);
   const host = req.headers.get('host') || 'voidbuild.com';
   const proto = host.includes('localhost') ? 'http' : 'https';
@@ -12,7 +16,7 @@ export async function GET(req: Request) {
   try {
     const { token, baseUrl } = await getPesapalToken();
     const result = await registerPesapalIPN(callbackUrl, token, baseUrl);
-    
+
     return Response.json({
       success: true,
       message: 'IPN registered successfully',

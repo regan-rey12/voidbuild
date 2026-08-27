@@ -7,6 +7,7 @@ import EditorSidebar from '@/components/editor/EditorSidebar';
 import { Template, TemplateBlock, BlockType } from '@/lib/types';
 import sampleTemplate from '@/templates/salon-ug-1.json';
 import { getTemplateByKey } from '@/lib/templates';
+import { getProjectById } from '@/lib/projects';
 import AuthButton from '@/components/AuthButton';
 import Link from 'next/link';
 
@@ -34,28 +35,28 @@ export default function BuilderPage() {
     const editId = params.get('editId');
     const templateParam = params.get('template');
 
-    if (editId) {
-      try {
-        const raw = localStorage.getItem('voidbuild_projects_v2');
-        if (raw) {
-          const projects = JSON.parse(raw);
-          const found = projects.find((p: any) => p.id === editId);
-          if (found && found.template_json) {
+    const load = async () => {
+      if (editId) {
+        try {
+          const found = await getProjectById(editId);
+          if (found?.template_json) {
             setTemplate(found.template_json);
             setEditMode(true);
             setIsGeneratedOrLoaded(true);
             return;
           }
-        }
-      } catch {}
-    }
+        } catch {}
+      }
 
-    if (templateParam) {
-      const selected = getTemplateByKey(templateParam);
-      setTemplate(selected);
-      setEditMode(true);
-      setIsGeneratedOrLoaded(true);
-    }
+      if (templateParam) {
+        const selected = getTemplateByKey(templateParam);
+        setTemplate(selected);
+        setEditMode(true);
+        setIsGeneratedOrLoaded(true);
+      }
+    };
+
+    load();
   }, []);
 
   const generate = async () => {

@@ -7,72 +7,71 @@ export default function PrivacyPage() {
       <TopNav currentPage="home" />
       <div className="max-w-3xl mx-auto px-4 md:px-6 py-10 md:py-16">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Privacy Policy - VoidBuild</h1>
-        <p className="text-xs text-gray-500 mt-2">Last updated: July 24, 2026 • Complies with Uganda Data Protection and Privacy Act Cap 97</p>
+        <p className="text-xs text-gray-500 mt-2">Last updated: August 26, 2026 • Complies with Uganda Data Protection and Privacy Act Cap 97</p>
 
         <div className="mt-8 space-y-6 text-sm leading-relaxed text-gray-700">
           <section>
             <h2 className="font-bold text-base">1. What Data We Collect</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1">
-              <li><strong>Business Information:</strong> Business name, phone, WhatsApp, location, hours you enter to generate website</li>
-              <li><strong>Website Content:</strong> Template JSON, images you upload, text you edit</li>
-              <li><strong>Account:</strong> Email, phone, user ID from Supabase Auth if you sign in</li>
-              <li><strong>Usage:</strong> Views, WhatsApp clicks, feedback rating/comment</li>
-              <li><strong>Payments:</strong> Plan type, transaction ID, phone used to pay (we do NOT store MoMo PIN, card numbers - handled by Pesapal)</li>
+              <li><strong>Business Information:</strong> Business name, phone, WhatsApp, location, hours, and content you enter to create a website.</li>
+              <li><strong>Website Content:</strong> Template JSON, text edits, links, and media references used in your website.</li>
+              <li><strong>Account:</strong> Email, phone, and user ID from Supabase Auth when you sign in.</li>
+              <li><strong>Usage:</strong> Page views, WhatsApp click events, feedback, and inquiry leads submitted through websites built on VoidBuild.</li>
+              <li><strong>Payments:</strong> Plan, payment order references, transaction IDs, amount, and phone or email used during checkout. We do not store MoMo PINs or full card details.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="font-bold text-base">2. How We Use Data</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1">
-              <li>Generate and host your website at voidbuild.com/p/id and {`{name}`}.voidbuild.com</li>
-              <li>Save your projects to dashboard, sync across devices if you sign in</li>
-              <li>Improve AI templates based on anonymous feedback (we read every feedback)</li>
-              <li>Process payments via Pesapal (MTN MoMo, Airtel Money, Cards) - 3.5% fee, auto verified</li>
-              <li>Show analytics: views, WhatsApp clicks in dashboard</li>
+              <li>Generate, save, and host websites on VoidBuild subdomains and share links.</li>
+              <li>Show your project list, subscription state, analytics, and inquiry leads in the dashboard.</li>
+              <li>Process secure payment verification and subscription activation via Pesapal.</li>
+              <li>Improve templates and product quality using operational feedback.</li>
+              <li>Support assisted setup requests, including custom-domain rollout where applicable.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="font-bold text-base">3. Where Data is Stored</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1">
-              <li><strong>Supabase (EU/US):</strong> Projects, payments, feedback, events tables - encrypted at rest, RLS row level security with user_id isolation</li>
-              <li><strong>Browser localStorage:</strong> Temporary fallback if Supabase not configured - your sites saved locally on device, you can clear anytime via browser settings</li>
-              <li><strong>Cloudflare Pages / Vercel:</strong> Hosting for voidbuild.com builder, edge in Africa (Nairobi, Lagos) for fast 2G loads</li>
-              <li><strong>Images:</strong> Supabase Storage bucket images (public) or data URL in site JSON if offline</li>
+              <li><strong>Supabase:</strong> Projects, payments, subscriptions, payment orders, events, leads, and feedback are stored in Supabase-managed infrastructure.</li>
+              <li><strong>Browser localStorage:</strong> Used only as a lightweight draft or fallback cache on your device. It is not the primary source of truth for subscriptions or public analytics.</li>
+              <li><strong>Vercel:</strong> Hosts the VoidBuild application and secure server routes.</li>
+              <li><strong>Pesapal:</strong> Processes checkout and payment verification.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="font-bold text-base">4. Data Protection - Uganda Data Protection Act Cap 97</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1">
-              <li>You own your business data - you can export, edit, delete anytime in dashboard</li>
-              <li>We do NOT sell your data to third parties</li>
-              <li>We do NOT store MoMo PIN, card numbers - payments handled by Pesapal (PCI compliant)</li>
-              <li>Images you upload: public read (since website is public), but only you can upload/update/delete your own via user_id</li>
-              <li>Right to be forgotten: Email hello@voidbuild.com or delete account in dashboard (coming) to delete all your projects, feedback, payments data</li>
-              <li>Data retention: Projects kept until you delete, feedback kept 1 year for improving AI, payments kept 7 years for URA tax compliance</li>
+              <li>We do not sell your data to third parties.</li>
+              <li>Public websites you publish are intentionally visible to the public, including the content you choose to display.</li>
+              <li>Operational payment, subscription, analytics, and lead records are processed through server-side routes and protected database access controls.</li>
+              <li>If you need account-wide deletion assistance, contact hello@voidbuild.com or WhatsApp +256 751 391318.</li>
+              <li>We may retain payment and accounting records for legal, tax, fraud-prevention, and reconciliation purposes.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="font-bold text-base">5. Cookies & Analytics</h2>
-            <p className="mt-2">We use minimal cookies: Supabase auth session cookie to keep you signed in, localStorage for projects. No tracking cookies, no ads. Analytics is first-party only (views, WhatsApp clicks) stored in Supabase events table, not shared.</p>
+            <h2 className="font-bold text-base">5. Cookies &amp; Analytics</h2>
+            <p className="mt-2">VoidBuild uses minimal session storage for authentication and device-level draft convenience. We do not run third-party advertising trackers. Website analytics inside VoidBuild are first-party events such as page views and WhatsApp clicks.</p>
           </section>
 
           <section>
             <h2 className="font-bold text-base">6. Your Rights</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1">
-              <li>Access: View your data in dashboard</li>
-              <li>Edit: Click text/image to edit in builder, changes save instantly</li>
-              <li>Delete: Delete project in dashboard, or email hello@voidbuild.com to delete account and all data</li>
-              <li>Export: Copy share link /p/id?d=base64 contains full site JSON, or contact support for full export</li>
-              <li>Complaint: If you believe your data rights violated, contact NITA-U or Uganda Data Protection Office</li>
+              <li>Access: You can view your saved websites and supported dashboard data after signing in.</li>
+              <li>Edit: You can update site content in the builder and save new changes.</li>
+              <li>Delete: You can delete individual projects in the dashboard. For broader account deletion requests, contact support.</li>
+              <li>Export: Share links and on-platform content access may help with export needs; for account-level export support, contact us directly.</li>
+              <li>Complaint: If you believe your data rights were violated, contact us first at hello@voidbuild.com.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="font-bold text-base">7. Contact</h2>
-            <p className="mt-2">For privacy questions, data deletion, or complaints: Email hello@voidbuild.com or WhatsApp +256 751 391318. We respond within 24 hours.</p>
+            <p className="mt-2">For privacy questions, deletion requests, or complaints: Email hello@voidbuild.com or WhatsApp +256 751 391318.</p>
           </section>
         </div>
 

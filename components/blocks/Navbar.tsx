@@ -14,19 +14,20 @@ interface NavbarProps {
     links?: { label: string; href: string }[];
   };
   style?: { primaryColor?: string };
+  projectId?: string;
   editMode?: boolean;
   onUpdateData?: (newData: any) => void;
 }
 
-export default function Navbar({ data, style, editMode, onUpdateData }: NavbarProps) {
+export default function Navbar({ data, style, projectId, editMode, onUpdateData }: NavbarProps) {
   const primary = style?.primaryColor || '#111827';
   const [open, setOpen] = useState(false);
-  
+
   const update = (field: string, value: string) => {
     if (onUpdateData) onUpdateData({ ...data, [field]: value });
   };
 
-  const waNumber = (data.whatsapp || data.phone || '').replace(/[^0-9]/g,'');
+  const waNumber = (data.whatsapp || data.phone || '').replace(/[^0-9]/g, '');
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (editMode) return;
@@ -67,9 +68,9 @@ export default function Navbar({ data, style, editMode, onUpdateData }: NavbarPr
             )}
           </div>
         </div>
-        
+
         <div className="hidden md:flex items-center gap-1 text-[13px]">
-          {(data.links || [{label:"Services", href:"#services"}, {label:"Contact", href:"#contact"}]).map((l,i) => (
+          {(data.links || [{ label: 'Services', href: '#services' }, { label: 'Contact', href: '#contact' }]).map((l, i) => (
             <a
               key={i}
               href={l.href}
@@ -86,7 +87,7 @@ export default function Navbar({ data, style, editMode, onUpdateData }: NavbarPr
             href={waNumber ? `https://wa.me/${waNumber}` : '#contact'}
             target={waNumber ? '_blank' : '_self'}
             rel={waNumber ? 'noopener noreferrer' : undefined}
-            onClick={() => recordWhatsAppClick()}
+            onClick={() => recordWhatsAppClick(projectId)}
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-white text-xs font-bold shadow-sm hover:opacity-95 transition"
             style={{ backgroundColor: primary }}
           >
@@ -103,7 +104,7 @@ export default function Navbar({ data, style, editMode, onUpdateData }: NavbarPr
       </div>
       {open && (
         <div className="md:hidden border-t bg-white px-4 py-3 space-y-1 shadow-lg animate-fade-in">
-          {(data.links || [{label:"Services", href:"#services"}, {label:"Contact", href:"#contact"}]).map((l,i) => (
+          {(data.links || [{ label: 'Services', href: '#services' }, { label: 'Contact', href: '#contact' }]).map((l, i) => (
             <a
               key={i}
               href={l.href}

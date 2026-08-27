@@ -56,7 +56,7 @@ export default function PricingPage() {
             Simple, Transparent Pricing
           </h1>
           <p className="mt-2 text-sm md:text-base text-gray-600">
-            Start 100% free with 1 website. Upgrade whenever your business is ready to expand.
+            Start free with 1 website, then upgrade when you need more websites, better analytics, or guided support from our Kampala team.
           </p>
         </div>
 
@@ -138,6 +138,10 @@ export default function PricingPage() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-5 max-w-3xl mx-auto text-center text-xs text-gray-600 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3">
+          Custom domain connections for Business and Pro are currently handled through an assisted rollout. Your VoidBuild subdomain works immediately, and our Kampala team can help attach a custom domain on request.
         </div>
 
         {/* How Flow B Works Card */}

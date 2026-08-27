@@ -30,14 +30,15 @@ interface ServicesProps {
   style?: {
     primaryColor?: string;
   };
+  projectId?: string;
   editMode?: boolean;
   onUpdateData?: (newData: any) => void;
 }
 
-export default function Services({ data, style, editMode, onUpdateData }: ServicesProps) {
+export default function Services({ data, style, projectId, editMode, onUpdateData }: ServicesProps) {
   const primary = style?.primaryColor || '#111827';
   const waNumber = (data.whatsapp || data.phone || '').replace(/[^0-9]/g, '');
-  
+
   const updateField = (field: string, value: string) => {
     if (onUpdateData) onUpdateData({ ...data, [field]: value });
   };
@@ -53,8 +54,8 @@ export default function Services({ data, style, editMode, onUpdateData }: Servic
       ...data,
       services: [
         ...(data.services || []),
-        { name: 'New Service', price: 'UGX 20,000', description: 'Quality service for your needs', image: 'business service' }
-      ]
+        { name: 'New Service', price: 'UGX 20,000', description: 'Quality service for your needs', image: 'business service' },
+      ],
     });
   };
   const removeService = (idx: number) => {
@@ -62,11 +63,10 @@ export default function Services({ data, style, editMode, onUpdateData }: Servic
     onUpdateData({ ...data, services: data.services.filter((_, i) => i !== idx) });
   };
 
-  const handleServiceOrderClick = (e: React.MouseEvent<HTMLAnchorElement>, serviceName: string, servicePrice?: string) => {
+  const handleServiceOrderClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (editMode) return;
-    recordWhatsAppClick();
+    recordWhatsAppClick(projectId);
     if (!waNumber) {
-      // Smooth scroll to contact section if phone is not directly on block
       e.preventDefault();
       const el = document.getElementById('contact');
       if (el) {
@@ -130,7 +130,7 @@ export default function Services({ data, style, editMode, onUpdateData }: Servic
                       </button>
                     )}
                   </div>
-                  
+
                   <div className="p-5">
                     <h3 className="font-bold text-sm text-gray-900">
                       {editMode && onUpdateData ? (
@@ -154,7 +154,7 @@ export default function Services({ data, style, editMode, onUpdateData }: Servic
                     href={itemWaLink}
                     target={waNumber ? '_blank' : '_self'}
                     rel={waNumber ? 'noopener noreferrer' : undefined}
-                    onClick={(e) => handleServiceOrderClick(e, service.name, service.price)}
+                    onClick={(e) => handleServiceOrderClick(e)}
                     className="w-full py-2.5 rounded-xl text-white text-xs font-bold text-center transition flex items-center justify-center gap-1.5 shadow-sm hover:opacity-95"
                     style={{ backgroundColor: primary }}
                   >

@@ -12,26 +12,25 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://voidbuild.com"),
   title: {
-    default: "VoidBuild — AI Website Builder for Ugandan Businesses | UGX & MoMo",
+    default: "VoidBuild — Professional Business Websites for Small Businesses | East Africa Friendly",
     template: "%s | VoidBuild",
   },
   description:
-    "Build a professional website for your Ugandan shop, salon, clinic, bakery, or hardware in 30 seconds. Accepts MTN MoMo, Airtel Money, Visa & instant WhatsApp ordering. 15 custom Ugandan templates.",
+    "Launch a professional business website with pricing, customer contact, mobile-friendly design, and setup support. Built in Kampala for SMEs in Uganda and across East Africa.",
   applicationName: "VoidBuild",
   authors: [{ name: "VoidBuild Uganda", url: "https://voidbuild.com" }],
   generator: "Next.js",
   keywords: [
-    "AI website builder Uganda",
+    "professional business website",
+    "small business website East Africa",
     "website builder Kampala",
     "Ugandan SME website",
-    "create website Uganda",
-    "MTN MoMo website builder",
-    "Airtel Money website",
-    "WhatsApp website Uganda",
+    "mobile money website",
+    "WhatsApp contact website",
     "salon website Kampala",
     "pharmacy website Uganda",
-    "hardware website Mbale",
-    "shop website Uganda UGX",
+    "shop website East Africa",
+    "business website Uganda",
     "voidbuild",
   ],
   referrer: "origin-when-cross-origin",
@@ -64,24 +63,24 @@ export const metadata: Metadata = {
     locale: "en_UG",
     url: "https://voidbuild.com",
     siteName: "VoidBuild",
-    title: "VoidBuild — AI Website Builder for Ugandan Businesses",
+    title: "VoidBuild — Professional Business Websites for Small Businesses",
     description:
-      "Build your business website in 30s with UGX pricing, MTN MoMo, Airtel Money & WhatsApp ordering. 15 Ugandan templates.",
+      "Launch a business website with pricing, customer contact, and setup support. Built in Kampala for SMEs in Uganda and across East Africa.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "VoidBuild — AI Website Builder for Ugandan Businesses",
+        alt: "VoidBuild — Professional Business Websites for Small Businesses",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "VoidBuild — AI Website Builder for Ugandan Businesses",
+    title: "VoidBuild — Professional Websites for Ugandan Businesses",
     description:
-      "Build your business website in 30s with UGX pricing, MTN MoMo, Airtel Money & instant WhatsApp ordering.",
+      "Launch your business website with UGX pricing, WhatsApp inquiries, and local support from Kampala.",
     images: ["/og-image.png"],
     creator: "@voidbuild",
   },
@@ -132,7 +131,7 @@ const jsonLd = {
       "@id": "https://voidbuild.com/#website",
       url: "https://voidbuild.com",
       name: "VoidBuild",
-      description: "AI Website Builder for Ugandan SMEs & Businesses",
+      description: "Professional business websites for SMEs with pricing, customer contact, and local support from Kampala.",
       publisher: {
         "@id": "https://voidbuild.com/#organization",
       },
@@ -141,7 +140,7 @@ const jsonLd = {
     {
       "@type": "SoftwareApplication",
       "@id": "https://voidbuild.com/#software",
-      name: "VoidBuild AI Website Builder",
+      name: "VoidBuild Website Builder for Small Businesses in East Africa",
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web Browser (Mobile & Desktop)",
       offers: [
@@ -164,7 +163,7 @@ const jsonLd = {
           name: "Business Plan",
           price: "35000",
           priceCurrency: "UGX",
-          description: "3 websites with custom domain support & visitor analytics",
+          description: "3 websites with visitor analytics and assisted domain connection rollout",
         },
         {
           "@type": "Offer",

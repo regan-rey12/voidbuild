@@ -1,55 +1,33 @@
-"use client";
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { getProjects, SavedProject, recordPageView } from '@/lib/projects';
-import TemplateRenderer from '@/components/TemplateRenderer';
-import { slugify } from '@/lib/slugify';
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import TemplateRenderer from '@/components/TemplateRenderer';
+import PublicPageTracker from '@/components/PublicPageTracker';
+import { buildProjectMetadata, getPublicProjectBySlugServer } from '@/lib/public-projects';
 
-export default function SubdomainPage() {
-  const params = useParams();
-  const rawSlug = (params.slug as string) || '';
-  const slug = decodeURIComponent(rawSlug).toLowerCase().trim();
-  const [project, setProject] = useState<SavedProject | null>(null);
-  const [loading, setLoading] = useState(true);
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
 
-  useEffect(() => {
-    if (!slug) return;
-    
-    getProjects().then(projects => {
-      const found = projects.find(p => {
-        const customSub = (p.subdomain || '').toLowerCase().trim();
-        const businessSlug = slugify(p.business_name || '');
-        const idSlug = (p.id || '').toLowerCase();
-        const generatedSubdomain = `${businessSlug}-${p.id.slice(-6).toLowerCase()}`;
-        
-        return (
-          customSub === slug ||
-          p.id === slug ||
-          businessSlug === slug ||
-          generatedSubdomain === slug ||
-          idSlug.includes(slug)
-        );
-      });
-      
-      if (found) {
-        recordPageView(found.id);
-        setProject(found);
-      } else {
-        setProject(null);
-      }
-      setLoading(false);
-    });
-  }, [slug]);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getPublicProjectBySlugServer(slug);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-sm text-gray-500">
-        <div className="w-6 h-6 rounded-full border-2 border-gray-300 border-t-gray-900 animate-spin mr-2.5"></div>
-        <span>Loading {slug}.voidbuild.com...</span>
-      </div>
-    );
+  if (!project) {
+    return {
+      title: 'Website Not Found | VoidBuild',
+      description: 'This business website could not be found on VoidBuild.',
+      robots: { index: false, follow: false },
+    };
   }
+
+  const canonical = `https://${project.subdomain || slug}.voidbuild.com`;
+  return buildProjectMetadata(project, canonical);
+}
+
+export default async function SubdomainPage({ params }: PageProps) {
+  const { slug: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug).toLowerCase().trim();
+  const project = await getPublicProjectBySlugServer(slug);
 
   if (!project) {
     return (
@@ -68,17 +46,18 @@ export default function SubdomainPage() {
 
   return (
     <div>
+      <PublicPageTracker projectId={project.id} />
       <div className="bg-gray-900 text-white text-center text-[11px] py-1.5 px-4 flex items-center justify-center gap-2">
         <img src="/logo.png" alt="VoidBuild" className="w-3.5 h-3.5 object-contain flex-shrink-0" />
         <span className="font-bold">{project.business_name}</span>
         <span>•</span>
-        <span className="text-gray-300">{slug}.voidbuild.com</span>
+        <span className="text-gray-300">{project.subdomain || slug}.voidbuild.com</span>
         <span>•</span>
-        <a href="/" className="underline text-yellow-400 font-bold hover:text-yellow-300">
+        <Link href="/" className="underline text-yellow-400 font-bold hover:text-yellow-300">
           Built with VoidBuild
-        </a>
+        </Link>
       </div>
-      <TemplateRenderer template={project.template_json} />
+      <TemplateRenderer template={project.template_json} projectId={project.id} />
     </div>
   );
 }

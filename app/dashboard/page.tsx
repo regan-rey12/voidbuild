@@ -1,27 +1,27 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { 
-  getProjects, 
-  deleteProject, 
-  SavedProject, 
-  getProjectStats, 
+import { useEffect, useMemo, useState } from 'react';
+import {
+  getProjects,
+  deleteProject,
+  SavedProject,
   updateProjectSubdomain,
   validateSubdomain,
-  claimLocalProjects
+  claimLocalProjects,
 } from '@/lib/projects';
-import { getEffectiveUser, User } from '@/lib/auth';
-import { getUserPlan, PLANS, Plan, canCreateProject, getRemainingSites, refreshUserPlanFromCloud } from '@/lib/payments';
+import { getAccessToken, getEffectiveUser, User } from '@/lib/auth';
+import { getUserPlan, PLANS, Plan, refreshUserPlanFromCloud } from '@/lib/payments';
+import { getSupabase } from '@/lib/supabase';
 import TopNav from '@/components/TopNav';
 import Paywall from '@/components/Paywall';
 import Link from 'next/link';
-import { 
-  Plus, 
-  Trash2, 
-  ExternalLink, 
-  Edit3, 
-  Copy, 
-  Check, 
-  AlertTriangle, 
+import {
+  Plus,
+  Trash2,
+  ExternalLink,
+  Edit3,
+  Copy,
+  Check,
+  AlertTriangle,
   Sparkles,
   MessageCircle,
   Eye,
@@ -30,8 +30,52 @@ import {
   X,
   Share2,
   Lock,
-  ArrowRight
+  Clock3,
+  BarChart3,
 } from 'lucide-react';
+
+type LeadStatus = 'new' | 'contacted' | 'closed' | 'spam';
+
+type LeadFilter = 'all' | LeadStatus;
+
+interface DashboardLead {
+  id: string;
+  project_id: string;
+  name: string;
+  phone?: string | null;
+  message: string;
+  status: LeadStatus;
+  created_at?: string;
+}
+
+function startOfDaysAgo(days: number) {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() - days);
+  return date;
+}
+
+function formatDelta(current: number, previous: number) {
+  const diff = current - previous;
+  if (diff > 0) return `+${diff} vs previous 7 days`;
+  if (diff < 0) return `${diff} vs previous 7 days`;
+  return 'No change vs previous 7 days';
+}
+
+function leadStatusClasses(status: LeadStatus) {
+  switch (status) {
+    case 'new':
+      return 'bg-blue-50 text-blue-700 border-blue-200';
+    case 'contacted':
+      return 'bg-yellow-50 text-yellow-800 border-yellow-200';
+    case 'closed':
+      return 'bg-green-50 text-green-700 border-green-200';
+    case 'spam':
+      return 'bg-red-50 text-red-700 border-red-200';
+    default:
+      return 'bg-gray-100 text-gray-700 border-gray-200';
+  }
+}
 
 export default function Dashboard() {
   const [projects, setProjects] = useState<SavedProject[]>([]);
@@ -45,8 +89,14 @@ export default function Dashboard() {
   const [paywallDismissed, setPaywallDismissed] = useState(false);
   const [statusNotification, setStatusNotification] = useState<string | null>(null);
   const [currentPlan, setCurrentPlan] = useState<Plan>(getUserPlan());
+  const [leads, setLeads] = useState<DashboardLead[]>([]);
+  const [leadFilter, setLeadFilter] = useState<LeadFilter>('all');
+  const [leadStatusSavingId, setLeadStatusSavingId] = useState<string | null>(null);
+  const [views7d, setViews7d] = useState(0);
+  const [viewsPrev7d, setViewsPrev7d] = useState(0);
+  const [clicks7d, setClicks7d] = useState(0);
+  const [clicksPrev7d, setClicksPrev7d] = useState(0);
 
-  // Subdomain & Link Manager Modal State
   const [managingProj, setManagingProj] = useState<SavedProject | null>(null);
   const [subdomainInput, setSubdomainInput] = useState('');
   const [customDomainInput, setCustomDomainInput] = useState('');
@@ -55,22 +105,78 @@ export default function Dashboard() {
   const [subdomainSuccess, setSubdomainSuccess] = useState(false);
 
   const fetchUserProjects = async (currentUser: User | null) => {
-    if (currentUser?.id) {
-      try {
+    try {
+      if (currentUser?.id) {
         await claimLocalProjects(currentUser.id);
         const refreshedPlan = await refreshUserPlanFromCloud(currentUser.id);
         setCurrentPlan(refreshedPlan);
-      } catch {}
-    }
-    getProjects().then(p => {
-      const filtered = p.filter(proj => {
+      }
+
+      const loadedProjects = await getProjects();
+      const filteredProjects = loadedProjects.filter((proj) => {
         const projAny = proj as any;
         if (projAny.user_id && currentUser && projAny.user_id !== currentUser.id && !projAny.user_id.startsWith('demo')) return false;
         return true;
       });
-      setProjects(filtered);
+      setProjects(filteredProjects);
+
+      if (currentUser?.id) {
+        const supabase = getSupabase();
+        if (supabase) {
+          const [leadRes, eventRes] = await Promise.all([
+            supabase
+              .from('leads')
+              .select('id, project_id, name, phone, message, status, created_at')
+              .order('created_at', { ascending: false })
+              .limit(50),
+            supabase
+              .from('events')
+              .select('id, project_id, event_type, created_at')
+              .order('created_at', { ascending: false })
+              .limit(300),
+          ]);
+
+          const leadRows = ((leadRes.data as DashboardLead[] | null) || []).map((lead) => ({
+            ...lead,
+            status: (lead.status || 'new') as LeadStatus,
+          }));
+          setLeads(leadRows);
+
+          const eventRows = (eventRes.data as Array<{ event_type: string; created_at?: string }> | null) || [];
+
+          const start7 = startOfDaysAgo(7).getTime();
+          const start14 = startOfDaysAgo(14).getTime();
+          let recentViews = 0;
+          let recentClicks = 0;
+          let prevViews = 0;
+          let prevClicks = 0;
+
+          for (const event of eventRows) {
+            const ts = event.created_at ? new Date(event.created_at).getTime() : 0;
+            if (!ts) continue;
+            const isView = event.event_type === 'page_view';
+            const isClick = event.event_type === 'whatsapp_click';
+
+            if (ts >= start7) {
+              if (isView) recentViews++;
+              if (isClick) recentClicks++;
+            } else if (ts >= start14 && ts < start7) {
+              if (isView) prevViews++;
+              if (isClick) prevClicks++;
+            }
+          }
+
+          setViews7d(recentViews);
+          setViewsPrev7d(prevViews);
+          setClicks7d(recentClicks);
+          setClicksPrev7d(prevClicks);
+        }
+      }
+    } catch (e: any) {
+      console.warn('Dashboard load warning:', e?.message || e);
+    } finally {
       setLoading(false);
-    });
+    }
   };
 
   useEffect(() => {
@@ -90,8 +196,7 @@ export default function Dashboard() {
     const checkUser = async () => {
       let u = await getEffectiveUser();
       if (!u) {
-        // Brief retry to allow local session storage to hydrate
-        await new Promise(r => setTimeout(r, 350));
+        await new Promise((r) => setTimeout(r, 350));
         u = await getEffectiveUser();
       }
 
@@ -107,6 +212,10 @@ export default function Dashboard() {
     checkUser();
   }, []);
 
+  const filteredLeads = useMemo(() => {
+    return leadFilter === 'all' ? leads : leads.filter((lead) => lead.status === leadFilter);
+  }, [leads, leadFilter]);
+
   const handleCopyLink = async (url: string, id: string) => {
     try {
       await navigator.clipboard.writeText(url);
@@ -119,7 +228,8 @@ export default function Dashboard() {
     setDeleting(true);
     try {
       await deleteProject(proj.id);
-      setProjects(prev => prev.filter(p => p.id !== proj.id));
+      setProjects((prev) => prev.filter((p) => p.id !== proj.id));
+      setLeads((prev) => prev.filter((lead) => lead.project_id !== proj.id));
       setDeleteConfirmProj(null);
       setStatusNotification(`Website "${proj.business_name}" deleted. You now have slot available to build a new website.`);
       setTimeout(() => setStatusNotification(null), 5000);
@@ -142,7 +252,7 @@ export default function Dashboard() {
     if (!managingProj) return;
     setSubdomainError(null);
     setSubdomainSaving(true);
-    
+
     const val = validateSubdomain(subdomainInput);
     if (!val.valid) {
       setSubdomainError(val.error || 'Invalid subdomain');
@@ -154,13 +264,48 @@ export default function Dashboard() {
     if (!res.success) {
       setSubdomainError(res.error || 'Failed to update subdomain');
     } else {
-      setProjects(prev => prev.map(p => p.id === managingProj.id ? { ...p, subdomain: subdomainInput.toLowerCase().trim(), custom_domain: customDomainInput.trim() || undefined } : p));
+      setProjects((prev) =>
+        prev.map((p) =>
+          p.id === managingProj.id
+            ? { ...p, subdomain: subdomainInput.toLowerCase().trim(), custom_domain: customDomainInput.trim() || undefined }
+            : p
+        )
+      );
       setSubdomainSuccess(true);
-      setTimeout(() => {
-        setSubdomainSuccess(false);
-      }, 3000);
+      setTimeout(() => setSubdomainSuccess(false), 3000);
     }
     setSubdomainSaving(false);
+  };
+
+  const handleLeadStatusChange = async (leadId: string, status: LeadStatus) => {
+    try {
+      setLeadStatusSavingId(leadId);
+      const token = await getAccessToken();
+      if (!token) {
+        throw new Error('Please sign in again to update inquiry status.');
+      }
+
+      const res = await fetch(`/api/leads/${leadId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Unable to update inquiry status.');
+
+      setLeads((prev) => prev.map((lead) => (lead.id === leadId ? { ...lead, status } : lead)));
+      setStatusNotification(`Inquiry marked as ${status}.`);
+      setTimeout(() => setStatusNotification(null), 3500);
+    } catch (e: any) {
+      setStatusNotification(e.message || 'Unable to update inquiry status.');
+      setTimeout(() => setStatusNotification(null), 5000);
+    } finally {
+      setLeadStatusSavingId(null);
+    }
   };
 
   if (!authChecked) {
@@ -181,35 +326,34 @@ export default function Dashboard() {
           <img src="/logo.png" alt="VoidBuild" className="w-10 h-10 object-contain mx-auto" />
           <h1 className="mt-4 font-bold text-lg text-gray-900">Sign in required</h1>
           <p className="text-sm text-gray-600 mt-2">Dashboard is only accessible after sign in.</p>
-          <Link href="/auth" className="mt-6 inline-flex px-5 py-2.5 rounded-full bg-gray-900 text-white text-sm font-bold hover:bg-black transition">Sign In</Link>
+          <Link href="/auth" className="mt-6 inline-flex px-5 py-2.5 rounded-full bg-gray-900 text-white text-sm font-bold hover:bg-black transition">
+            Sign In
+          </Link>
         </div>
       </main>
     );
   }
 
   const planInfo = PLANS[currentPlan] || PLANS.free;
-  const isLimitReached = !canCreateProject();
-  const remainingSites = getRemainingSites();
-  const globalStats = getProjectStats();
-
-  const totalClicks = projects.reduce((acc, p) => acc + (p.whatsapp_clicks || 0), 0) + globalStats.clicks;
-  const totalViews = projects.reduce((acc, p) => acc + (p.views || 1), 0) + globalStats.views;
+  const isLimitReached = projects.length >= planInfo.limit;
+  const remainingSites = Math.max(0, planInfo.limit - projects.length);
+  const totalClicks = projects.reduce((acc, p) => acc + (p.whatsapp_clicks || 0), 0);
+  const totalViews = projects.reduce((acc, p) => acc + (p.views || 0), 0);
 
   return (
     <main className="min-h-screen bg-gray-50">
       <TopNav currentPage="dashboard" />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-10">
-        {/* Header Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">Your Dashboard</h1>
             <div className="text-xs text-gray-500 mt-1 flex flex-wrap items-center gap-2">
-              <span>Signed in as <strong className="text-gray-700">{user.email || user.phone || user.id.slice(0, 12)}</strong></span>
-              <span>•</span>
-              <span className="px-2 py-0.5 rounded-full bg-gray-200 text-gray-800 font-bold uppercase text-[10px]">
-                {planInfo.name} Plan
+              <span>
+                Signed in as <strong className="text-gray-700">{user.email || user.phone || user.id.slice(0, 12)}</strong>
               </span>
+              <span>•</span>
+              <span className="px-2 py-0.5 rounded-full bg-gray-200 text-gray-800 font-bold uppercase text-[10px]">{planInfo.name} Plan</span>
             </div>
           </div>
 
@@ -234,17 +378,14 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Analytics Snapshot Bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-6">
           <div className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm flex items-center gap-3.5">
             <div className="w-10 h-10 rounded-xl bg-green-50 text-green-700 border border-green-200 flex items-center justify-center flex-shrink-0">
               <MessageCircle className="w-5 h-5" />
             </div>
             <div>
               <div className="text-xs text-gray-500 font-medium">WhatsApp Inquiries</div>
-              <div className="text-xl font-extrabold text-gray-900 mt-0.5">
-                {totalClicks} <span className="text-[11px] font-normal text-gray-400">clicks</span>
-              </div>
+              <div className="text-xl font-extrabold text-gray-900 mt-0.5">{totalClicks}</div>
             </div>
           </div>
 
@@ -254,9 +395,7 @@ export default function Dashboard() {
             </div>
             <div>
               <div className="text-xs text-gray-500 font-medium">Website Visits</div>
-              <div className="text-xl font-extrabold text-gray-900 mt-0.5">
-                {totalViews} <span className="text-[11px] font-normal text-gray-400">views</span>
-              </div>
+              <div className="text-xl font-extrabold text-gray-900 mt-0.5">{totalViews}</div>
             </div>
           </div>
 
@@ -267,14 +406,31 @@ export default function Dashboard() {
             <div>
               <div className="text-xs text-gray-500 font-medium">Active Website Slots</div>
               <div className="text-xl font-extrabold text-gray-900 mt-0.5">
-                {projects.length} / {planInfo.limit}{' '}
-                <span className="text-[11px] font-semibold text-gray-400">({remainingSites} free)</span>
+                {projects.length} / {planInfo.limit}
               </div>
+              <div className="text-[11px] text-gray-400">{remainingSites} slots left</div>
             </div>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm">
+            <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
+              <BarChart3 className="w-4 h-4 text-gray-700" />
+              <span>Last 7 Days Views</span>
+            </div>
+            <div className="text-2xl font-extrabold text-gray-900 mt-2">{views7d}</div>
+            <div className="text-[11px] text-gray-500 mt-1">{formatDelta(views7d, viewsPrev7d)}</div>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm">
+            <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
+              <Clock3 className="w-4 h-4 text-gray-700" />
+              <span>Last 7 Days Clicks</span>
+            </div>
+            <div className="text-2xl font-extrabold text-gray-900 mt-2">{clicks7d}</div>
+            <div className="text-[11px] text-gray-500 mt-1">{formatDelta(clicks7d, clicksPrev7d)}</div>
           </div>
         </div>
 
-        {/* Notifications */}
         {paymentMsg && (
           <div className="mt-6 bg-green-50 border border-green-200 text-green-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-2">
@@ -292,7 +448,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Limit Reached Inline Pro Paywall */}
         {isLimitReached && !paywallDismissed && (
           <div className="mt-6" id="paywall-section">
             <Paywall
@@ -301,163 +456,215 @@ export default function Dashboard() {
               onDeleteOldSite={() => {
                 const el = document.getElementById('websites-grid');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
-                setStatusNotification('Select an old website below and click delete to free up your 1 Free website slot.');
+                setStatusNotification('Select an old website below and click delete to free up your current plan slot.');
               }}
             />
           </div>
         )}
 
-        {/* Websites Section */}
-        <div id="websites-grid" className="mt-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-bold text-gray-700 uppercase tracking-wider">
-              Your Published Websites ({projects.length})
-            </h2>
-            {remainingSites > 0 && (
-              <span className="text-xs text-green-700 bg-green-50 border border-green-200 px-2.5 py-0.5 rounded-full font-semibold">
-                {remainingSites} {remainingSites === 1 ? 'slot' : 'slots'} available
-              </span>
-            )}
-          </div>
-
-          {loading ? (
-            <div className="text-center py-16">
-              <div className="w-8 h-8 rounded-full border-4 border-gray-200 border-t-gray-900 animate-spin mx-auto"></div>
-              <div className="text-gray-500 text-xs mt-3">Loading your websites...</div>
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-6">
+          <section id="websites-grid">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-bold text-gray-700 uppercase tracking-wider">Your Published Websites ({projects.length})</h2>
+              {remainingSites > 0 && (
+                <span className="text-xs text-green-700 bg-green-50 border border-green-200 px-2.5 py-0.5 rounded-full font-semibold">
+                  {remainingSites} {remainingSites === 1 ? 'slot' : 'slots'} available
+                </span>
+              )}
             </div>
-          ) : projects.length === 0 ? (
-            <div className="text-center border-2 border-dashed rounded-2xl p-10 md:p-14 bg-white">
-              <img src="/logo.png" alt="VoidBuild" className="w-12 h-12 object-contain mx-auto" />
-              <div className="font-bold text-base mt-4 text-gray-900">No websites built yet</div>
-              <div className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
-                Generate your first professional Ugandan shop website in 30 seconds.
+
+            {loading ? (
+              <div className="text-center py-16 bg-white rounded-2xl border border-gray-200">
+                <div className="w-8 h-8 rounded-full border-4 border-gray-200 border-t-gray-900 animate-spin mx-auto"></div>
+                <div className="text-gray-500 text-xs mt-3">Loading your websites...</div>
               </div>
-              <Link
-                href="/builder"
-                className="mt-5 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-gray-900 text-white text-xs font-bold hover:bg-black transition shadow-sm"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
-                <span>Generate First Website Free</span>
-              </Link>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {projects.map(p => {
-                const subSlug = p.subdomain || p.id.split('-')[0] || 'shop';
-                const directUrl = typeof window !== 'undefined' ? `${window.location.origin}/s/${subSlug}` : `/s/${subSlug}`;
-                const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/p/${p.id}` : `/p/${p.id}`;
+            ) : projects.length === 0 ? (
+              <div className="text-center border-2 border-dashed rounded-2xl p-10 md:p-14 bg-white">
+                <img src="/logo.png" alt="VoidBuild" className="w-12 h-12 object-contain mx-auto" />
+                <div className="font-bold text-base mt-4 text-gray-900">No websites built yet</div>
+                <div className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">Generate your first professional Ugandan shop website in 30 seconds.</div>
+                <Link
+                  href="/builder"
+                  className="mt-5 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-gray-900 text-white text-xs font-bold hover:bg-black transition shadow-sm"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+                  <span>Generate First Website Free</span>
+                </Link>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+                {projects.map((p) => {
+                  const subSlug = p.subdomain || p.id.split('-')[0] || 'shop';
+                  const directUrl = typeof window !== 'undefined' ? `${window.location.origin}/s/${subSlug}` : `/s/${subSlug}`;
+                  const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/p/${p.id}` : `/p/${p.id}`;
 
-                return (
-                  <div
-                    key={p.id}
-                    className="bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-gray-100 uppercase font-bold text-gray-700">
-                          {p.category || 'Business'}
-                        </span>
-                        <span className="text-[10px] text-gray-400 font-medium">
-                          {p.created_at ? new Date(p.created_at).toLocaleDateString() : 'Active'}
-                        </span>
-                      </div>
+                  return (
+                    <div key={p.id} className="bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-gray-300 transition-all flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-gray-100 uppercase font-bold text-gray-700">{p.category || 'Business'}</span>
+                          <span className="text-[10px] text-gray-400 font-medium">{p.created_at ? new Date(p.created_at).toLocaleDateString() : 'Active'}</span>
+                        </div>
 
-                      <h3 className="font-bold text-base mt-3 text-gray-900 truncate">
-                        {p.business_name || 'My Shop'}
-                      </h3>
+                        <h3 className="font-bold text-base mt-3 text-gray-900 truncate">{p.business_name || 'My Shop'}</h3>
 
-                      {/* Subdomain Link Chip */}
-                      <div className="mt-2.5 flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl px-3 py-2">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <Globe className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
-                          <span className="text-xs font-mono text-gray-800 truncate font-semibold">
-                            {subSlug}.voidbuild.com
+                        <div className="mt-2.5 flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl px-3 py-2">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <Globe className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
+                            <span className="text-xs font-mono text-gray-800 truncate font-semibold">{subSlug}.voidbuild.com</span>
+                          </div>
+                          <button
+                            onClick={() => openLinkManager(p)}
+                            className="text-[11px] font-bold text-blue-600 hover:text-blue-800 hover:underline flex-shrink-0 ml-2"
+                          >
+                            Change
+                          </button>
+                        </div>
+
+                        <div className="mt-3 flex items-center gap-2 flex-wrap">
+                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-md">
+                            <MessageCircle className="w-3 h-3" />
+                            <span>{p.whatsapp_clicks || 0} WhatsApp clicks</span>
+                          </span>
+                          <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md">
+                            <Eye className="w-3 h-3" />
+                            <span>{p.views || 0} views</span>
                           </span>
                         </div>
-                        <button
-                          onClick={() => openLinkManager(p)}
-                          className="text-[11px] font-bold text-blue-600 hover:text-blue-800 hover:underline flex-shrink-0 ml-2"
-                        >
-                          Change
-                        </button>
                       </div>
 
-                      {/* Inquiry & Views Badges */}
-                      <div className="mt-3 flex items-center gap-2">
-                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-md">
-                          <MessageCircle className="w-3 h-3" />
-                          <span>{p.whatsapp_clicks || 0} WhatsApp clicks</span>
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md">
-                          <Eye className="w-3 h-3" />
-                          <span>{p.views || 1} views</span>
-                        </span>
-                      </div>
-                    </div>
+                      <div className="mt-5 pt-4 border-t border-gray-100 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <a
+                            href={`/s/${subSlug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-900 text-xs font-semibold transition"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            <span>View Live</span>
+                          </a>
+                          <Link
+                            href={`/builder?editId=${p.id}`}
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-bold transition"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                            <span>Edit Again</span>
+                          </Link>
+                        </div>
 
-                    <div className="mt-5 pt-4 border-t border-gray-100 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <a
-                          href={`/s/${subSlug}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-900 text-xs font-semibold transition"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                          <span>View Live</span>
-                        </a>
-                        <Link
-                          href={`/builder?editId=${p.id}`}
-                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-bold transition"
-                        >
-                          <Edit3 className="w-3.5 h-3.5" />
-                          <span>Edit Again</span>
-                        </Link>
-                      </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => handleCopyLink(directUrl, p.id)}
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-medium transition"
+                          >
+                            {copiedId === p.id ? (
+                              <>
+                                <Check className="w-3.5 h-3.5 text-green-600" />
+                                <span className="text-green-700 font-bold">Copied!</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3.5 h-3.5 text-gray-500" />
+                                <span>Copy Link</span>
+                              </>
+                            )}
+                          </button>
 
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleCopyLink(directUrl, p.id)}
-                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-medium transition"
-                        >
-                          {copiedId === p.id ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-green-600" />
-                              <span className="text-green-700 font-bold">Copied!</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3.5 h-3.5 text-gray-500" />
-                              <span>Copy Link</span>
-                            </>
-                          )}
-                        </button>
+                          <button
+                            onClick={() => handleCopyLink(shareUrl, `${p.id}-share`)}
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-medium transition"
+                          >
+                            <Share2 className="w-3.5 h-3.5 text-gray-500" />
+                            <span>Copy Share Link</span>
+                          </button>
 
-                        <button
-                          onClick={() => openLinkManager(p)}
-                          className="inline-flex items-center justify-center p-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-600 transition"
-                          title="Custom Subdomain & Link Settings"
-                        >
-                          <LinkIcon className="w-3.5 h-3.5" />
-                        </button>
-
-                        <button
-                          onClick={() => setDeleteConfirmProj(p)}
-                          className="inline-flex items-center justify-center p-2 rounded-xl border border-transparent hover:border-red-200 hover:bg-red-50 text-gray-400 hover:text-red-600 transition"
-                          title="Delete Website"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+                          <button
+                            onClick={() => setDeleteConfirmProj(p)}
+                            className="inline-flex items-center justify-center p-2 rounded-xl border border-transparent hover:border-red-200 hover:bg-red-50 text-gray-400 hover:text-red-600 transition"
+                            title="Delete Website"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+            )}
+          </section>
+
+          <section className="space-y-6">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="p-4 border-b border-gray-100 flex items-center justify-between gap-3 flex-wrap">
+                <h2 className="text-sm font-bold text-gray-700 uppercase tracking-wider">Recent Inquiries ({filteredLeads.length})</h2>
+                <div className="flex flex-wrap gap-2">
+                  {(['all', 'new', 'contacted', 'closed', 'spam'] as LeadFilter[]).map((filter) => (
+                    <button
+                      key={filter}
+                      onClick={() => setLeadFilter(filter)}
+                      className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border transition ${
+                        leadFilter === filter
+                          ? 'bg-gray-900 text-white border-gray-900'
+                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      {filter === 'all' ? 'All' : filter}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {filteredLeads.length === 0 ? (
+                <div className="p-5 text-xs text-gray-500">No inquiries yet for this filter. Once visitors send messages from your website, they will appear here.</div>
+              ) : (
+                <div className="divide-y divide-gray-100 max-h-[520px] overflow-y-auto">
+                  {filteredLeads.map((lead) => {
+                    const projectName = projects.find((p) => p.id === lead.project_id)?.business_name || 'Website';
+                    return (
+                      <div key={lead.id} className="p-4">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="font-bold text-sm text-gray-900">{lead.name}</span>
+                              <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold uppercase ${leadStatusClasses(lead.status)}`}>
+                                {lead.status}
+                              </span>
+                            </div>
+                            <div className="text-[11px] text-gray-400 mt-1">from {projectName}</div>
+                          </div>
+                          <div className="text-[11px] text-gray-400 whitespace-nowrap">{lead.created_at ? new Date(lead.created_at).toLocaleDateString() : 'New'}</div>
+                        </div>
+
+                        <div className="text-xs text-gray-700 mt-3 leading-relaxed">{lead.message}</div>
+                        <div className="text-[11px] text-gray-500 mt-2">{lead.phone ? `Phone: ${lead.phone}` : 'Phone not provided'}</div>
+
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {(['new', 'contacted', 'closed', 'spam'] as LeadStatus[]).map((status) => (
+                            <button
+                              key={status}
+                              onClick={() => handleLeadStatusChange(lead.id, status)}
+                              disabled={leadStatusSavingId === lead.id || lead.status === status}
+                              className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition ${
+                                lead.status === status
+                                  ? 'bg-gray-900 text-white border-gray-900'
+                                  : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                              } disabled:opacity-50`}
+                            >
+                              {leadStatusSavingId === lead.id && lead.status !== status ? 'Saving...' : `Mark ${status}`}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          )}
+          </section>
         </div>
 
-        {/* Upgrade Card if on Free and has websites */}
         {!isLimitReached && projects.length > 0 && currentPlan === 'free' && (
           <div className="mt-12">
             <Paywall />
@@ -465,14 +672,13 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* Subdomain & Custom Domain Link Manager Modal */}
       {managingProj && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl border overflow-hidden">
             <div className="p-5 border-b flex items-center justify-between bg-gray-900 text-white">
               <div className="flex items-center gap-2.5">
                 <img src="/logo.png" alt="VoidBuild" className="w-6 h-6 object-contain flex-shrink-0" />
-                <h3 className="font-bold text-sm">Manage Website Link &amp; Domain</h3>
+                <h3 className="font-bold text-sm">Manage Website Link &amp; Domain Request</h3>
               </div>
               <button
                 onClick={() => setManagingProj(null)}
@@ -483,15 +689,10 @@ export default function Dashboard() {
             </div>
 
             <div className="p-6 space-y-6">
-              {/* Subdomain Configuration */}
               <div>
-                <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
-                  Custom Subdomain (.voidbuild.com)
-                </label>
+                <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">Custom Subdomain (.voidbuild.com)</label>
                 <div className="mt-2 flex rounded-xl border border-gray-300 overflow-hidden focus-within:ring-2 focus-within:ring-gray-900/10 focus-within:border-gray-900">
-                  <span className="bg-gray-100 text-gray-500 text-xs px-3 py-2.5 flex items-center font-mono select-none">
-                    https://
-                  </span>
+                  <span className="bg-gray-100 text-gray-500 text-xs px-3 py-2.5 flex items-center font-mono select-none">https://</span>
                   <input
                     value={subdomainInput}
                     onChange={(e) => {
@@ -501,13 +702,9 @@ export default function Dashboard() {
                     placeholder="my-shop-name"
                     className="flex-1 px-3 py-2.5 text-xs font-mono font-bold text-gray-900 outline-none"
                   />
-                  <span className="bg-gray-100 text-gray-600 text-xs px-3 py-2.5 flex items-center font-mono font-semibold select-none">
-                    .voidbuild.com
-                  </span>
+                  <span className="bg-gray-100 text-gray-600 text-xs px-3 py-2.5 flex items-center font-mono font-semibold select-none">.voidbuild.com</span>
                 </div>
-                <p className="text-[11px] text-gray-500 mt-1.5">
-                  Lowercase letters, numbers, and hyphens (3-30 chars).
-                </p>
+                <p className="text-[11px] text-gray-500 mt-1.5">Lowercase letters, numbers, and hyphens (3-30 chars).</p>
 
                 {subdomainError && (
                   <div className="mt-2 text-xs text-red-600 flex items-center gap-1.5">
@@ -524,11 +721,10 @@ export default function Dashboard() {
                 )}
               </div>
 
-              {/* Custom Domain Section (Business & Pro) */}
               <div className="pt-4 border-t border-gray-100">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
-                    <span>Connect Custom Domain</span>
+                    <span>Custom Domain Rollout</span>
                     {currentPlan === 'free' || currentPlan === 'hustler' ? (
                       <span className="text-[9px] bg-yellow-100 text-yellow-900 px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1">
                         <Lock className="w-3 h-3" /> BUSINESS PLAN
@@ -545,15 +741,23 @@ export default function Dashboard() {
                       placeholder="e.g. www.aishasalon.ug"
                       className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs font-mono outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900"
                     />
-                    <div className="mt-2 bg-gray-50 border rounded-xl p-3 text-[11px] text-gray-600 space-y-1">
-                      <div className="font-bold text-gray-800">DNS Setup Instructions:</div>
-                      <div>Create a <strong>CNAME</strong> record in your domain registrar (Namecheap, GoDaddy, etc.)</div>
-                      <div><strong>Host:</strong> www &nbsp;|&nbsp; <strong>Points to:</strong> voidbuild.com</div>
+                    <div className="mt-2 bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-900 space-y-1">
+                      <div className="font-bold">Assisted rollout:</div>
+                      <div>Save the domain you want us to connect. Automatic self-serve custom-domain routing is still rolling out.</div>
+                      <div>For now, our Kampala team can review and help complete domain setup manually for selected Business and Pro customers.</div>
                     </div>
+                    <a
+                      href={`https://wa.me/256751391318?text=${encodeURIComponent(`Hello VoidBuild, I want help connecting my custom domain ${customDomainInput || 'for my website'}.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-[11px] font-bold transition"
+                    >
+                      Request Domain Setup on WhatsApp
+                    </a>
                   </div>
                 ) : (
                   <div className="mt-2 bg-gray-50 border border-gray-200 rounded-xl p-3 flex items-center justify-between text-xs">
-                    <span className="text-gray-600">Upgrade to Business to attach your own domain (e.g. www.myshop.ug).</span>
+                    <span className="text-gray-600">Upgrade to Business to join the custom-domain rollout and request assisted setup for domains like www.myshop.ug.</span>
                     <button
                       onClick={() => {
                         setManagingProj(null);
@@ -568,7 +772,6 @@ export default function Dashboard() {
                 )}
               </div>
 
-              {/* Share to WhatsApp Quick Action */}
               <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center gap-3">
                 <a
                   href={`https://wa.me/?text=${encodeURIComponent(`Check out our official shop website: https://${subdomainInput || 'myshop'}.voidbuild.com`)}`}
@@ -585,7 +788,7 @@ export default function Dashboard() {
                   disabled={subdomainSaving}
                   className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-bold disabled:opacity-50 transition shadow-sm"
                 >
-                  {subdomainSaving ? 'Saving...' : 'Save Subdomain'}
+                  {subdomainSaving ? 'Saving...' : 'Save Link Settings'}
                 </button>
               </div>
             </div>
@@ -593,7 +796,6 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* Delete Confirmation Modal (No browser confirm()) */}
       {deleteConfirmProj && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl border">

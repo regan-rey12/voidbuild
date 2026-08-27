@@ -35,7 +35,7 @@ export const PLANS: Record<Plan, PlanInfo> = {
     price: 35000,
     priceUGX: '35,000',
     limit: 3,
-    features: ['3 websites', 'Custom domain ready', 'Visitor analytics', 'Priority WhatsApp support', 'Remove VoidBuild badge'],
+    features: ['3 websites', 'Domain connection assistance', 'Visitor analytics', 'Priority WhatsApp support', 'Assisted rollout features'],
     popular: true,
   },
   pro: {
@@ -43,7 +43,7 @@ export const PLANS: Record<Plan, PlanInfo> = {
     price: 75000,
     priceUGX: '75,000',
     limit: 10,
-    features: ['10 websites', 'Unlimited visits', 'Online store catalog', 'Dedicated support', 'VIP onboarding'],
+    features: ['10 websites', 'Unlimited visits', 'Online store catalog', 'Domain connection priority', 'VIP onboarding'],
   },
 };
 

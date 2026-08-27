@@ -19,18 +19,19 @@ interface PricingProps {
     }[];
   };
   style?: { primaryColor?: string };
+  projectId?: string;
   editMode?: boolean;
   onUpdateData?: (newData: any) => void;
 }
 
-export default function Pricing({ data, style, editMode, onUpdateData }: PricingProps) {
+export default function Pricing({ data, style, projectId, editMode, onUpdateData }: PricingProps) {
   const primary = style?.primaryColor || '#111827';
   const waNumber = (data.whatsapp || data.phone || '').replace(/[^0-9]/g, '');
 
   const plans = data.plans || [
-    { name: "Standard Package", price: "UGX 35,000", sub: "one-time", features: ["Full Service", "Quality Guarantee", "WhatsApp Support"], popular: false },
-    { name: "Executive Package", price: "UGX 60,000", sub: "popular choice", features: ["Premium Service", "Priority Booking", "Free Refreshment", "Guarantee"], popular: true },
-    { name: "VIP Full Package", price: "UGX 120,000", sub: "complete experience", features: ["Full Treatment", "Home or Studio", "Dedicated Specialist", "VIP Care"], popular: false },
+    { name: 'Standard Package', price: 'UGX 35,000', sub: 'one-time', features: ['Full Service', 'Quality Guarantee', 'WhatsApp Support'], popular: false },
+    { name: 'Executive Package', price: 'UGX 60,000', sub: 'popular choice', features: ['Premium Service', 'Priority Booking', 'Free Refreshment', 'Guarantee'], popular: true },
+    { name: 'VIP Full Package', price: 'UGX 120,000', sub: 'complete experience', features: ['Full Treatment', 'Home or Studio', 'Dedicated Specialist', 'VIP Care'], popular: false },
   ];
 
   const updateField = (field: string, value: string) => {
@@ -44,9 +45,9 @@ export default function Pricing({ data, style, editMode, onUpdateData }: Pricing
     onUpdateData({ ...data, plans: newPlans });
   };
 
-  const handlePlanClick = (e: React.MouseEvent<HTMLAnchorElement>, planName: string) => {
+  const handlePlanClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (editMode) return;
-    recordWhatsAppClick();
+    recordWhatsAppClick(projectId);
     if (!waNumber) {
       e.preventDefault();
       const el = document.getElementById('contact');
@@ -100,7 +101,7 @@ export default function Pricing({ data, style, editMode, onUpdateData }: Pricing
                       MOST POPULAR
                     </div>
                   )}
-                  
+
                   <div className="font-bold text-sm text-gray-900">
                     {editMode && onUpdateData ? (
                       <EditableText value={p.name} onChange={(v) => updatePlan(i, 'name', v)} editMode={editMode} as="span" className="font-bold text-sm" />
@@ -116,12 +117,8 @@ export default function Pricing({ data, style, editMode, onUpdateData }: Pricing
                       p.price
                     )}
                   </div>
-                  
-                  {p.sub && (
-                    <div className="text-[11px] text-gray-500 mt-0.5">
-                      {p.sub}
-                    </div>
-                  )}
+
+                  {p.sub && <div className="text-[11px] text-gray-500 mt-0.5">{p.sub}</div>}
 
                   <ul className="mt-5 space-y-2.5 text-xs text-gray-600">
                     {p.features?.map((f, j) => (
@@ -138,7 +135,7 @@ export default function Pricing({ data, style, editMode, onUpdateData }: Pricing
                     href={planWaLink}
                     target={waNumber ? '_blank' : '_self'}
                     rel={waNumber ? 'noopener noreferrer' : undefined}
-                    onClick={(e) => handlePlanClick(e, p.name)}
+                    onClick={(e) => handlePlanClick(e)}
                     className="w-full py-2.5 rounded-xl text-white text-xs font-bold text-center flex items-center justify-center gap-1.5 shadow-sm hover:opacity-95 transition"
                     style={{ backgroundColor: primary }}
                   >

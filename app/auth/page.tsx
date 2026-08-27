@@ -57,7 +57,16 @@ export default function AuthPage() {
             <span className="font-extrabold text-xl tracking-tight text-gray-900">voidbuild</span>
           </Link>
           <h1 className="mt-5 text-xl font-bold tracking-tight text-gray-900">Welcome to VoidBuild</h1>
-          <p className="mt-1.5 text-sm text-gray-600">Sign in to save your websites. Free forever.</p>
+          <p className="mt-1.5 text-sm text-gray-600">Sign in to save your websites, track inquiries, and manage everything from one dashboard.</p>
+        </div>
+
+        <div className="mt-6 bg-gray-50 border border-gray-200 rounded-2xl p-4">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-gray-500">Why sign in?</div>
+          <ul className="mt-2 space-y-1.5 text-sm text-gray-600">
+            <li>• Save websites securely to your account</li>
+            <li>• Access your dashboard across devices</li>
+            <li>• See inquiries, views, and WhatsApp clicks</li>
+          </ul>
         </div>
 
         {step === 'form' && (

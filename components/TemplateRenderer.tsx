@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { Template, TemplateBlock } from '@/lib/types';
+import { Template } from '@/lib/types';
 import Navbar from './blocks/Navbar';
 import Hero from './blocks/Hero';
 import Services from './blocks/Services';
@@ -30,6 +30,7 @@ const BLOCK_MAP: Record<string, React.ComponentType<any>> = {
 
 interface Props {
   template: Template;
+  projectId?: string;
   editMode?: boolean;
   onUpdateBlock?: (blockId: string, newData: any) => void;
   onMoveBlock?: (blockId: string, direction: 'up' | 'down') => void;
@@ -37,13 +38,14 @@ interface Props {
   onDeleteBlock?: (blockId: string) => void;
 }
 
-export default function TemplateRenderer({ 
-  template, 
-  editMode = false, 
-  onUpdateBlock, 
-  onMoveBlock, 
-  onDuplicateBlock, 
-  onDeleteBlock 
+export default function TemplateRenderer({
+  template,
+  projectId,
+  editMode = false,
+  onUpdateBlock,
+  onMoveBlock,
+  onDuplicateBlock,
+  onDeleteBlock,
 }: Props) {
   return (
     <div className="min-h-screen bg-white antialiased">
@@ -60,13 +62,11 @@ export default function TemplateRenderer({
           );
         }
 
-        // Edit mode wrapper
         if (editMode) {
           const isNavbar = block.type === 'navbar';
 
           return (
             <div key={block.id} className="relative group">
-              {/* Floating Toolbar - Only for body sections (Omitted from Navbar to avoid obscuring header elements) */}
               {!isNavbar && (
                 <div className="absolute right-3 top-2 z-30 opacity-0 group-hover:opacity-100 transition shadow-lg rounded-full">
                   <BlockToolbar
@@ -80,18 +80,17 @@ export default function TemplateRenderer({
                 </div>
               )}
 
-              {/* Block type label - Only for non-navbar sections */}
               {!isNavbar && (
                 <div className="hidden md:block absolute top-2 left-3 z-20 bg-gray-900/90 text-white text-[9px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition shadow">
                   {block.type} #{index + 1}
                 </div>
               )}
 
-              {/* Editable block */}
               <div className="group-hover:outline group-hover:outline-2 group-hover:outline-dashed group-hover:outline-blue-400 group-hover:outline-offset-[-2px]">
-                <Component 
-                  data={block.data} 
+                <Component
+                  data={block.data}
                   style={block.style}
+                  projectId={projectId}
                   editMode={editMode}
                   onUpdateData={(newData: any) => onUpdateBlock?.(block.id, newData)}
                 />
@@ -100,15 +99,19 @@ export default function TemplateRenderer({
           );
         }
 
-        // View mode - normal render
-        return <Component key={block.id} data={block.data} style={block.style} />;
+        return <Component key={block.id} data={block.data} style={block.style} projectId={projectId} />;
       })}
 
-      {/* Always ensure WhatsApp floating if not already */}
       {!template.blocks.find(b => b.type === 'whatsapp') && template.blocks.find(b => b.data?.whatsapp || b.data?.phone) && (
-        <WhatsAppButton data={{ 
-          phone: template.blocks.find(b => b.data?.whatsapp || b.data?.phone)?.data?.whatsapp || template.blocks.find(b => b.data?.phone)?.data?.phone || '',
-        }} />
+        <WhatsAppButton
+          projectId={projectId}
+          data={{
+            phone:
+              template.blocks.find(b => b.data?.whatsapp || b.data?.phone)?.data?.whatsapp ||
+              template.blocks.find(b => b.data?.phone)?.data?.phone ||
+              '',
+          }}
+        />
       )}
     </div>
   );

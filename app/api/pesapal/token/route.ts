@@ -1,8 +1,12 @@
-// Debug endpoint to test Pesapal auth - GET returns token if configured
+// Protected debug endpoint to test Pesapal auth
 export const runtime = 'nodejs';
 import { getPesapalToken } from '@/lib/pesapal';
+import { requireAdminDebugAccess } from '@/lib/admin-guard';
 
-export async function GET() {
+export async function GET(req: Request) {
+  const denied = requireAdminDebugAccess(req);
+  if (denied) return denied;
+
   try {
     const { token, baseUrl } = await getPesapalToken();
     return Response.json({
