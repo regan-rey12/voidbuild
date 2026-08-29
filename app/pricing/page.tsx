@@ -56,7 +56,7 @@ export default function PricingPage() {
             Simple, Transparent Pricing
           </h1>
           <p className="mt-2 text-sm md:text-base text-gray-600">
-            Start free with 1 website, then upgrade when you need more websites, better analytics, or guided support from our Kampala team.
+            Start free with 1 website, then upgrade yearly when you need more websites, better analytics, or guided support from our Kampala team.
           </p>
         </div>
 
@@ -94,6 +94,9 @@ export default function PricingPage() {
                 <div className="mt-1 text-xs text-gray-500 font-medium">
                   {plan.limit} {plan.limit === 1 ? 'website' : 'websites'}
                 </div>
+                {key !== 'free' && plan.monthlyEquivalentUGX && (
+                  <div className="mt-1 text-[11px] text-gray-400">About UGX {plan.monthlyEquivalentUGX} / month</div>
+                )}
                 <ul className="mt-5 space-y-2 text-xs text-gray-600">
                   {plan.features.map((f: string) => (
                     <li key={f} className="flex items-start gap-2">

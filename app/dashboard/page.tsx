@@ -9,7 +9,7 @@ import {
   claimLocalProjects,
 } from '@/lib/projects';
 import { getAccessToken, getEffectiveUser, User } from '@/lib/auth';
-import { getUserPlan, PLANS, Plan, refreshUserPlanFromCloud } from '@/lib/payments';
+import { getUserPlan, PLANS, Plan, refreshUserPlanFromCloud, getSubscriptionSnapshotFromCloud } from '@/lib/payments';
 import { getSupabase } from '@/lib/supabase';
 import TopNav from '@/components/TopNav';
 import Paywall from '@/components/Paywall';
@@ -96,6 +96,7 @@ export default function Dashboard() {
   const [viewsPrev7d, setViewsPrev7d] = useState(0);
   const [clicks7d, setClicks7d] = useState(0);
   const [clicksPrev7d, setClicksPrev7d] = useState(0);
+  const [subscriptionState, setSubscriptionState] = useState<{ status: string; expiresAt?: string | null; graceEndsAt?: string | null } | null>(null);
 
   const [managingProj, setManagingProj] = useState<SavedProject | null>(null);
   const [subdomainInput, setSubdomainInput] = useState('');
@@ -103,13 +104,15 @@ export default function Dashboard() {
   const [subdomainError, setSubdomainError] = useState<string | null>(null);
   const [subdomainSaving, setSubdomainSaving] = useState(false);
   const [subdomainSuccess, setSubdomainSuccess] = useState(false);
+  const [confirmSubdomainChange, setConfirmSubdomainChange] = useState(false);
 
   const fetchUserProjects = async (currentUser: User | null) => {
     try {
       if (currentUser?.id) {
         await claimLocalProjects(currentUser.id);
-        const refreshedPlan = await refreshUserPlanFromCloud(currentUser.id);
-        setCurrentPlan(refreshedPlan);
+        const snapshot = await getSubscriptionSnapshotFromCloud(currentUser.id);
+        setCurrentPlan(snapshot.plan);
+        setSubscriptionState({ status: snapshot.status, expiresAt: snapshot.expiresAt, graceEndsAt: snapshot.graceEndsAt });
       }
 
       const loadedProjects = await getProjects();
@@ -183,7 +186,10 @@ export default function Dashboard() {
     const params = new URLSearchParams(window.location.search);
     const payment = params.get('payment');
     if (payment === 'success') {
-      setPaymentMsg('Payment successful! Your subscription is now being refreshed.');
+      setPaymentMsg('Payment successful! Your subscription is now active.');
+      window.history.replaceState({}, '', '/dashboard');
+    } else if (payment === 'renewed') {
+      setPaymentMsg('Payment successful! Your plan has been renewed.');
       window.history.replaceState({}, '', '/dashboard');
     } else if (payment === 'failed') {
       setPaymentMsg('Payment was not completed. You can try again whenever you are ready.');
@@ -246,12 +252,22 @@ export default function Dashboard() {
     setCustomDomainInput(p.custom_domain || '');
     setSubdomainError(null);
     setSubdomainSuccess(false);
+    setConfirmSubdomainChange(false);
   };
 
   const handleSaveSubdomain = async () => {
     if (!managingProj) return;
     setSubdomainError(null);
     setSubdomainSaving(true);
+
+    const originalSubdomain = (managingProj.subdomain || managingProj.id.split('-')[0] || 'my-shop').toLowerCase().trim();
+    const nextSubdomain = subdomainInput.toLowerCase().trim();
+
+    if (nextSubdomain !== originalSubdomain && !confirmSubdomainChange) {
+      setSubdomainError('Please confirm that you understand changing this website address may break old shared links and bookmarks.');
+      setSubdomainSaving(false);
+      return;
+    }
 
     const val = validateSubdomain(subdomainInput);
     if (!val.valid) {
@@ -430,6 +446,20 @@ export default function Dashboard() {
             <div className="text-[11px] text-gray-500 mt-1">{formatDelta(clicks7d, clicksPrev7d)}</div>
           </div>
         </div>
+
+        {subscriptionState?.status === 'grace_period' && (
+          <div className="mt-6 bg-yellow-50 border border-yellow-200 text-yellow-900 rounded-xl p-4 shadow-sm">
+            <div className="font-semibold text-xs md:text-sm">Your plan is in grace period.</div>
+            <div className="text-xs mt-1">Renew before {subscriptionState.graceEndsAt ? new Date(subscriptionState.graceEndsAt).toLocaleDateString() : 'the grace period ends'} to keep your paid features active without interruption.</div>
+          </div>
+        )}
+
+        {subscriptionState?.status === 'active' && subscriptionState.expiresAt && currentPlan !== 'free' && (
+          <div className="mt-6 bg-gray-50 border border-gray-200 text-gray-700 rounded-xl p-4 shadow-sm">
+            <div className="font-semibold text-xs md:text-sm">Your {planInfo.name} plan is active.</div>
+            <div className="text-xs mt-1">Renews yearly. Current access runs until {new Date(subscriptionState.expiresAt).toLocaleDateString()}.</div>
+          </div>
+        )}
 
         {paymentMsg && (
           <div className="mt-6 bg-green-50 border border-green-200 text-green-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
@@ -706,6 +736,22 @@ export default function Dashboard() {
                 </div>
                 <p className="text-[11px] text-gray-500 mt-1.5">Lowercase letters, numbers, and hyphens (3-30 chars).</p>
 
+                {managingProj && subdomainInput.toLowerCase().trim() !== (managingProj.subdomain || managingProj.id.split('-')[0] || 'my-shop').toLowerCase().trim() && (
+                  <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-[11px] text-amber-900">
+                    <div className="font-bold">Changing your website address:</div>
+                    <div className="mt-1">Old shared links, bookmarks, and search results may stop working until you update them.</div>
+                    <label className="mt-2 flex items-start gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={confirmSubdomainChange}
+                        onChange={(e) => setConfirmSubdomainChange(e.target.checked)}
+                        className="mt-0.5"
+                      />
+                      <span>I understand and still want to change this subdomain.</span>
+                    </label>
+                  </div>
+                )}
+
                 {subdomainError && (
                   <div className="mt-2 text-xs text-red-600 flex items-center gap-1.5">
                     <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
@@ -739,20 +785,28 @@ export default function Dashboard() {
                       value={customDomainInput}
                       onChange={(e) => setCustomDomainInput(e.target.value)}
                       placeholder="e.g. www.aishasalon.ug"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs font-mono outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900"
+                      readOnly={!!managingProj?.custom_domain}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono outline-none ${managingProj?.custom_domain ? 'border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed' : 'border-gray-300 focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900'}`}
                     />
-                    <div className="mt-2 bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-900 space-y-1">
-                      <div className="font-bold">Assisted rollout:</div>
-                      <div>Save the domain you want us to connect. Automatic self-serve custom-domain routing is still rolling out.</div>
-                      <div>For now, our Kampala team can review and help complete domain setup manually for selected Business and Pro customers.</div>
-                    </div>
+                    {managingProj?.custom_domain ? (
+                      <div className="mt-2 bg-blue-50 border border-blue-200 rounded-xl p-3 text-[11px] text-blue-900 space-y-1">
+                        <div className="font-bold">Custom domain locked for safe changes:</div>
+                        <div>This website already has a custom-domain request or connection recorded. To change it again, contact support so old links and DNS do not break unexpectedly.</div>
+                      </div>
+                    ) : (
+                      <div className="mt-2 bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-900 space-y-1">
+                        <div className="font-bold">Assisted rollout:</div>
+                        <div>Save the domain you want us to connect. Automatic self-serve custom-domain routing is still rolling out.</div>
+                        <div>For now, our Kampala team can review and help complete domain setup manually for selected Business and Pro customers.</div>
+                      </div>
+                    )}
                     <a
                       href={`https://wa.me/256751391318?text=${encodeURIComponent(`Hello VoidBuild, I want help connecting my custom domain ${customDomainInput || 'for my website'}.`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-3 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-[11px] font-bold transition"
                     >
-                      Request Domain Setup on WhatsApp
+                      {managingProj?.custom_domain ? 'Request Domain Change on WhatsApp' : 'Request Domain Setup on WhatsApp'}
                     </a>
                   </div>
                 ) : (

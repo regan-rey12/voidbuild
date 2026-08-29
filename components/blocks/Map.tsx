@@ -2,9 +2,20 @@
 import React from 'react';
 import { MapPin, Phone, ShieldCheck } from 'lucide-react';
 
-export default function MapBlock({ data, style }: any) {
-  const location = data.location || 'Wandegeya, Kampala';
+function normalizeLocation(value?: string) {
+  return String(value || '').trim();
+}
+
+export default function MapBlock({ data, fallbackLocation, fallbackPhone }: any) {
+  const rawLocation = normalizeLocation(data.location);
+  const sharedLocation = normalizeLocation(fallbackLocation);
+  const location = rawLocation && rawLocation.toLowerCase() !== 'wandegeya, kampala'
+    ? rawLocation
+    : sharedLocation || rawLocation || 'Wandegeya, Kampala';
+
+  const phone = data.phone || fallbackPhone || '';
   const query = encodeURIComponent(location);
+
   return (
     <section id="map" className="py-16 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
@@ -25,10 +36,10 @@ export default function MapBlock({ data, style }: any) {
             <MapPin className="w-3.5 h-3.5 text-gray-700" />
             <span>{location}</span>
           </div>
-          {data.phone && (
-            <a href={`tel:${data.phone}`} className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full hover:bg-gray-100 transition text-gray-800">
+          {phone && (
+            <a href={`tel:${phone}`} className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full hover:bg-gray-100 transition text-gray-800">
               <Phone className="w-3.5 h-3.5 text-gray-700" />
-              <span>{data.phone}</span>
+              <span>{phone}</span>
             </a>
           )}
           <div className="flex items-center gap-1.5 bg-yellow-50 text-yellow-900 border border-yellow-200 px-3 py-1.5 rounded-full">

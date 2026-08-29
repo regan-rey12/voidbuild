@@ -1,5 +1,6 @@
-// VoidBuild Payments - plan catalog + browser-side cached subscription lookup
+// VoidBuild Payments - yearly plan catalog + cached subscription lookup
 import { getSupabase } from './supabase';
+import { buildSubscriptionSnapshot, SubscriptionSnapshot } from './subscriptions';
 
 export type Plan = 'free' | 'hustler' | 'business' | 'pro';
 
@@ -7,7 +8,9 @@ export interface PlanInfo {
   name: string;
   price: number;
   priceUGX: string;
+  monthlyEquivalentUGX?: string;
   limit: number;
+  billingPeriod: 'year';
   features: string[];
   popular?: boolean;
 }
@@ -21,28 +24,35 @@ export const PLANS: Record<Plan, PlanInfo> = {
     price: 0,
     priceUGX: '0',
     limit: 1,
+    billingPeriod: 'year',
     features: ['1 website', 'Your link on voidbuild.com', 'WhatsApp booking', 'Community support'],
   },
   hustler: {
     name: 'Starter',
-    price: 15000,
-    priceUGX: '15,000',
+    price: 50000,
+    priceUGX: '50,000',
+    monthlyEquivalentUGX: '4,167',
     limit: 1,
+    billingPeriod: 'year',
     features: ['1 website', 'Your custom subdomain', 'WhatsApp button', '5,000 monthly visits', 'Fast Africa edge loading'],
   },
   business: {
     name: 'Business',
-    price: 35000,
-    priceUGX: '35,000',
+    price: 100000,
+    priceUGX: '100,000',
+    monthlyEquivalentUGX: '8,333',
     limit: 3,
+    billingPeriod: 'year',
     features: ['3 websites', 'Domain connection assistance', 'Visitor analytics', 'Priority WhatsApp support', 'Assisted rollout features'],
     popular: true,
   },
   pro: {
     name: 'Pro',
-    price: 75000,
-    priceUGX: '75,000',
+    price: 200000,
+    priceUGX: '200,000',
+    monthlyEquivalentUGX: '16,667',
     limit: 10,
+    billingPeriod: 'year',
     features: ['10 websites', 'Unlimited visits', 'Online store catalog', 'Domain connection priority', 'VIP onboarding'],
   },
 };
@@ -58,7 +68,6 @@ function setCachedUserPlan(plan: Plan) {
   if (typeof window === 'undefined') return;
   localStorage.setItem(PLAN_CACHE_KEY, plan);
   localStorage.setItem(PLAN_CACHE_DATE_KEY, new Date().toISOString());
-  // Backward-compatible cache for older UI code during transition.
   localStorage.setItem('voidbuild_plan', plan);
   localStorage.setItem('voidbuild_plan_date', new Date().toISOString());
 }
@@ -81,26 +90,35 @@ export function setUserPlan(plan: Plan) {
   setCachedUserPlan(plan);
 }
 
-export async function refreshUserPlanFromCloud(userId?: string): Promise<Plan> {
+export async function getSubscriptionSnapshotFromCloud(userId?: string): Promise<SubscriptionSnapshot> {
   const supabase = getSupabase();
   const cached = getUserPlan();
 
-  if (!supabase || !userId) return cached;
+  if (!supabase || !userId) {
+    return buildSubscriptionSnapshot({ plan: cached, rawStatus: cached === 'free' ? 'expired' : 'active' });
+  }
 
   try {
     const { data: subscriptionRows, error: subscriptionError } = await supabase
       .from('subscriptions')
-      .select('plan, status, updated_at')
+      .select('plan, status, started_at, expires_at, updated_at')
       .eq('user_id', userId)
       .order('updated_at', { ascending: false })
       .limit(1);
 
     if (!subscriptionError && subscriptionRows && subscriptionRows.length > 0) {
-      const active = subscriptionRows[0] as { plan?: string; status?: string };
-      const status = active.status || 'active';
-      const resolvedPlan = status === 'cancelled' || status === 'expired' ? 'free' : normalizePlan(active.plan);
-      setCachedUserPlan(resolvedPlan);
-      return resolvedPlan;
+      const row = subscriptionRows[0] as {
+        plan?: string;
+        status?: string;
+        started_at?: string | null;
+        expires_at?: string | null;
+      };
+      return buildSubscriptionSnapshot({
+        plan: normalizePlan(row.plan),
+        rawStatus: row.status,
+        startedAt: row.started_at,
+        expiresAt: row.expires_at,
+      });
     }
   } catch {}
 
@@ -114,14 +132,18 @@ export async function refreshUserPlanFromCloud(userId?: string): Promise<Plan> {
       .limit(1);
 
     if (!paymentError && paymentRows && paymentRows.length > 0) {
-      const cloudPlan = normalizePlan(paymentRows[0].plan);
-      setCachedUserPlan(cloudPlan);
-      return cloudPlan;
+      const plan = normalizePlan(paymentRows[0].plan);
+      return buildSubscriptionSnapshot({ plan, rawStatus: 'active' });
     }
   } catch {}
 
-  setCachedUserPlan('free');
-  return 'free';
+  return buildSubscriptionSnapshot({ plan: 'free', rawStatus: 'expired' });
+}
+
+export async function refreshUserPlanFromCloud(userId?: string): Promise<Plan> {
+  const snapshot = await getSubscriptionSnapshotFromCloud(userId);
+  setCachedUserPlan(snapshot.plan);
+  return snapshot.plan;
 }
 
 export function canCreateProject(): boolean {

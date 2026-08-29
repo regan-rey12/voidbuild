@@ -349,10 +349,10 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-10">
             {[
-              { name: 'Free', price: '0', sub: '/mo', features: ['1 website', 'voidbuild.com link', 'WhatsApp button', 'Free forever'], cta: 'Start Free', popular: false },
-              { name: 'Starter', price: '15,000', sub: '/mo', features: ['1 website', 'Custom subdomain', '5k visits/mo', 'Fast Africa edge'], cta: 'Get Starter', popular: false },
-              { name: 'Business', price: '35,000', sub: '/mo', features: ['3 websites', 'Domain connection assistance', 'Visitor analytics', 'Priority WhatsApp support'], cta: 'Try Business', popular: true },
-              { name: 'Pro', price: '75,000', sub: '/mo', features: ['10 websites', 'Unlimited visits', 'Online store catalog', 'VIP onboarding'], cta: 'Get Pro', popular: false },
+              { name: 'Free', price: '0', sub: 'Free forever', approx: '', features: ['1 website', 'voidbuild.com link', 'WhatsApp button', 'Free forever'], cta: 'Start Free', popular: false },
+              { name: 'Starter', price: '50,000', sub: '/year', approx: 'About UGX 4,167 / month', features: ['1 website', 'Custom subdomain', '5k visits/mo', 'Fast Africa edge'], cta: 'Get Starter', popular: false },
+              { name: 'Business', price: '100,000', sub: '/year', approx: 'About UGX 8,333 / month', features: ['3 websites', 'Domain connection assistance', 'Visitor analytics', 'Priority WhatsApp support'], cta: 'Try Business', popular: true },
+              { name: 'Pro', price: '200,000', sub: '/year', approx: 'About UGX 16,667 / month', features: ['10 websites', 'Unlimited visits', 'Online store catalog', 'VIP onboarding'], cta: 'Get Pro', popular: false },
             ].map((p, i) => (
               <div
                 key={i}
@@ -367,10 +367,11 @@ export default function LandingPage() {
                     </div>
                   )}
                   <div className="font-bold text-sm">{p.name}</div>
-                  <div className="mt-2 flex items-baseline gap-1">
+                  <div className="mt-2 flex items-baseline gap-1 flex-wrap">
                     <span className="text-2xl font-extrabold">UGX {p.price}</span>
                     <span className="text-[11px] opacity-70">{p.sub}</span>
                   </div>
+                  {p.approx && <div className="mt-1 text-[11px] opacity-70">{p.approx}</div>}
                   <ul className="mt-4 space-y-2 text-xs opacity-90">
                     {p.features.map((f, j) => (
                       <li key={j} className="flex items-start gap-1.5">

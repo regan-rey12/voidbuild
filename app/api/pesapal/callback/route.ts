@@ -3,6 +3,7 @@ export const runtime = 'nodejs';
 
 import { getPesapalToken, getPesapalTransactionStatus } from '@/lib/pesapal';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
+import { addOneYear, toIso } from '@/lib/subscriptions';
 
 async function handleCallback(req: Request) {
   const url = new URL(req.url);
@@ -24,10 +25,7 @@ async function handleCallback(req: Request) {
     const admin = getSupabaseAdmin();
     if (!admin) throw new Error('Supabase service role is not configured on the server.');
 
-    let orderQuery = admin
-      .from('payment_orders')
-      .select('*')
-      .limit(1);
+    let orderQuery = admin.from('payment_orders').select('*').limit(1);
 
     if (merchantReference) {
       orderQuery = orderQuery.eq('merchant_reference', merchantReference);
@@ -52,10 +50,7 @@ async function handleCallback(req: Request) {
     const statusData = await getPesapalTransactionStatus(resolvedTrackingId, token, baseUrl);
 
     const paymentStatus = statusData?.payment_status_description || statusData?.status || 'UNKNOWN';
-    const isCompleted =
-      paymentStatus === 'COMPLETED' ||
-      statusData?.payment_status === 1 ||
-      statusData?.status_code === 1;
+    const isCompleted = paymentStatus === 'COMPLETED' || statusData?.payment_status === 1 || statusData?.status_code === 1;
 
     await admin
       .from('payment_orders')
@@ -102,14 +97,29 @@ async function handleCallback(req: Request) {
         paymentId = insertedPayment?.id || null;
       }
 
+      const now = new Date();
+      const { data: existingSubscription } = await admin
+        .from('subscriptions')
+        .select('plan, status, started_at, expires_at')
+        .eq('user_id', order.user_id)
+        .limit(1)
+        .maybeSingle();
+
+      const isSamePlanRenewal = existingSubscription?.plan === order.plan;
+      const existingExpiry = existingSubscription?.expires_at ? new Date(existingSubscription.expires_at) : null;
+      const hasFutureExpiry = !!existingExpiry && !Number.isNaN(existingExpiry.getTime()) && existingExpiry > now;
+      const renewalBase = isSamePlanRenewal && hasFutureExpiry && existingExpiry ? existingExpiry : now;
+      const expiresAt = addOneYear(renewalBase);
+
       const { error: subscriptionError } = await admin.from('subscriptions').upsert(
         {
           user_id: order.user_id,
           plan: order.plan,
           status: 'active',
-          started_at: new Date().toISOString(),
+          started_at: toIso(now),
+          expires_at: toIso(expiresAt),
           source_payment_id: paymentId,
-          updated_at: new Date().toISOString(),
+          updated_at: toIso(now),
         },
         { onConflict: 'user_id' }
       );
@@ -118,7 +128,8 @@ async function handleCallback(req: Request) {
         throw new Error(`Unable to activate subscription: ${subscriptionError.message}`);
       }
 
-      return Response.redirect(`${origin}/dashboard?payment=success`, 302);
+      const statusLabel = isSamePlanRenewal ? 'renewed' : 'success';
+      return Response.redirect(`${origin}/dashboard?payment=${statusLabel}`, 302);
     }
 
     return Response.redirect(`${origin}/dashboard?payment=failed&status=${encodeURIComponent(paymentStatus)}`, 302);

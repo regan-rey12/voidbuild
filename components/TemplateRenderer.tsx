@@ -47,6 +47,10 @@ export default function TemplateRenderer({
   onDuplicateBlock,
   onDeleteBlock,
 }: Props) {
+  const contactBlock = template.blocks.find((b) => b.type === 'contact');
+  const sharedLocation = contactBlock?.data?.location || template.meta?.target || '';
+  const sharedPhone = contactBlock?.data?.phone || template.blocks.find((b) => b.data?.phone)?.data?.phone || '';
+
   return (
     <div className="min-h-screen bg-white antialiased">
       {template.blocks.map((block, index) => {
@@ -56,7 +60,9 @@ export default function TemplateRenderer({
             <div key={block.id} className="p-4 bg-yellow-50 border text-xs">
               Unknown block: {block.type}
               {editMode && onDeleteBlock && (
-                <button onClick={() => onDeleteBlock(block.id)} className="ml-2 text-red-600">Delete</button>
+                <button onClick={() => onDeleteBlock(block.id)} className="ml-2 text-red-600">
+                  Delete
+                </button>
               )}
             </div>
           );
@@ -91,6 +97,8 @@ export default function TemplateRenderer({
                   data={block.data}
                   style={block.style}
                   projectId={projectId}
+                  fallbackLocation={sharedLocation}
+                  fallbackPhone={sharedPhone}
                   editMode={editMode}
                   onUpdateData={(newData: any) => onUpdateBlock?.(block.id, newData)}
                 />
@@ -99,16 +107,25 @@ export default function TemplateRenderer({
           );
         }
 
-        return <Component key={block.id} data={block.data} style={block.style} projectId={projectId} />;
+        return (
+          <Component
+            key={block.id}
+            data={block.data}
+            style={block.style}
+            projectId={projectId}
+            fallbackLocation={sharedLocation}
+            fallbackPhone={sharedPhone}
+          />
+        );
       })}
 
-      {!template.blocks.find(b => b.type === 'whatsapp') && template.blocks.find(b => b.data?.whatsapp || b.data?.phone) && (
+      {!template.blocks.find((b) => b.type === 'whatsapp') && template.blocks.find((b) => b.data?.whatsapp || b.data?.phone) && (
         <WhatsAppButton
           projectId={projectId}
           data={{
             phone:
-              template.blocks.find(b => b.data?.whatsapp || b.data?.phone)?.data?.whatsapp ||
-              template.blocks.find(b => b.data?.phone)?.data?.phone ||
+              template.blocks.find((b) => b.data?.whatsapp || b.data?.phone)?.data?.whatsapp ||
+              template.blocks.find((b) => b.data?.phone)?.data?.phone ||
               '',
           }}
         />

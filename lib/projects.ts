@@ -261,6 +261,16 @@ export async function updateProjectSubdomain(
   const cleanDomain = customDomain?.toLowerCase().trim().replace(/^https?:\/\//, '').replace(/\/$/, '') || undefined;
 
   const existing = getLocalProjects();
+  const existingProject = existing.find((p) => p.id === id);
+  const lockedCustomDomain = existingProject?.custom_domain?.toLowerCase().trim() || '';
+
+  if (lockedCustomDomain && cleanDomain !== lockedCustomDomain) {
+    return {
+      success: false,
+      error: 'This custom domain has already been requested or connected. Please contact VoidBuild support to change it safely.',
+    };
+  }
+
   const duplicate = existing.find((p) => p.id !== id && (p.subdomain === cleanSub || (!p.subdomain && slugify(p.business_name) === cleanSub)));
   if (duplicate) {
     return { success: false, error: `Subdomain "${cleanSub}" is already taken by another website.` };
@@ -268,7 +278,12 @@ export async function updateProjectSubdomain(
 
   if (supabase) {
     try {
-      const { error } = await supabase.from('projects').update({ subdomain: cleanSub, custom_domain: cleanDomain }).eq('id', id);
+      const updatePayload: Record<string, string | undefined> = { subdomain: cleanSub };
+      if (!lockedCustomDomain && cleanDomain !== undefined) {
+        updatePayload.custom_domain = cleanDomain;
+      }
+
+      const { error } = await supabase.from('projects').update(updatePayload).eq('id', id);
       if (error) {
         return { success: false, error: error.message };
       }
@@ -280,12 +295,15 @@ export async function updateProjectSubdomain(
   const idx = existing.findIndex((p) => p.id === id);
   if (idx !== -1) {
     existing[idx].subdomain = cleanSub;
-    if (cleanDomain !== undefined) existing[idx].custom_domain = cleanDomain;
+    if (!lockedCustomDomain && cleanDomain !== undefined) existing[idx].custom_domain = cleanDomain;
     localStorage.setItem(LS_KEY, JSON.stringify(existing));
     return { success: true, project: existing[idx] };
   }
 
-  return { success: true, project: { id, business_name: '', category: '', template_json: {} as Template, subdomain: cleanSub, custom_domain: cleanDomain } as SavedProject };
+  return {
+    success: true,
+    project: { id, business_name: '', category: '', template_json: {} as Template, subdomain: cleanSub, custom_domain: lockedCustomDomain || cleanDomain } as SavedProject,
+  };
 }
 
 export async function deleteProject(id: string): Promise<boolean> {

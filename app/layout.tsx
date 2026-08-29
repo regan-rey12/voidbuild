@@ -154,23 +154,23 @@ const jsonLd = {
         {
           "@type": "Offer",
           name: "Starter Plan",
-          price: "15000",
+          price: "50000",
           priceCurrency: "UGX",
-          description: "1 website with custom subdomain & high-speed hosting",
+          description: "1 website with custom subdomain and annual hosting",
         },
         {
           "@type": "Offer",
           name: "Business Plan",
-          price: "35000",
+          price: "100000",
           priceCurrency: "UGX",
           description: "3 websites with visitor analytics and assisted domain connection rollout",
         },
         {
           "@type": "Offer",
           name: "Pro Plan",
-          price: "75000",
+          price: "200000",
           priceCurrency: "UGX",
-          description: "10 websites with priority VIP support & store catalog",
+          description: "10 websites with priority support and store catalog features",
         },
       ],
       aggregateRating: {

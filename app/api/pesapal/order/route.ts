@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       phone,
       email,
       provider: 'pesapal',
-      callback_payload: { phase: 'created_locally' },
+      callback_payload: { phase: 'created_locally', billing_period: 'year' },
     });
 
     if (pendingOrderError) {
@@ -65,20 +65,24 @@ export async function POST(req: Request) {
 
     const callbackUrl = `${origin}/api/pesapal/callback?merchant_reference=${merchantReference}`;
 
-    const order = await createPesapalOrder({
-      amount: finalAmount,
-      currency: 'UGX',
-      description: `VoidBuild ${selectedPlan.name} Plan - ${selectedPlan.limit} Websites`,
-      callbackUrl,
-      notificationId: notificationId || '',
-      merchantReference,
-      billingAddress: {
-        email,
-        phone: phone || '0751391318',
-        firstName: 'VoidBuild',
-        lastName: 'Customer',
+    const order = await createPesapalOrder(
+      {
+        amount: finalAmount,
+        currency: 'UGX',
+        description: `VoidBuild ${selectedPlan.name} Annual Plan - ${selectedPlan.limit} Websites`,
+        callbackUrl,
+        notificationId: notificationId || '',
+        merchantReference,
+        billingAddress: {
+          email,
+          phone: phone || '0751391318',
+          firstName: 'VoidBuild',
+          lastName: 'Customer',
+        },
       },
-    }, token, baseUrl);
+      token,
+      baseUrl
+    );
 
     if (!order.redirect_url) {
       await admin
@@ -109,6 +113,7 @@ export async function POST(req: Request) {
       redirectUrl: order.redirect_url,
       amount: finalAmount,
       amountUGX: selectedPlan.priceUGX,
+      billingPeriod: 'year',
     });
   } catch (e: any) {
     console.error('Pesapal order error:', e.message);

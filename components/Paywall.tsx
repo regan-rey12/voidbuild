@@ -98,7 +98,7 @@ export default function Paywall({
                 'Opening checkout...'
               ) : (
                 <>
-                  <span>Upgrade to Business (UGX 35,000/mo)</span>
+                  <span>Upgrade to Business (UGX 100,000/year)</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </>
               )}
@@ -179,8 +179,11 @@ export default function Paywall({
 
                   <div className="mt-3">
                     <span className="text-2xl font-extrabold text-gray-900">UGX {plan.priceUGX}</span>
-                    <span className="text-xs text-gray-500 font-normal"> / month</span>
+                    <span className="text-xs text-gray-500 font-normal"> / year</span>
                   </div>
+                  {plan.monthlyEquivalentUGX && (
+                    <div className="mt-1 text-[11px] text-gray-400">About UGX {plan.monthlyEquivalentUGX} / month</div>
+                  )}
 
                   <ul className="mt-4 space-y-2 text-xs text-gray-600">
                     {plan.features.map((f, i) => (

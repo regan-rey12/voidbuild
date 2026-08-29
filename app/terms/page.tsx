@@ -21,9 +21,9 @@ export default function TermsPage() {
             <h2 className="font-bold text-base">2. Plans &amp; Pricing (UGX)</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1">
               <li><strong>Free:</strong> 1 website, voidbuild.com link, WhatsApp booking button. Free forever with no card required.</li>
-              <li><strong>Starter UGX 15,000/mo:</strong> 1 website, custom subdomain, 5k monthly visits, fast Africa edge loading.</li>
-              <li><strong>Business UGX 35,000/mo (Popular):</strong> 3 websites, visitor analytics, priority WhatsApp support, and assisted domain connection rollout.</li>
-              <li><strong>Pro UGX 75,000/mo:</strong> 10 websites, unlimited visits, online store catalog, VIP onboarding, and domain connection priority.</li>
+              <li><strong>Starter UGX 50,000/year:</strong> 1 website, custom subdomain, 5k monthly visits, fast Africa edge loading.</li>
+              <li><strong>Business UGX 100,000/year (Popular):</strong> 3 websites, visitor analytics, priority WhatsApp support, and assisted domain connection rollout.</li>
+              <li><strong>Pro UGX 200,000/year:</strong> 10 websites, unlimited visits, online store catalog, VIP onboarding, and domain connection priority.</li>
               <li>Prices are in UGX and payments are processed securely via Pesapal using MTN MoMo, Airtel Money, or card.</li>
               <li>Subscription cancellation is currently handled through support by emailing hello@voidbuild.com or messaging +256 751 391318.</li>
             </ul>
@@ -53,7 +53,7 @@ export default function TermsPage() {
             <h2 className="font-bold text-base">5. Payments &amp; Refunds (Pesapal)</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1">
               <li>Payments are processed securely via Pesapal — supporting MTN MoMo Uganda, Airtel Money, and Visa/Mastercard.</li>
-              <li>Subscription plans are billed monthly in UGX (Starter UGX 15,000 / Business UGX 35,000 / Pro UGX 75,000).</li>
+              <li>Subscription plans are billed yearly in UGX (Starter UGX 50,000 / Business UGX 100,000 / Pro UGX 200,000).</li>
               <li>If a technical payment issue occurs and we cannot confirm or fix it within a reasonable support window, contact hello@voidbuild.com for assistance.</li>
               <li>Failed or abandoned payments do not activate a plan until our system verifies the payment successfully.</li>
             </ul>
