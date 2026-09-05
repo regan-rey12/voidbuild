@@ -47,7 +47,7 @@ export default async function SubdomainPage({ params }: PageProps) {
   return (
     <div>
       <PublicPageTracker projectId={project.id} />
-      <div className="bg-gray-900 text-white text-center text-[11px] py-1.5 px-4 flex items-center justify-center gap-2">
+      <div className="relative z-40 bg-gray-950 text-white text-center text-[11px] py-1.5 px-4 flex items-center justify-center gap-2 border-b border-white/10">
         <img src="/logo.png" alt="VoidBuild" className="w-3.5 h-3.5 object-contain flex-shrink-0" />
         <span className="font-bold">{project.business_name}</span>
         <span>•</span>

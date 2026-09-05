@@ -37,7 +37,23 @@ export interface TemplateBlock {
 export interface Template {
   id: string;
   name: string;
-  category: 'salon' | 'hardware' | 'restaurant' | 'church' | 'portfolio' | 'shop' | 'boda' | 'school' | 'clinic' | 'boutique' | 'barbershop';
+  category:
+    | 'salon'
+    | 'hardware'
+    | 'restaurant'
+    | 'church'
+    | 'portfolio'
+    | 'shop'
+    | 'boda'
+    | 'school'
+    | 'clinic'
+    | 'boutique'
+    | 'barbershop'
+    | 'pharmacy'
+    | 'bakery'
+    | 'carwash'
+    | 'hotel'
+    | 'gym';
   description: string;
   blocks: TemplateBlock[];
   meta: {

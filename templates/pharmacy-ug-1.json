@@ -1,231 +1,241 @@
 {
   "id": "pharmacy-ug-1",
-  "name": "GoodLife Pharmacy & Drug Shop Ntinda",
+  "name": "CityCare Pharmacy Bukoto",
   "category": "pharmacy",
-  "description": "Licensed retail pharmacy in Kampala - prescription drugs, diabetes & BP care, baby formulas, and home delivery",
-  "meta": { "target": "Pharmacy in Ntinda, Kampala, Uganda", "language": "en" },
+  "description": "Trusted community pharmacy in Kampala with prescription refills, wellness essentials, and delivery support",
+  "meta": { "target": "Pharmacy in Bukoto, Kampala, Uganda", "language": "en" },
   "blocks": [
     {
       "id": "nav-1",
       "type": "navbar",
       "data": {
-        "businessName": "GoodLife Pharmacy",
-        "phone": "+256 701 333444",
-        "whatsapp": "+256701333444",
+        "businessName": "CityCare Pharmacy",
+        "phone": "+256 752 814230",
+        "whatsapp": "+256752814230",
+        "variant": "overlay-light",
         "links": [
-          { "label": "Medicines", "href": "#services" },
-          { "label": "Prescription Refill", "href": "#pricing" },
-          { "label": "Pharmacy Look", "href": "#gallery" },
+          { "label": "Products", "href": "#services" },
+          { "label": "Refills", "href": "#pricing" },
+          { "label": "Inside", "href": "#gallery" },
           { "label": "Reviews", "href": "#testimonials" },
-          { "label": "Location", "href": "#map" },
-          { "label": "Order Delivery", "href": "#contact" }
+          { "label": "Visit Us", "href": "#map" },
+          { "label": "Contact", "href": "#contact" }
         ]
       },
-      "style": { "primaryColor": "#059669" }
+      "style": { "primaryColor": "#0F9F6E" }
     },
     {
       "id": "hero-1",
       "type": "hero",
       "data": {
-        "badge": "NDA Licensed • 100% Genuine Certified Medicines • 30-Min Kampala Delivery",
-        "title": "Your Trusted Community Pharmacy for Health & Wellness",
-        "subtitle": "National Drug Authority (NDA) licensed pharmacy. Genuine antibiotics, blood pressure & diabetes maintenance refills, pediatric syrups, baby care formulas, first aid, and vitamins. Send your doctor's prescription on WhatsApp for instant doorstep delivery.",
-        "ctaText": "Order Medicine on WhatsApp",
+        "badge": "NDA licensed • Open 7 days • Kampala delivery available",
+        "title": "A trusted pharmacy for prescriptions, genuine medicines, and everyday wellness essentials.",
+        "subtitle": "CityCare Pharmacy supports families with prescription refills, over-the-counter medicines, skincare, baby care, and convenient delivery coordination across selected Kampala areas.",
+        "ctaText": "Send Prescription",
         "ctaLink": "#contact",
-        "image": "african pharmacist doctor pharmacy medicine dispensary kampala"
+        "secondaryCtaText": "See Pharmacy Products",
+        "secondaryCtaLink": "#services",
+        "trustPoints": [
+          "Licensed community pharmacy",
+          "Genuine medicines from trusted suppliers",
+          "Pickup and delivery available"
+        ],
+        "variant": "pharmacy-background",
+        "image": "/template-images/pharmacy/pharmacy-3.jpg"
       },
-      "style": { "primaryColor": "#059669", "alignment": "left" }
+      "style": { "primaryColor": "#0F9F6E", "alignment": "left" }
     },
     {
       "id": "stats-1",
       "type": "stats",
       "data": {
-        "heading": "Standards You Can Trust",
+        "variant": "pharmacy",
+        "heading": "Why families choose us",
         "stats": [
-          { "number": "100%", "label": "NDA Approved Genuine Pharmaceuticals" },
-          { "number": "30 Mins", "label": "Fast Delivery across Ntinda, Bukoto & Kisaasi" },
-          { "number": "24/7", "label": "Pharmacist Consultation via WhatsApp" }
+          { "number": "7 Days", "label": "Open daily for prescriptions and walk-ins" },
+          { "number": "Refills", "label": "Support for repeat prescriptions and collection planning" },
+          { "number": "Delivery", "label": "Helpful coordination across selected Kampala areas" }
         ]
       },
-      "style": { "primaryColor": "#059669" }
+      "style": { "primaryColor": "#0F9F6E" }
     },
     {
       "id": "services-1",
       "type": "services",
       "data": {
-        "heading": "Medicines, Baby Care & Healthcare Essentials",
-        "subheading": "All medications stored in temperature-controlled environments. Send your prescription photo for instant price quotation.",
-        "phone": "+256 701 333444",
-        "whatsapp": "+256701333444",
+        "variant": "pharmacy",
+        "buttonLabel": "Ask About Availability",
+        "heading": "Pharmacy Products & Everyday Essentials",
+        "subheading": "Send a prescription photo or product name before pickup or delivery so the pharmacy can confirm availability and guide you well.",
+        "phone": "+256 752 814230",
+        "whatsapp": "+256752814230",
         "services": [
           {
-            "name": "Malaria & Fever Relief Kit",
-            "price": "UGX 15,000",
-            "description": "Coartem / Duo-cotecxin, paracetamol pain relief, and rehydration salts with dosage instructions.",
-            "image": "pharmacy medicine blister pack pills fever"
+            "name": "Prescription Medicines & Refills",
+            "description": "Share your prescription for refill support, availability confirmation, and smooth collection or delivery planning.",
+            "image": "/template-images/pharmacy/pharmacy-3.jpg"
           },
           {
-            "name": "Hypertension & Diabetes Refills",
-            "price": "From UGX 25,000",
-            "description": "Monthly chronic maintenance tablets (Amlodipine, Losartan, Metformin, Glimepiride) with free BP check.",
-            "image": "blood pressure monitor pharmacist check"
+            "name": "Common Over-the-Counter Medicines",
+            "description": "A practical range of everyday medicines for pain relief, colds, allergies, fever, and other common needs.",
+            "image": "/template-images/pharmacy/pharmacy-8.jpg"
           },
           {
-            "name": "Pediatric & Baby Formulas",
-            "price": "UGX 45,000",
-            "description": "NAN, SMA, Cow & Gate infant formulas, baby gripe water, teething gel, and cough syrups.",
-            "image": "baby formula milk powder pharmacy"
+            "name": "Baby Care & Family Essentials",
+            "description": "Selected baby and family care products that help customers handle everyday needs from one trusted place.",
+            "image": "/template-images/pharmacy/pharmacy-2.jpg"
           },
           {
-            "name": "Immunity & Multivitamin Supplements",
-            "price": "UGX 20,000",
-            "description": "High-potency Vitamin C (1000mg), Zinc, Vitamin D3, Cod Liver Oil, and prenatal folic acid tablets.",
-            "image": "vitamin supplements bottles pharmacy"
+            "name": "Skincare & Personal Care",
+            "description": "A clean retail mix of skincare, personal care, and wellness products customers often need alongside pharmacy purchases.",
+            "image": "/template-images/pharmacy/pharmacy-5.jpg"
           },
           {
-            "name": "Home First Aid & Wound Dressing",
-            "price": "UGX 12,000",
-            "description": "Antiseptic Dettol, sterile gauze, surgical tape, bandages, and hydrogen peroxide spray.",
-            "image": "first aid kit medical supplies gauze"
+            "name": "In-Store Pharmacist Guidance",
+            "description": "Speak to the team for product guidance, refill clarification, and help understanding what has been prescribed or requested.",
+            "image": "/template-images/pharmacy/pharmacy-7.jpg"
           },
           {
-            "name": "Digital BP & Glucose Monitors",
-            "price": "UGX 85,000",
-            "description": "Accurate automated arm blood pressure monitor and digital blood sugar meter with 50 test strips.",
-            "image": "digital blood glucose meter diabetes test"
+            "name": "Pickup & Delivery Coordination",
+            "description": "Helpful support for collection timing and delivery planning when you need medicines or essentials brought closer to you.",
+            "image": "/template-images/pharmacy/pharmacy-6.jpg"
           }
         ]
       },
-      "style": { "primaryColor": "#059669" }
+      "style": { "primaryColor": "#0F9F6E" }
     },
     {
       "id": "gallery-1",
       "type": "gallery",
       "data": {
-        "heading": "Our Pharmacy & Dispensary",
-        "subheading": "Clean, modern, air-conditioned retail premises with certified pharmacy technicians.",
+        "variant": "pharmacy",
+        "heading": "Inside the Pharmacy",
+        "subheading": "Clean shelves, organized stock, and a calm service desk help customers feel more confident before they visit or order.",
         "images": [
-          "pharmacy interior shelves medicines",
-          "pharmacist dispensing prescription tablets",
-          "blood pressure test patient smiling",
-          "baby care products pharmacy shelves",
-          "vitamins supplements display counter",
-          "pharmacy delivery courier motorcycle"
+          "/template-images/pharmacy/pharmacy-3.jpg",
+          "/template-images/pharmacy/pharmacy-1.jpg",
+          "/template-images/pharmacy/pharmacy-7.jpg",
+          "/template-images/pharmacy/pharmacy-6.jpg",
+          "/template-images/pharmacy/pharmacy-8.jpg",
+          "/template-images/pharmacy/pharmacy-5.jpg"
         ]
       },
-      "style": { "primaryColor": "#059669" }
+      "style": { "primaryColor": "#0F9F6E" }
     },
     {
       "id": "pricing-1",
       "type": "pricing",
       "data": {
-        "heading": "Monthly Refill & Delivery Plans",
-        "subheading": "Save time and never miss a dose with our automatic scheduled prescription refills.",
-        "phone": "+256 701 333444",
-        "whatsapp": "+256701333444",
+        "heading": "Prescription, Refill & Delivery Support",
+        "subheading": "Simple service pathways that help customers know what to do before pickup or delivery.",
+        "phone": "+256 752 814230",
+        "whatsapp": "+256752814230",
+        "variant": "pharmacy",
+        "ctaText": "Ask About This Support",
         "plans": [
           {
-            "name": "Express Boda Delivery",
-            "price": "UGX 4,000",
-            "sub": "within 30 minutes",
+            "name": "Prescription Upload",
+            "sub": "share before you travel",
             "features": [
-              "Same-day doorstep delivery in Kampala",
-              "Discreet opaque waterproof packaging",
-              "Payment via MTN MoMo / Airtel / Cash",
-              "Pharmacist dosage guide included"
+              "Send a clear prescription photo",
+              "Availability confirmed before pickup",
+              "Helpful guidance on collection or delivery",
+              "Faster service for busy customers"
             ],
             "popular": true
           },
           {
-            "name": "Elderly Care Monthly Refill",
-            "price": "UGX 60,000+",
-            "sub": "custom monthly bundle",
+            "name": "Repeat Refill Support",
+            "sub": "for ongoing prescriptions",
             "features": [
-              "Monthly automatic home medicine dispatch",
-              "Free monthly in-home Blood Pressure check",
-              "Dedicated pharmacist phone consultation",
-              "Free reminder SMS when pills run low"
+              "Easy follow-up for returning customers",
+              "Stock check before collection",
+              "Clear communication on replacements if needed",
+              "Useful for long-term repeat purchases"
             ],
             "popular": false
           },
           {
-            "name": "Family First Aid Bundle",
-            "price": "UGX 45,000",
-            "sub": "complete home box",
+            "name": "Delivery Coordination",
+            "sub": "selected Kampala areas",
             "features": [
-              "Digital fever thermometer",
-              "Antiseptic liquid, gauze & bandages",
-              "Paracetamol, ibuprofen & allergy syrup",
-              "Burn relief ointment & emergency guide"
+              "Home or office drop-off planning",
+              "Discreet packaging where needed",
+              "Updates shared on WhatsApp",
+              "Pickup remains available any time"
             ],
             "popular": false
           }
         ]
       },
-      "style": { "primaryColor": "#059669" }
+      "style": { "primaryColor": "#0F9F6E" }
     },
     {
       "id": "testimonials-1",
       "type": "testimonials",
       "data": {
-        "heading": "What Our Customers Say",
-        "subheading": "Real feedback from residents in Ntinda, Bukoto, and Kisaasi.",
+        "heading": "What customers say",
+        "subheading": "Short, believable reviews help first-time visitors feel safer about ordering or walking in.",
+        "variant": "pharmacy",
         "testimonials": [
           {
-            "name": "Grace N.",
-            "role": "Ntinda Resident",
-            "text": "Sent a photo of my son's prescription on WhatsApp at 9 PM. Medicine arrived at our gate in 25 minutes. Lifesavers!",
+            "name": "Miriam K.",
+            "role": "Bukoto resident",
+            "text": "I sent my prescription before leaving work and the team confirmed what was available quickly. Pickup was smooth and professional.",
             "rating": 5
           },
           {
-            "name": "Dr. Joseph M.",
-            "role": "Consultant Physician",
-            "text": "Always recommend GoodLife Pharmacy to my patients. Their stock is 100% authentic and the pharmacists are knowledgeable.",
+            "name": "Paul S.",
+            "role": "Parent, Ntinda",
+            "text": "They explained the medicines clearly and helped me choose what I needed for my family without making the process confusing.",
             "rating": 5
           },
           {
-            "name": "Hellen A.",
-            "role": "Mother of two, Kisaasi",
-            "text": "The monthly refill program for my mother's blood pressure tablets has made life so easy. Thank you for the great service.",
+            "name": "Ruth A.",
+            "role": "Office worker, Kololo",
+            "text": "The delivery option saved me a lot of time. Communication was fast and the service felt trustworthy from start to finish.",
             "rating": 5
           }
         ]
       },
-      "style": { "primaryColor": "#059669" }
+      "style": { "primaryColor": "#0F9F6E" }
     },
     {
       "id": "map-1",
       "type": "map",
       "data": {
-        "heading": "Visit Our Ntinda Dispensary",
-        "subheading": "Located along Ntinda-Kisaasi Road, right opposite Quality Supermarket.",
-        "location": "Ntinda-Kisaasi Road, Opposite Quality Supermarket, Ntinda, Kampala",
-        "phone": "+256 701 333444"
+        "heading": "Visit Our Bukoto Branch",
+        "subheading": "Easy to reach for walk-ins, prescription drop-offs, and quick collections.",
+        "location": "Bukoto Street, near Bukoto Trading Centre, Kampala",
+        "phone": "+256 752 814230"
       },
-      "style": { "primaryColor": "#059669" }
+      "style": { "primaryColor": "#0F9F6E" }
     },
     {
       "id": "contact-1",
       "type": "contact",
       "data": {
-        "heading": "Send Prescription or Inquire on WhatsApp",
-        "phone": "+256 701 333444",
-        "whatsapp": "+256701333444",
-        "location": "Ntinda-Kisaasi Road, Opposite Quality Supermarket, Ntinda, Kampala",
-        "hours": "Mon-Sun: 7:30am - 10:30pm (Open Every Day including Holidays)",
-        "email": "orders@goodlifepharmacy.ug"
+        "variant": "pharmacy",
+        "heading": "Send your prescription or ask the pharmacy",
+        "subheading": "Share your prescription, the medicine name, or the product you need and the team can guide you before pickup or delivery.",
+        "buttonText": "Send Pharmacy Inquiry",
+        "phone": "+256 752 814230",
+        "whatsapp": "+256752814230",
+        "location": "Bukoto Street, near Bukoto Trading Centre, Kampala",
+        "hours": "Mon-Sun: 8:00am - 10:00pm",
+        "email": "care@citycarepharmacy.ug"
       },
-      "style": { "primaryColor": "#059669" }
+      "style": { "primaryColor": "#0F9F6E" }
     },
     {
       "id": "footer-1",
       "type": "footer",
       "data": {
-        "businessName": "GoodLife Pharmacy & Drug Shop",
-        "tagline": "NDA Licensed • Genuine Medicines • Express Home Delivery • Ntinda, Kampala",
+        "businessName": "CityCare Pharmacy",
+        "tagline": "Licensed pharmacy • Genuine medicines • Delivery • Bukoto, Kampala",
         "year": 2026
       },
-      "style": { "primaryColor": "#059669" }
+      "style": { "primaryColor": "#0F9F6E" }
     }
   ]
 }

@@ -71,7 +71,7 @@ export default async function PublicPage({ params, searchParams }: PageProps) {
   return (
     <div>
       {!isFallback && <PublicPageTracker projectId={project.id} />}
-      <div className="bg-gray-900 text-white text-center text-xs py-2 px-4 flex items-center justify-center gap-2">
+      <div className="relative z-40 bg-gray-950 text-white text-center text-xs py-2 px-4 flex items-center justify-center gap-2 border-b border-white/10">
         <img src="/logo.png" alt="VoidBuild" className="w-4 h-4 object-contain flex-shrink-0" />
         {isFallback ? (
           <span>

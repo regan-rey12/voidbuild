@@ -2,7 +2,7 @@
   "id": "restaurant-ug-1",
   "name": "Mama Africa Kitchen Wandegeya",
   "category": "restaurant",
-  "description": "Authentic Ugandan food - Luwombo, Matooke, Tilapia, Pilau, and fast delivery in Wandegeya & Makerere",
+  "description": "Fresh local meals, rolex, pilau, tilapia, and office lunch delivery in Wandegeya & Makerere",
   "meta": { "target": "Restaurant in Wandegeya, Kampala", "language": "en" },
   "blocks": [
     {
@@ -12,12 +12,13 @@
         "businessName": "Mama Africa Kitchen",
         "phone": "+256 700 987654",
         "whatsapp": "+256700987654",
+        "variant": "overlay-light",
         "links": [
-          { "label": "Daily Menu", "href": "#services" },
-          { "label": "Food Gallery", "href": "#gallery" },
+          { "label": "Menu", "href": "#services" },
+          { "label": "Gallery", "href": "#gallery" },
           { "label": "Combos", "href": "#pricing" },
-          { "label": "Location", "href": "#map" },
-          { "label": "Order Delivery", "href": "#contact" }
+          { "label": "Find Us", "href": "#map" },
+          { "label": "Order", "href": "#contact" }
         ]
       },
       "style": { "primaryColor": "#DC2626" }
@@ -26,72 +27,117 @@
       "id": "hero-1",
       "type": "hero",
       "data": {
-        "badge": "Fresh Daily • Fast Delivery in Wandegeya & Makerere (Under 25 Mins)",
-        "title": "Taste Authentic Ugandan Home Cooking Every Single Day",
-        "subtitle": "Steaming Local Chicken Luwombo, Crispy Nile Tilapia, Friday Goat Meat Pilau, Beef Katogo Breakfast, and iconic Monster Rolex. Cooked fresh with organic local ingredients. Order on WhatsApp, pay with MTN MoMo or Airtel Money.",
-        "ctaText": "Order Food on WhatsApp",
+        "badge": "Fresh Daily • Wandegeya & Makerere Delivery • Local Favorites",
+        "title": "Hot local meals, fast delivery, and a menu people remember",
+        "subtitle": "From chicken luwombo and whole tilapia to rolex, pilau, katogo, and fresh juice, Mama Africa Kitchen serves familiar favorites with clear UGX prices and easy WhatsApp ordering.",
+        "ctaText": "Order on WhatsApp",
         "ctaLink": "#contact",
-        "image": "african luwombo matooke traditional food uganda"
+        "secondaryCtaText": "Explore Menu",
+        "secondaryCtaLink": "#services",
+        "trustPoints": [
+          "UGX prices shown clearly",
+          "Fast Wandegeya delivery",
+          "Fresh food cooked daily"
+        ],
+        "variant": "restaurant-background",
+        "image": "https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?auto=compress&cs=tinysrgb&w=2000"
       },
       "style": { "primaryColor": "#DC2626", "alignment": "left" }
-    },
-    {
-      "id": "stats-1",
-      "type": "stats",
-      "data": {
-        "heading": "Why Kampala Foodies Love Us",
-        "stats": [
-          { "number": "25 Mins", "label": "Fast Delivery in Wandegeya & Makerere" },
-          { "number": "500+", "label": "Hot Meals Cooked & Served Daily" },
-          { "number": "100%", "label": "Fresh Local Organic Ingredients" }
-        ]
-      },
-      "style": { "primaryColor": "#DC2626" }
     },
     {
       "id": "services-1",
       "type": "services",
       "data": {
-        "heading": "Our Daily Menu & UGX Prices",
-        "subheading": "All main dishes include free steamed Matooke, rice, pumpkin, and greens. Special discounts for office lunch group orders.",
+        "heading": "Daily Menu with Clear UGX Prices",
+        "subheading": "Simple favorites customers can understand quickly before they order or visit.",
         "phone": "+256 700 987654",
         "whatsapp": "+256700987654",
         "services": [
           {
-            "name": "Local Chicken Luwombo Special",
+            "name": "Local Chicken Luwombo",
             "price": "UGX 18,000",
-            "description": "Tender local chicken slow-cooked in banana leaves with rich peanut paste & steamed matooke.",
-            "image": "african chicken luwombo banana leaves"
+            "description": "Slow-cooked chicken in rich sauce, served with matooke or rice for a proper filling local meal.",
+            "image": "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg?auto=compress&cs=tinysrgb&w=1200"
           },
           {
-            "name": "Whole Fried Lake Tilapia & Chips",
+            "name": "Whole Fried Tilapia & Chips",
             "price": "UGX 25,000",
-            "description": "Crispy whole fresh Nile tilapia served with golden chips, kachumbari, and homemade chili sauce.",
-            "image": "african fried tilapia fish chips"
+            "description": "Fresh whole tilapia with chips, kachumbari, and house sauce for lunch or sharing.",
+            "image": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1200"
           },
           {
-            "name": "Friday Goat Meat Pilau",
+            "name": "Goat Meat Pilau",
             "price": "UGX 16,000",
-            "description": "Fragrant spiced basmati rice cooked with tender local goat meat, served with avocado and gravy.",
-            "image": "african pilau goat meat rice"
+            "description": "Spiced rice with tender goat meat — a strong pick for busy lunch hours and Friday cravings.",
+            "image": "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1200"
           },
           {
-            "name": "Monster Rolex (4 Eggs)",
+            "name": "Monster Rolex",
             "price": "UGX 5,000",
-            "description": "Warm fresh chapatis rolled with 4 fried eggs, tomatoes, onions, and cabbage.",
-            "image": "uganda rolex chapati eggs street food"
+            "description": "A quick favorite with eggs, chapati, tomato, and onion when you want something affordable and satisfying.",
+            "image": "https://images.pexels.com/photos/4958792/pexels-photo-4958792.jpeg?auto=compress&cs=tinysrgb&w=1200"
           },
           {
             "name": "Beef Katogo Breakfast",
             "price": "UGX 8,000",
-            "description": "Morning energy special: Soft matooke cooked with tender beef chunks and savory sauce.",
-            "image": "ugandan katogo breakfast matooke beef"
+            "description": "Soft matooke cooked with beef in savory sauce for an early breakfast that keeps you going.",
+            "image": "https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&w=1200"
           },
           {
             "name": "Fresh Passion Juice (1 Litre)",
             "price": "UGX 6,000",
-            "description": "100% natural organic Masaka passion fruit juice, chilled without artificial sweeteners.",
-            "image": "fresh passion fruit juice glass"
+            "description": "Cold natural juice for meals, office orders, and group combos.",
+            "image": "https://images.pexels.com/photos/1337825/pexels-photo-1337825.jpeg?auto=compress&cs=tinysrgb&w=1200"
+          }
+        ]
+      },
+      "style": { "primaryColor": "#DC2626" }
+    },
+    {
+      "id": "pricing-1",
+      "type": "pricing",
+      "data": {
+        "heading": "Popular Combos & Group Orders",
+        "subheading": "Easy-to-understand food bundles for students, office teams, and family orders.",
+        "phone": "+256 700 987654",
+        "whatsapp": "+256700987654",
+        "variant": "restaurant",
+        "plans": [
+          {
+            "name": "Student Lunch Deal",
+            "price": "UGX 10,000",
+            "sub": "weekday value meal",
+            "features": [
+              "One local meal plate",
+              "Rice or matooke included",
+              "Quick pickup or hostel delivery",
+              "Best for campus lunch"
+            ],
+            "popular": false
+          },
+          {
+            "name": "Office Team Combo",
+            "price": "UGX 75,000",
+            "sub": "feeds about 5 people",
+            "features": [
+              "Choice of luwombo or pilau plates",
+              "1 litre fresh juice included",
+              "Same-day office delivery",
+              "Good for staff lunch orders"
+            ],
+            "popular": true
+          },
+          {
+            "name": "Weekend Family Feast",
+            "price": "UGX 120,000",
+            "sub": "family sharing order",
+            "features": [
+              "Tilapia, local meals, and sides",
+              "Large portions for sharing",
+              "Great for home gatherings",
+              "Advance order recommended"
+            ],
+            "popular": false
           }
         ]
       },
@@ -101,64 +147,28 @@
       "id": "gallery-1",
       "type": "gallery",
       "data": {
-        "heading": "From Our Kitchen Lookbook",
-        "subheading": "Real photos of meals prepared daily at our restaurant in Wandegeya.",
+        "heading": "From the Kitchen & Dining Area",
+        "subheading": "A ready restaurant site should already feel alive. Replace these with your own food and dining photos anytime.",
         "images": [
-          "african luwombo food",
-          "fried whole tilapia fish",
-          "goat pilau rice dish",
-          "ugandan rolex chapati",
-          "fresh passion juice",
-          "restaurant dining table food"
+          "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "https://images.pexels.com/photos/4958792/pexels-photo-4958792.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1200"
         ]
       },
       "style": { "primaryColor": "#DC2626" }
     },
     {
-      "id": "pricing-1",
-      "type": "pricing",
+      "id": "stats-1",
+      "type": "stats",
       "data": {
-        "heading": "Lunch Combos & Office Bundles",
-        "subheading": "Save on group delivery for offices, hostels, and family weekend meals.",
-        "phone": "+256 700 987654",
-        "whatsapp": "+256700987654",
-        "plans": [
-          {
-            "name": "Student Lunch Box",
-            "price": "UGX 10,000",
-            "sub": "with student ID",
-            "features": [
-              "Beef or Chicken Stew Plate",
-              "Matooke + Rice + Greens",
-              "Chilled glass of fresh juice",
-              "Fast hostel delivery"
-            ],
-            "popular": false
-          },
-          {
-            "name": "Office Squad Bundle",
-            "price": "UGX 75,000",
-            "sub": "feeds 5 colleagues",
-            "features": [
-              "5 Chicken Luwombo or Pilau plates",
-              "1 Litre fresh Masaka passion juice",
-              "Free same-day office boda delivery",
-              "Complimentary bananas & avocado"
-            ],
-            "popular": true
-          },
-          {
-            "name": "Weekend Family Feast",
-            "price": "UGX 120,000",
-            "sub": "feeds 6–8 people",
-            "features": [
-              "2 Whole Jumbo Tilapia + Chips",
-              "2 Goat Meat Luwombo plates",
-              "2 Litres fresh Masaka juice",
-              "Large bowl of steamed Matooke & Katogo"
-            ],
-            "popular": false
-          }
+        "heading": "Why Regulars Come Back",
+        "stats": [
+          { "number": "25 Mins", "label": "Fast delivery around Wandegeya and Makerere" },
+          { "number": "300+", "label": "Meals served on a busy day" },
+          { "number": "7 Days", "label": "Open all week for breakfast, lunch, and dinner" }
         ]
       },
       "style": { "primaryColor": "#DC2626" }
@@ -167,25 +177,26 @@
       "id": "testimonials-1",
       "type": "testimonials",
       "data": {
-        "heading": "What Kampala Diners Say",
-        "subheading": "Real feedback from students, office workers, and families around Wandegeya.",
+        "heading": "What Diners Around Wandegeya Say",
+        "subheading": "Quick, believable reviews that make the restaurant feel real and active.",
+        "variant": "restaurant",
         "testimonials": [
           {
             "name": "Brian K.",
-            "role": "Makerere University Student",
-            "text": "Their chicken luwombo is the best in Wandegeya. Always hot, tender, and delivered to Complex Hall in under 20 minutes.",
+            "role": "Makerere student",
+            "text": "The luwombo was hot, filling, and reached my hostel faster than I expected.",
             "rating": 5
           },
           {
             "name": "Daphne A.",
-            "role": "Bank Teller, Wandegeya Branch",
-            "text": "We order lunch for our entire branch every Friday. The goat pilau is top tier and portion sizes are generous!",
+            "role": "Office worker in Wandegeya",
+            "text": "We order lunch as a team and the portions are reliable. It saves us a lot of time during busy days.",
             "rating": 5
           },
           {
             "name": "Samuel M.",
-            "role": "Bombo Road Resident",
-            "text": "The whole fried tilapia is fresh Nile catch and perfectly spiced. Highly recommended for family Sunday lunch.",
+            "role": "Weekend customer",
+            "text": "The tilapia and chips are one of the easiest things to recommend when friends ask where to eat nearby.",
             "rating": 5
           }
         ]
@@ -197,8 +208,8 @@
       "type": "map",
       "data": {
         "heading": "Find Our Wandegeya Dining Hall",
-        "subheading": "Located along Bombo Road, right opposite Makerere Main Gate.",
-        "location": "Bombo Road, Opposite Makerere University Main Gate, Wandegeya, Kampala",
+        "subheading": "Along Bombo Road, right opposite Makerere Main Gate.",
+        "location": "Bombo Road, Opposite Makerere Main Gate, Wandegeya, Kampala",
         "phone": "+256 700 987654"
       },
       "style": { "primaryColor": "#DC2626" }
@@ -221,7 +232,7 @@
       "type": "footer",
       "data": {
         "businessName": "Mama Africa Kitchen",
-        "tagline": "Authentic Local Ugandan Cooking • Wandegeya, Kampala",
+        "tagline": "Fresh local meals • Delivery • Wandegeya, Kampala",
         "year": 2026
       },
       "style": { "primaryColor": "#DC2626" }

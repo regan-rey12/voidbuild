@@ -111,17 +111,53 @@ function mergeProjects(cloud: SavedProject[], local: SavedProject[], userId?: st
     : local;
 
   const merged = [...cloud, ...localFiltered].slice(0, 100);
-  const seen = new Set<string>();
+  const seenIds = new Set<string>();
+  const seenSubdomains = new Set<string>();
+
   return merged.filter((p) => {
-    if (seen.has(p.id)) return false;
-    seen.add(p.id);
+    const sub = (p.subdomain || '').toLowerCase().trim();
+    if (seenIds.has(p.id)) return false;
+    if (sub && seenSubdomains.has(sub)) return false;
+    seenIds.add(p.id);
+    if (sub) seenSubdomains.add(sub);
     return true;
   });
+}
+
+function buildSubdomainCandidate(base: string, attempt: number): string {
+  if (attempt <= 0) return base;
+  const suffix = `-${attempt + 1}`;
+  const trimmedBase = base.slice(0, Math.max(1, 30 - suffix.length)).replace(/-+$/g, '');
+  return `${trimmedBase}${suffix}`;
+}
+
+async function resolveAvailableSubdomain(
+  base: string,
+  supabase: ReturnType<typeof getSupabase>,
+  localProjects: SavedProject[]
+): Promise<string> {
+  for (let attempt = 0; attempt < 25; attempt++) {
+    const candidate = buildSubdomainCandidate(base, attempt);
+    const localTaken = localProjects.some((project) => (project.subdomain || '').toLowerCase().trim() === candidate);
+    if (localTaken) continue;
+
+    if (supabase) {
+      try {
+        const { data } = await supabase.from('projects').select('id').eq('subdomain', candidate).limit(1).maybeSingle();
+        if (data?.id) continue;
+      } catch {}
+    }
+
+    return candidate;
+  }
+
+  return `${base.slice(0, 24).replace(/-+$/g, '')}-${Date.now().toString(36).slice(-4)}`;
 }
 
 export async function saveProject(template: Template, phone?: string): Promise<SavedProject> {
   const supabase = getSupabase();
   const userId = getUserIdSync();
+  const localProjects = getLocalProjects();
 
   const payments = await import('./payments');
   let plan = payments.getUserPlan();
@@ -162,7 +198,7 @@ export async function saveProject(template: Template, phone?: string): Promise<S
     }
   }
 
-  const generatedSub = slugify(template.name || 'my-shop');
+  const generatedSub = await resolveAvailableSubdomain(slugify(template.name || 'my-shop'), supabase, localProjects);
 
   const project: SavedProject = {
     id: `${template.id}-${Date.now().toString(36)}`,
@@ -197,12 +233,14 @@ export async function saveProject(template: Template, phone?: string): Promise<S
         .select()
         .single();
 
-      if (!error && data) {
+      if (error) throw error;
+      if (data) {
         saveToLocalStorage(data as SavedProject);
         return data as SavedProject;
       }
-    } catch (e) {
-      console.warn('Supabase save failed, fallback to local:', e);
+    } catch (e: any) {
+      console.warn('Supabase save failed:', e);
+      throw new Error(e?.message || 'Unable to save this website to your live account right now. Please try again.');
     }
   }
 

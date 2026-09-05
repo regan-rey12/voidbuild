@@ -16,8 +16,8 @@ export default function EditableImage({ imageKeyword, alt, editMode, onChange, c
   const [showPicker, setShowPicker] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
 
-  const displaySrc = preview || (imageKeyword?.startsWith('http') || imageKeyword?.startsWith('data:') 
-    ? imageKeyword 
+  const displaySrc = preview || (imageKeyword?.startsWith('http') || imageKeyword?.startsWith('data:') || imageKeyword?.startsWith('/')
+    ? imageKeyword
     : `https://source.unsplash.com/800x600/?${encodeURIComponent(imageKeyword || 'business')}`);
 
   const handleSelect = async (url: string) => {

@@ -52,7 +52,7 @@ export default function TemplateRenderer({
   const sharedPhone = contactBlock?.data?.phone || template.blocks.find((b) => b.data?.phone)?.data?.phone || '';
 
   return (
-    <div className="min-h-screen bg-white antialiased">
+    <div className="relative z-0 min-h-screen bg-white antialiased overflow-x-hidden">
       {template.blocks.map((block, index) => {
         const Component = BLOCK_MAP[block.type];
         if (!Component) {
