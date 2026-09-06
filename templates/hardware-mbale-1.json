@@ -2,8 +2,8 @@
   "id": "hardware-mbale-1",
   "name": "Musa Hardware & Building Supplies Mbale",
   "category": "hardware",
-  "description": "Direct distributor of Tororo Cement, Versatile iron sheets, Plascon paint, and steel rebar in Mbale Central",
-  "meta": { "target": "Hardware store in Mbale, Uganda", "language": "en" },
+  "description": "Direct distributor of Tororo Cement, Versatile iron sheets, Plascon paint and steel rebar in Mbale Central",
+  "meta": { "target": "Hardware and building supplies depot in Mbale, Uganda", "language": "en" },
   "blocks": [
     {
       "id": "nav-1",
@@ -12,219 +12,241 @@
         "businessName": "Musa Hardware",
         "phone": "+256 772 345678",
         "whatsapp": "+256772345678",
+        "variant": "overlay-light",
+        "overlaySurface": "#101a26",
         "links": [
-          { "label": "Products", "href": "#services" },
-          { "label": "Yard Photos", "href": "#gallery" },
-          { "label": "Contractor Tiers", "href": "#pricing" },
-          { "label": "Location", "href": "#map" },
-          { "label": "Price Quote", "href": "#contact" }
+          { "label": "Catalog", "href": "#services" },
+          { "label": "The Depot", "href": "#gallery" },
+          { "label": "Delivery & Packages", "href": "#pricing" },
+          { "label": "Reviews", "href": "#testimonials" },
+          { "label": "Find Us", "href": "#map" },
+          { "label": "Get a Quote", "href": "#contact" }
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": { "primaryColor": "#C2410C" }
     },
     {
       "id": "hero-1",
       "type": "hero",
       "data": {
-        "badge": "UNBS Certified • Direct Factory Distributor • Free Site Delivery in Mbale Town",
-        "title": "Build with Strength, Durability & Direct Factory Prices",
-        "subtitle": "Mbale's trusted wholesale and retail depot for genuine Tororo Cement, Hima PowerMax, Versatile Gauge 28 Iron Sheets, Plascon Paints, and Deformed Steel Rebar. Same-day on-site delivery for construction sites across Bugisu and Sebei.",
-        "ctaText": "Request Price Quote on WhatsApp",
+        "badge": "Direct factory distributor • Mbale Central • Free town delivery",
+        "title": "Build it once. Build it right.",
+        "subtitle": "Tororo Cement, Versatile iron sheets, Plascon paint and deformed steel rebar — genuine stock at factory-direct prices, delivered the same day to sites across Bugisu and Sebei.",
+        "ctaText": "Request a Price Quote",
         "ctaLink": "#contact",
-        "image": "building construction materials cement depot mbale uganda"
+        "secondaryCtaText": "Browse the Catalog",
+        "secondaryCtaLink": "#services",
+        "trustPoints": [
+          "Direct factory distributor",
+          "Same-day site delivery",
+          "Retail & wholesale prices",
+          "Genuine, certified stock"
+        ],
+        "variant": "hardware-background",
+        "image": "/template-images/hardware/hardware-1.jpg"
       },
-      "style": { "primaryColor": "#D97706", "alignment": "left" }
+      "style": { "primaryColor": "#C2410C", "alignment": "left" }
     },
     {
       "id": "stats-1",
       "type": "stats",
       "data": {
-        "heading": "Trusted by Contractors in Eastern Uganda",
+        "variant": "hardware",
+        "heading": "Trusted by contractors across Eastern Uganda",
         "stats": [
-          { "number": "5,000+", "label": "Bags of Cement Always in Stock" },
-          { "number": "100%", "label": "Genuine UNBS Factory Certified Materials" },
-          { "number": "Same Day", "label": "Free Site Delivery for 50+ Bags in Mbale" }
+          { "number": "15+ yrs", "label": "Supplying builders in Bugisu & Sebei" },
+          { "number": "500+", "label": "Construction sites supplied and delivered to" },
+          { "number": "Same day", "label": "Delivery within Mbale town on confirmed orders" }
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": { "primaryColor": "#C2410C" }
     },
     {
       "id": "services-1",
       "type": "services",
       "data": {
-        "heading": "Wholesale & Retail Building Catalog",
-        "subheading": "All prices quoted in UGX with genuine factory warranties. Contact us for bulk truckload contractor discounts.",
+        "variant": "hardware",
+        "buttonLabel": "Ask Price & Stock",
+        "heading": "Wholesale & Retail Catalog",
+        "subheading": "The materials Eastern Ugandan builders actually use — in stock, priced fairly, and loaded for delivery the same day.",
         "phone": "+256 772 345678",
         "whatsapp": "+256772345678",
         "services": [
           {
-            "name": "Tororo Portland Cement (50kg)",
-            "price": "UGX 36,000 / bag",
-            "description": "CEM II 32.5R & 42.5N high strength cement for heavy columns, foundations, and slab casting.",
-            "image": "tororo cement bags building site"
+            "name": "Cement & Concrete",
+            "price": "From UGX 38,000 / bag",
+            "description": "Tororo Cement and Hima PowerMax by the bag or full truckload — fresh stock, never water-damaged.",
+            "image": "/template-images/hardware/hardware-2.jpg"
           },
           {
-            "name": "Versatile Iron Sheets (Gauge 28)",
-            "price": "UGX 42,000 / sheet",
-            "description": "Fade-resistant matte finish corrugated & versatile roofing sheets in Brick Red, Blue, and Forest Green.",
-            "image": "corrugated iron sheets roofing materials"
+            "name": "Roofing & Iron Sheets",
+            "price": "From UGX 36,000 / sheet",
+            "description": "Versatile and Uganda Baati sheets in gauge 28–32, pre-cut to your roof lengths and color choice.",
+            "image": "/template-images/hardware/hardware-3.jpg"
           },
           {
-            "name": "Plascon Weatherguard Paint (20L)",
-            "price": "UGX 185,000 / bucket",
-            "description": "Tough exterior acrylic paint with Maxiflex technology to resist heavy tropical rains and heat.",
-            "image": "paint buckets hardware store"
+            "name": "Steel & Rebar",
+            "price": "From UGX 28,000 / bar",
+            "description": "Deformed reinforcement bars from 10mm to 16mm, plus round bars, square tubes and binding wire.",
+            "image": "/template-images/hardware/hardware-4.jpg"
           },
           {
-            "name": "Deformed Steel Rebar (12mm)",
-            "price": "UGX 38,000 / bar",
-            "description": "High tensile strength British Standard rebar for reinforced concrete structures and ring beams.",
-            "image": "steel rebar construction rods"
+            "name": "Paint & Finishing",
+            "price": "From UGX 45,000 / 4L",
+            "description": "Plascon and Sadolin interior, exterior and gloss finishes — with rollers, brushes and thinners in stock.",
+            "image": "/template-images/hardware/hardware-5.jpg"
           },
           {
-            "name": "Heavy-Duty PVC Pipes (4-Inch)",
-            "price": "UGX 24,000 / length",
-            "description": "Pressure plumbing and drainage pipes with matching elbow, tee, and solvent accessories.",
-            "image": "pvc plumbing pipes hardware"
+            "name": "Plumbing & Water Systems",
+            "price": "From UGX 8,000 / pipe",
+            "description": "PVC and PPR pipes, fittings, taps, water tanks and everything for a full house installation.",
+            "image": "/template-images/hardware/hardware-6.jpg"
           },
           {
-            "name": "Treated Hardwood Timber (2x4x12ft)",
-            "price": "UGX 12,000 / piece",
-            "description": "Kiln-dried, anti-termite treated timber for durable roof trusses and ceiling framework.",
-            "image": "timber wood planks construction"
+            "name": "Tools & Fixings",
+            "price": "From UGX 15,000",
+            "description": "Power tools, hand tools, nails, screws and safety gear — for the trade and for the home fixer.",
+            "image": "/template-images/hardware/hardware-7.jpg"
           }
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": { "primaryColor": "#C2410C" }
     },
     {
       "id": "gallery-1",
       "type": "gallery",
       "data": {
-        "heading": "Our Depot & Materials Yard",
-        "subheading": "Real photos of our warehouses, truck loading dock, and supplied construction sites in Mbale.",
+        "variant": "hardware",
+        "heading": "Inside the Depot & Yard",
+        "subheading": "Organized, covered stock and a loading bay built for quick turnarounds.",
         "images": [
-          "cement bags warehouse stack",
-          "iron sheets roofing construction",
-          "plascon paint store display",
-          "steel rebar construction site",
-          "pvc pipes plumbing warehouse",
-          "hardware store truck loading"
+          "/template-images/hardware/hardware-9.jpg",
+          "/template-images/hardware/hardware-2.jpg",
+          "/template-images/hardware/hardware-3.jpg",
+          "/template-images/hardware/hardware-4.jpg",
+          "/template-images/hardware/hardware-7.jpg",
+          "/template-images/hardware/hardware-8.jpg"
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": { "primaryColor": "#C2410C" }
     },
     {
       "id": "pricing-1",
       "type": "pricing",
       "data": {
-        "heading": "Contractor Supply & Delivery Packages",
-        "subheading": "Save on logistics and materials with our tiered commercial supply programs.",
+        "variant": "hardware",
+        "ctaText": "Request This Package",
+        "heading": "Delivery & Contractor Packages",
+        "subheading": "Whether it's one bag or a full bill of quantities — we price it, load it and deliver it.",
         "phone": "+256 772 345678",
         "whatsapp": "+256772345678",
         "plans": [
           {
-            "name": "Residential Builder Tier",
-            "price": "From UGX 500,000",
-            "sub": "single house projects",
+            "name": "Mbale Town Delivery",
+            "price": "FREE",
+            "sub": "orders above UGX 500,000",
             "features": [
-              "Mixed cement & steel orders",
-              "Standard same-day Mbale delivery",
-              "Payment via MTN MoMo / Airtel Merchant",
-              "Free material quantity estimate"
+              "Same-day delivery within Mbale town",
+              "Offloading at your site",
+              "Orders confirmed by 3 PM arrive same day",
+              "Truck or pickup depending on load size"
             ],
             "popular": false
           },
           {
-            "name": "Commercial Contractor Tier",
-            "price": "From UGX 2,500,000",
-            "sub": "most popular for builders",
+            "name": "Contractor Supply Account",
+            "price": "Custom pricing",
+            "sub": "for active builders & foremen",
             "features": [
-              "Wholesale bulk price discounts",
-              "Priority crane truck site delivery",
-              "Reserved cement batches in depot",
-              "Dedicated account manager on WhatsApp"
+              "Dedicated counter contact for your jobs",
+              "Bulk pricing on cement, sheets & rebar",
+              "Priority delivery scheduling",
+              "Stock reserved ahead of big pours"
             ],
             "popular": true
           },
           {
-            "name": "Mega Project Direct Trailer",
-            "price": "From UGX 10,000,000",
-            "sub": "factory direct shipments",
+            "name": "Full Project Supply",
+            "price": "Quoted per project",
+            "sub": "bill of quantities welcome",
             "features": [
-              "Direct factory trailer dispatch from Tororo",
-              "Lowest guaranteed wholesale rate",
-              "Credit payment facility for registered firms",
-              "On-site UNBS batch test certificates"
+              "Complete supply of your bill of quantities",
+              "Phased deliveries aligned to your build schedule",
+              "One contact for every material on site",
+              "Delivery across Bugisu & Sebei"
             ],
             "popular": false
           }
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": { "primaryColor": "#C2410C" }
     },
     {
       "id": "testimonials-1",
       "type": "testimonials",
       "data": {
+        "variant": "hardware",
         "heading": "What Mbale Builders Say",
-        "subheading": "Feedback from engineers, foremen, and private property developers.",
+        "subheading": "Foremen, contractors and families building their own homes.",
         "testimonials": [
           {
-            "name": "Eng. David W.",
-            "role": "Site Engineer, Mbale Commercial Plaza",
-            "text": "Musa Hardware delivered 200 bags of Tororo cement to our site within 2 hours. Never had a delay or counterfeit product.",
+            "name": "Godfrey W.",
+            "role": "Site foreman, Mbale town",
+            "text": "When we are pouring a slab, cement arrives before 10 AM — every time. In four years I have never had a delayed pour because of materials from Musa.",
             "rating": 5
           },
           {
-            "name": "Patrick O.",
-            "role": "Homeowner, Pallisa Road",
-            "text": "Bought all iron sheets and paint for my 4-bedroom bungalow here. Saved over 1.5 million shillings compared to Kampala prices.",
+            "name": "Prossy N.",
+            "role": "Building her home in Namatala",
+            "text": "The final invoice matched the quote to the shilling, and the iron sheets were genuine gauge. No shortcuts, no surprises.",
             "rating": 5
           },
           {
-            "name": "Sarah N.",
-            "role": "School Project Manager, Bududa",
-            "text": "Their delivery truck navigated the rainy hills of Bududa safely. Trustworthy business and easy mobile money payments.",
+            "name": "Engineer David S.",
+            "role": "Contractor, Sironko",
+            "text": "I send my bill of quantities in the morning and get full pricing the same day. They now supply all my jobs across Sebei.",
             "rating": 5
           }
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": { "primaryColor": "#C2410C" }
     },
     {
       "id": "map-1",
       "type": "map",
       "data": {
         "heading": "Visit Our Central Mbale Depot",
-        "subheading": "Convenient truck loading bay located right in the commercial center of Mbale town.",
+        "subheading": "Plot 12, Cathedral Avenue — opposite Stanbic Bank, with a loading bay for pickups and lorries.",
         "location": "Plot 12, Cathedral Avenue, Opposite Stanbic Bank, Mbale",
         "phone": "+256 772 345678"
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": { "primaryColor": "#C2410C" }
     },
     {
       "id": "contact-1",
       "type": "contact",
       "data": {
-        "heading": "Request Price Quote or Schedule Delivery",
+        "variant": "hardware",
+        "heading": "Request a Quote",
+        "subheading": "Send your material list — we reply with current prices, stock and delivery costs.",
         "phone": "+256 772 345678",
         "whatsapp": "+256772345678",
         "location": "Plot 12, Cathedral Avenue, Mbale Central (Opposite Stanbic Bank)",
-        "hours": "Mon-Sat: 7:30am - 6:30pm (Closed on Sundays)",
-        "email": "sales@musahardware.ug"
+        "hours": "Mon–Sat: 7:30 AM – 6:30 PM • Closed Sundays",
+        "email": "sales@musahardware.ug",
+        "buttonText": "Send Quote Request"
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": { "primaryColor": "#C2410C" }
     },
     {
       "id": "footer-1",
       "type": "footer",
       "data": {
         "businessName": "Musa Hardware & Building Supplies",
-        "tagline": "Building Eastern Uganda • Cement • Iron Sheets • Steel • Paint • Mbale",
+        "tagline": "Cement • Iron Sheets • Steel • Paint • Mbale, Uganda",
         "year": 2026
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": { "primaryColor": "#C2410C" }
     }
   ]
 }

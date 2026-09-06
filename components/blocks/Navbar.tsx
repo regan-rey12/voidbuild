@@ -13,6 +13,7 @@ interface NavbarProps {
     whatsapp?: string;
     links?: { label: string; href: string }[];
     variant?: 'default' | 'overlay-light';
+    overlaySurface?: string;
   };
   style?: { primaryColor?: string };
   projectId?: string;
@@ -46,6 +47,13 @@ export default function Navbar({ data, style, projectId, editMode, onUpdateData 
   const waNumber = (data.whatsapp || data.phone || '').replace(/[^0-9]/g, '');
   const overlayElevated = isOverlay && scrolled;
 
+  const overlaySurface = data.overlaySurface || '#16110d';
+  const surfaceRgba = (alpha: number) => {
+    const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(overlaySurface);
+    if (!m) return `rgba(22,17,13,${alpha})`;
+    return `rgba(${parseInt(m[1], 16)},${parseInt(m[2], 16)},${parseInt(m[3], 16)},${alpha})`;
+  };
+
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (editMode) return;
     if (href.startsWith('#')) {
@@ -63,10 +71,11 @@ export default function Navbar({ data, style, projectId, editMode, onUpdateData 
       className={`${editMode ? 'relative' : isOverlay ? 'fixed top-0 left-0 w-full' : 'sticky top-0'} z-40 transition-all duration-300 ${
         isOverlay
           ? overlayElevated
-            ? 'bg-[#16110d]/84 border-b border-white/10 shadow-lg backdrop-blur-xl'
+            ? 'border-b border-white/10 shadow-lg backdrop-blur-xl'
             : 'bg-transparent'
           : 'bg-white border-b border-gray-100 shadow-sm'
       }`}
+      style={isOverlay && overlayElevated ? { backgroundColor: surfaceRgba(0.86) } : undefined}
     >
       <div
         className={`max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between transition-all duration-300 ${
@@ -142,7 +151,10 @@ export default function Navbar({ data, style, projectId, editMode, onUpdateData 
       </div>
 
       {open && (
-        <div className={`md:hidden border-t px-4 py-3 space-y-1 shadow-lg animate-fade-in ${isOverlay ? 'bg-[#16110d]/96 border-white/10 backdrop-blur-xl' : 'bg-white'}`}>
+        <div
+          className={`md:hidden border-t px-4 py-3 space-y-1 shadow-lg animate-fade-in ${isOverlay ? 'border-white/10 backdrop-blur-xl' : 'bg-white'}`}
+          style={isOverlay ? { backgroundColor: surfaceRgba(0.97) } : undefined}
+        >
           {(data.links || [{ label: 'Services', href: '#services' }, { label: 'Contact', href: '#contact' }]).map((l, i) => (
             <a
               key={i}

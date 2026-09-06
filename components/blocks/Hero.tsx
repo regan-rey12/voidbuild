@@ -62,8 +62,11 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
   const isRestaurant = variant === 'restaurant-background';
   const isBoutique = variant === 'boutique-background';
   const isPharmacyBackground = variant === 'pharmacy-background';
+  const isHotelBackground = variant === 'hotel-background';
+  const isBarbershopBackground = variant === 'barbershop-background';
+  const isHardwareBackground = variant === 'hardware-background';
   const isPharmacyClean = variant === 'pharmacy-clean';
-  const isBackgroundVariant = isSalon || isRestaurant || isBoutique || isPharmacyBackground;
+  const isBackgroundVariant = isSalon || isRestaurant || isBoutique || isPharmacyBackground || isHotelBackground || isBarbershopBackground || isHardwareBackground;
 
   if (isBackgroundVariant) {
     const surfaceClass = isRestaurant
@@ -72,6 +75,12 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
       ? 'bg-[#201913]'
       : isPharmacyBackground
       ? 'bg-[#071611]'
+      : isHotelBackground
+      ? 'bg-[#081510]'
+      : isBarbershopBackground
+      ? 'bg-[#100d0a]'
+      : isHardwareBackground
+      ? 'bg-[#101a26]'
       : 'bg-[#12070d]';
 
     const accentClass = isRestaurant
@@ -80,6 +89,12 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
       ? 'text-[#f0d9c3]'
       : isPharmacyBackground
       ? 'text-emerald-300'
+      : isHotelBackground
+      ? 'text-amber-300'
+      : isBarbershopBackground
+      ? 'text-amber-400'
+      : isHardwareBackground
+      ? 'text-orange-400'
       : 'text-pink-300';
 
     const fallbackBg = isRestaurant
@@ -88,6 +103,12 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
       ? 'bg-gradient-to-br from-stone-300 via-amber-100 to-stone-50'
       : isPharmacyBackground
       ? 'bg-gradient-to-br from-emerald-200 via-teal-50 to-white'
+      : isHotelBackground
+      ? 'bg-gradient-to-br from-[#1d4d3e] via-[#2f6b58] to-[#0d211a]'
+      : isBarbershopBackground
+      ? 'bg-gradient-to-br from-[#3a2f22] via-[#241c13] to-[#0f0c09]'
+      : isHardwareBackground
+      ? 'bg-gradient-to-br from-[#2b3f52] via-[#1d2c3b] to-[#0f1823]'
       : 'bg-gradient-to-br from-rose-200 via-rose-100 to-stone-100';
 
     const badgeClass = isRestaurant
@@ -96,6 +117,12 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
       ? 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold bg-white/12 text-white border border-white/15 mb-4 backdrop-blur-sm'
       : isPharmacyBackground
       ? 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold bg-white/12 text-white border border-white/15 mb-4 backdrop-blur-sm'
+      : isHotelBackground
+      ? 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 text-white border border-amber-200/30 mb-4 backdrop-blur-sm'
+      : isBarbershopBackground
+      ? 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 text-white border border-amber-300/25 mb-4 backdrop-blur-sm'
+      : isHardwareBackground
+      ? 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 text-white border border-orange-300/25 mb-4 backdrop-blur-sm'
       : 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 text-white border border-white/15 mb-4 backdrop-blur-sm';
 
     const chipClass = isRestaurant
@@ -104,30 +131,54 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
       ? 'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] text-white/95 backdrop-blur-sm bg-black/25 border border-white/15'
       : isPharmacyBackground
       ? 'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] text-white/95 backdrop-blur-sm bg-black/25 border border-white/15'
+      : isHotelBackground
+      ? 'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] text-white/95 backdrop-blur-sm bg-black/30 border border-white/15'
+      : isBarbershopBackground
+      ? 'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] text-white/95 backdrop-blur-sm bg-black/35 border border-white/15'
+      : isHardwareBackground
+      ? 'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] text-white/95 backdrop-blur-sm bg-black/35 border border-white/15'
       : 'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] text-white/95 backdrop-blur-sm bg-white/10 border border-white/15';
 
-    const overlayClass = isBoutique
+    const overlayClass = isHotelBackground
+      ? 'bg-[#06110d]/52'
+      : isBarbershopBackground
+      ? 'bg-gradient-to-r from-black/80 via-black/55 to-black/25'
+      : isHardwareBackground
+      ? 'bg-gradient-to-r from-[#0b141d]/80 via-[#0b141d]/55 to-[#0b141d]/25'
+      : isBoutique
       ? 'bg-gradient-to-r from-black/80 via-black/55 to-black/15'
       : isPharmacyBackground
       ? 'bg-gradient-to-r from-[#04110c]/85 via-[#04110c]/60 to-[#04110c]/22'
       : 'bg-gradient-to-r from-black/75 via-black/60 to-black/25';
 
-    const containerSpacing = isBoutique
+    const containerSpacing = isHotelBackground
+      ? 'pt-32 pb-20 md:pt-36 md:pb-32'
+      : isBarbershopBackground
+      ? 'pt-28 pb-16 md:pt-36 md:pb-28'
+      : isHardwareBackground
+      ? 'pt-28 pb-16 md:pt-36 md:pb-28'
+      : isBoutique
       ? 'pt-28 pb-16 md:pt-36 md:pb-28'
       : isPharmacyBackground
       ? 'pt-28 pb-16 md:pt-36 md:pb-26'
       : 'pt-24 pb-14 md:pt-32 md:pb-24';
 
-    const titleClass = isBoutique
+    const titleClass = isHotelBackground
+      ? 'text-[34px] sm:text-[46px] md:text-[70px]'
+      : isBarbershopBackground
+      ? 'text-[33px] sm:text-[46px] md:text-[68px]'
+      : isHardwareBackground
+      ? 'text-[33px] sm:text-[44px] md:text-[66px]'
+      : isBoutique
       ? 'text-[33px] sm:text-[44px] md:text-[68px]'
       : isPharmacyBackground
       ? 'text-[33px] sm:text-[44px] md:text-[64px]'
       : 'text-[31px] sm:text-[40px] md:text-[62px]';
 
-    const subtitleClass = isBoutique || isPharmacyBackground ? 'text-[15px] md:text-[18px]' : 'text-sm md:text-lg';
+    const subtitleClass = isBoutique || isPharmacyBackground || isHotelBackground || isBarbershopBackground || isHardwareBackground ? 'text-[15px] md:text-[18px]' : 'text-sm md:text-lg';
 
     return (
-      <section id="hero" className={`relative overflow-hidden text-white ${surfaceClass}`}>
+      <section id="hero" className={`relative overflow-hidden text-white ${surfaceClass} ${isHotelBackground || isBarbershopBackground ? 'flex items-center min-h-[88vh] md:min-h-[94vh]' : ''}`}>
         <div className="absolute inset-0">
           {imageSrc ? (
             <img src={imageSrc} alt={data.title} className="w-full h-full object-cover" loading="lazy" />
@@ -137,6 +188,9 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
         </div>
         <div className={`absolute inset-0 pointer-events-none ${overlayClass}`} />
         <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/45 via-transparent to-black/20" />
+        {(isHotelBackground || isBarbershopBackground) && (
+          <div className="absolute inset-x-0 bottom-0 h-24 pointer-events-none bg-gradient-to-t from-black/55 to-transparent" />
+        )}
 
         {editMode && (
           <button
@@ -153,7 +207,7 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
         )}
 
         <div className={`relative max-w-6xl mx-auto px-4 md:px-6 ${containerSpacing}`}>
-          <div className="max-w-2xl md:max-w-3xl">
+          <div className={isHotelBackground ? 'max-w-3xl mx-auto text-center' : 'max-w-2xl md:max-w-3xl'}>
             {data.badge && (
               <div className={badgeClass}>
                 <span>
@@ -166,7 +220,7 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
               </div>
             )}
 
-            <h1 className={`font-extrabold tracking-tight leading-[0.98] text-white max-w-2xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)] ${titleClass}`}>
+            <h1 className={`font-extrabold tracking-tight leading-[0.98] text-white max-w-2xl ${isHotelBackground ? 'mx-auto' : ''} drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)] ${titleClass}`}>
               {editMode ? (
                 <EditableText value={data.title} onChange={(v) => update('title', v)} editMode={editMode} as="span" className={`${titleClass} font-extrabold leading-[0.98]`} placeholder="Headline" />
               ) : (
@@ -184,12 +238,12 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
               </p>
             )}
 
-            <div className="mt-6 flex flex-col sm:flex-row gap-3 max-w-xl">
+            <div className={`mt-6 flex flex-col sm:flex-row gap-3 ${isHotelBackground ? 'sm:justify-center' : 'max-w-xl'}`}>
               <a
                 href={targetLink}
                 onClick={(e) => handleSmoothScroll(e, targetLink)}
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all"
-                style={{ backgroundColor: primary }}
+                className={`inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm shadow-lg hover:shadow-xl transition-all ${isBarbershopBackground ? 'text-[#221604]' : 'text-white'}`}
+                style={{ backgroundColor: isBarbershopBackground ? '#C9962E' : primary }}
               >
                 {editMode ? (
                   <EditableText value={data.ctaText || 'Book Now'} onChange={(v) => update('ctaText', v)} editMode={editMode} as="span" className="text-sm" />
@@ -214,7 +268,7 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
             </div>
 
             {!!data.trustPoints?.length && (
-              <div className="mt-6 flex flex-wrap gap-2.5 max-w-2xl">
+              <div className={`mt-6 flex flex-wrap gap-2.5 ${isHotelBackground ? 'justify-center max-w-none' : 'max-w-2xl'}`}>
                 {data.trustPoints.map((point) => (
                   <div key={point} className={chipClass}>
                     <Check className={`w-3.5 h-3.5 ${accentClass}`} />
@@ -235,7 +289,7 @@ export default function Hero({ data, style, editMode, onUpdateData }: HeroProps)
               update('image', url);
             }}
             currentKeyword={data.image}
-            category={isRestaurant ? 'restaurant' : isBoutique ? 'boutique' : isPharmacyBackground ? 'pharmacy' : 'salon'}
+            category={isRestaurant ? 'restaurant' : isBoutique ? 'boutique' : isPharmacyBackground ? 'pharmacy' : isHotelBackground ? 'hotel' : isBarbershopBackground ? 'barbershop' : isHardwareBackground ? 'hardware' : 'salon'}
           />
         )}
       </section>

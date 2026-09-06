@@ -2,7 +2,7 @@
   "id": "hotel-ug-1",
   "name": "Nile View Lodge & Cottages Jinja",
   "category": "hotel",
-  "description": "Luxury riverview cottages, Nile boat cruises, swimming pool, and dining in Jinja, Uganda",
+  "description": "Riverside cottages, sunset boat cruises, swimming pool and dining at a boutique lodge in Jinja, Uganda",
   "meta": { "target": "Hotel and resort lodge in Jinja, Uganda", "language": "en" },
   "blocks": [
     {
@@ -12,220 +12,242 @@
         "businessName": "Nile View Lodge",
         "phone": "+256 776 112233",
         "whatsapp": "+256776112233",
+        "variant": "overlay-light",
+        "overlaySurface": "#0b1a14",
         "links": [
           { "label": "Rooms & Cottages", "href": "#services" },
-          { "label": "Lodge Views", "href": "#gallery" },
-          { "label": "Weekend Packages", "href": "#pricing" },
+          { "label": "Gallery", "href": "#gallery" },
+          { "label": "Packages", "href": "#pricing" },
           { "label": "Guest Reviews", "href": "#testimonials" },
-          { "label": "Location", "href": "#map" },
-          { "label": "Book Stay", "href": "#contact" }
+          { "label": "Find Us", "href": "#map" },
+          { "label": "Reserve", "href": "#contact" }
         ]
       },
-      "style": { "primaryColor": "#0F766E" }
+      "style": { "primaryColor": "#1A5748" }
     },
     {
       "id": "hero-1",
       "type": "hero",
       "data": {
-        "badge": "Source of the Nile Views • Swimming Pool • Sunset Boat Cruise • Free WiFi",
-        "title": "Escape to Serenity on the Banks of River Nile",
-        "subtitle": "Jinja's premier boutique riverfront getaway. Thatched luxury cottages with private balconies overlooking the River Nile, infinity swimming pool, sunset boat cruises, and exquisite local & continental dining. Direct WhatsApp reservations.",
-        "ctaText": "Book Room on WhatsApp",
-        "ctaLink": "#contact",
-        "image": "luxury resort hotel river nile cottages jinja uganda"
+        "badge": "Boutique riverside lodge • Bujagali, Jinja",
+        "title": "Slow evenings on the banks of the Nile",
+        "subtitle": "Thatched cottages with river views, an infinity pool, sunset boat cruises and unhurried Ugandan hospitality — about 90 minutes from Kampala.",
+        "ctaText": "Check Rooms & Rates",
+        "ctaLink": "#services",
+        "secondaryCtaText": "View Weekend Packages",
+        "secondaryCtaLink": "#pricing",
+        "trustPoints": [
+          "Breakfast included",
+          "Infinity pool & river views",
+          "Sunset cruises on the Nile",
+          "24/7 reception & security"
+        ],
+        "variant": "hotel-background",
+        "image": "/template-images/hotel/hotel-1.jpg"
       },
-      "style": { "primaryColor": "#0F766E", "alignment": "left" }
+      "style": { "primaryColor": "#1A5748", "alignment": "center" }
     },
     {
       "id": "stats-1",
       "type": "stats",
       "data": {
-        "heading": "Your Riverside Sanctuary",
+        "variant": "hotel",
+        "heading": "A lodge built for slow weekends",
         "stats": [
-          { "number": "100%", "label": "Panoramic River Nile Views from Cottages" },
-          { "number": "4.9 ★", "label": "Top Rated Weekend Getaway in Jinja" },
-          { "number": "1.5 Hrs", "label": "Scenic Drive from Kampala City" }
+          { "number": "4.9 ★", "label": "Average guest rating from stays with us" },
+          { "number": "90 min", "label": "Scenic drive from Kampala to the lodge" },
+          { "number": "24/7", "label": "Reception, security and check-in" }
         ]
       },
-      "style": { "primaryColor": "#0F766E" }
+      "style": { "primaryColor": "#1A5748" }
     },
     {
       "id": "services-1",
       "type": "services",
       "data": {
-        "heading": "Cottages, Suites & Resort Experiences",
-        "subheading": "All accommodation rates include full English breakfast, high-speed WiFi, and swimming pool access.",
+        "variant": "hotel",
+        "buttonLabel": "Enquire About This Stay",
+        "heading": "Rooms, Cottages & Experiences",
+        "subheading": "Every rate includes full breakfast, WiFi and pool access. Mix your stay with a cruise, a riverside dinner or a day on the rapids.",
         "phone": "+256 776 112233",
         "whatsapp": "+256776112233",
         "services": [
           {
-            "name": "Deluxe Riverview Cottage (Bed & Breakfast)",
+            "name": "Deluxe Riverview Cottage",
             "price": "UGX 220,000 / night",
-            "description": "King-size bed, private wooden balcony facing the Nile rapids, en-suite hot shower, and mini-fridge.",
-            "image": "luxury safari cottage bedroom wooden balcony view"
+            "description": "King-size bed, en-suite hot shower and a private wooden balcony looking straight over the Nile rapids.",
+            "image": "/template-images/hotel/hotel-2.jpg"
           },
           {
             "name": "Family Two-Bedroom Villa",
             "price": "UGX 380,000 / night",
-            "description": "Spacious family lodge with 2 bedrooms, private lounge, garden patio, and kids play area access.",
-            "image": "resort villa family room hotel interior"
+            "description": "Two bedrooms, a private lounge and a garden patio — comfortable space for four to five guests, steps from the pool.",
+            "image": "/template-images/hotel/hotel-3.jpg"
           },
           {
-            "name": "Sunset Nile Boat Cruise (2 Hours)",
+            "name": "Sunset Boat Cruise",
             "price": "UGX 60,000 / person",
-            "description": "Guided evening cruise to the Source of the Nile with birdwatching, chilled drinks, and sunset views.",
-            "image": "boat cruise river nile sunset jinja"
+            "description": "A relaxed two-hour evening cruise with chilled drinks, birdwatching and the sun going down over the river.",
+            "image": "/template-images/hotel/hotel-4.jpg"
           },
           {
-            "name": "Riverfront BBQ & Tilapia Dinner",
+            "name": "Riverside Dining & Tilapia BBQ",
             "price": "UGX 35,000 / plate",
-            "description": "Fresh whole Nile tilapia grilled on charcoal with spiced potato wedges and garden salad.",
-            "image": "grilled fish dinner outdoor restaurant resort"
+            "description": "Fresh Nile tilapia grilled on charcoal and served on the terrace as the lanterns come on in the evening.",
+            "image": "/template-images/hotel/hotel-5.jpg"
           },
           {
-            "name": "White Water Rafting & Quad Biking",
+            "name": "Nile Adventures Desk",
             "price": "UGX 280,000 / person",
-            "description": "Full-day Grade 5 Nile white water rafting with certified guides, safety gear, and riverside lunch.",
-            "image": "white water rafting river nile adventure jinja"
+            "description": "White-water rafting and quad biking with certified guides and full safety gear — booked for you at reception.",
+            "image": "/template-images/hotel/hotel-8.jpg"
           },
           {
-            "name": "Corporate Retreat & Conference Hall",
-            "price": "UGX 450,000 / day",
-            "description": "Air-conditioned 60-seater conference hall with projector, sound system, and mid-morning tea breaks.",
-            "image": "conference meeting room hotel resort projector"
+            "name": "Weddings, Retreats & Conferences",
+            "price": "From UGX 450,000 / day",
+            "description": "A 60-seat hall, a garden lawn for weddings and team-building activities, with catering arranged for your group.",
+            "image": "/template-images/hotel/hotel-9.jpg"
           }
         ]
       },
-      "style": { "primaryColor": "#0F766E" }
+      "style": { "primaryColor": "#1A5748" }
     },
     {
       "id": "gallery-1",
       "type": "gallery",
       "data": {
-        "heading": "Lodge Views & Experiences",
-        "subheading": "Moments of relaxation, infinity pool sunsets, and nature walks along the River Nile.",
+        "variant": "hotel",
+        "heading": "The Lodge, Up Close",
+        "subheading": "Pool afternoons, river evenings and slow mornings — a look at everyday life at the lodge.",
         "images": [
-          "swimming pool resort sunset river",
-          "cottage room interior king bed",
-          "river nile boat cruise sunset",
-          "resort dining outdoor garden night",
-          "source of the nile jinja scenery",
-          "hotel breakfast fruit buffet morning"
+          "/template-images/hotel/hotel-7.jpg",
+          "/template-images/hotel/hotel-2.jpg",
+          "/template-images/hotel/hotel-4.jpg",
+          "/template-images/hotel/hotel-5.jpg",
+          "/template-images/hotel/hotel-6.jpg",
+          "/template-images/hotel/hotel-10.jpg",
+          "/template-images/hotel/hotel-3.jpg"
         ]
       },
-      "style": { "primaryColor": "#0F766E" }
+      "style": { "primaryColor": "#1A5748" }
     },
     {
       "id": "pricing-1",
       "type": "pricing",
       "data": {
-        "heading": "Weekend Getaway & Honeymoon Packages",
-        "subheading": "Special discounted packages for couples, families, and corporate team building.",
+        "variant": "hotel",
+        "ctaText": "Enquire About This Package",
+        "heading": "Weekend & Getaway Packages",
+        "subheading": "Bundled stays for couples, families and teams — flexible dates, confirmed on enquiry.",
         "phone": "+256 776 112233",
         "whatsapp": "+256776112233",
         "plans": [
           {
             "name": "Couples Weekend Escape",
             "price": "UGX 420,000",
-            "sub": "2 Days / 1 Night (2 pax)",
+            "sub": "2 Days / 1 Night • 2 Guests",
             "features": [
-              "Deluxe Riverview Cottage accommodation",
-              "Complimentary bottle of sparkling wine",
-              "2-Hour Sunset Nile boat cruise for two",
-              "Full English breakfast & candlelit dinner"
+              "Deluxe riverview cottage",
+              "Sunset boat cruise for two",
+              "Candlelit dinner & full breakfast",
+              "Late check-out at 12:30 PM"
             ],
             "popular": true
           },
           {
-            "name": "Full Honeymoon Romance",
+            "name": "Honeymoon Romance",
             "price": "UGX 890,000",
             "sub": "3 Days / 2 Nights",
             "features": [
-              "Honeymoon Suite with rose petal bed decor",
-              "Private candlelit 3-course dinner by the river",
-              "Couples Swedish massage by pool",
-              "Full board meals (Breakfast, Lunch & Dinner)"
+              "Honeymoon suite with rose decor",
+              "Private 3-course riverside dinner",
+              "Couples massage by the pool",
+              "Full board — all meals included"
             ],
             "popular": false
           },
           {
-            "name": "Family Staycation Special",
+            "name": "Family Staycation",
             "price": "UGX 650,000",
-            "sub": "2 Days / 1 Night (Up to 4 pax)",
+            "sub": "2 Days / 1 Night • Up to 5 Guests",
             "features": [
-              "Family Two-Bedroom Villa",
-              "Unlimited swimming pool access",
-              "Kids nature walk & birdwatching tour",
-              "Full breakfast & family BBQ dinner"
+              "Two-bedroom family villa",
+              "Pool & garden access all day",
+              "Kids nature walk & birdwatching",
+              "Family BBQ dinner & breakfast"
             ],
             "popular": false
           }
         ]
       },
-      "style": { "primaryColor": "#0F766E" }
+      "style": { "primaryColor": "#1A5748" }
     },
     {
       "id": "testimonials-1",
       "type": "testimonials",
       "data": {
-        "heading": "Guest Reviews & Stories",
-        "subheading": "What guests say about their stay at Nile View Lodge Jinja.",
+        "variant": "hotel",
+        "heading": "Guest Reviews",
+        "subheading": "Couples, families and teams who stayed with us by the Nile.",
         "testimonials": [
           {
             "name": "Joshua & Brenda O.",
-            "role": "Kampala Couple",
-            "text": "Waking up to the sound of the Nile rapids was pure magic. The food was fresh, the cottage was spotless, and the boat cruise was unforgettable.",
+            "role": "Weekend guests from Kampala",
+            "text": "We woke up to the sound of the rapids, had breakfast on the terrace and ended the day on the boat cruise. Everything felt easy and unhurried.",
             "rating": 5
           },
           {
             "name": "Dr. Sarah A.",
-            "role": "Solo Traveler",
-            "text": "The perfect place to rest and write. High-speed WiFi worked seamlessly by the swimming pool. Staff are exceptionally warm and welcoming.",
+            "role": "Solo traveller",
+            "text": "The perfect place to rest between trips. Strong WiFi by the pool, quiet cottages and genuinely kind staff who remember your name.",
             "rating": 5
           },
           {
             "name": "Ivan K.",
-            "role": "Team Building Organizer",
-            "text": "Hosted our company retreat of 25 staff members here. Conference facilities and team activities exceeded our expectations.",
+            "role": "Team retreat organiser",
+            "text": "We hosted 25 staff here for two days. The hall worked perfectly, the BBQ night was a highlight, and the team kept talking about the cruise for weeks.",
             "rating": 5
           }
         ]
       },
-      "style": { "primaryColor": "#0F766E" }
+      "style": { "primaryColor": "#1A5748" }
     },
     {
       "id": "map-1",
       "type": "map",
       "data": {
-        "heading": "Location Along River Nile in Jinja",
-        "subheading": "Located along Kyabirwa Road, 10 minutes from Jinja City Centre.",
+        "heading": "Find Us on the Banks of the Nile",
+        "subheading": "Ten minutes from Jinja town centre, along Kyabirwa Road — we share full directions when you book.",
         "location": "Kyabirwa Road, Bujagali, Jinja, Uganda",
         "phone": "+256 776 112233"
       },
-      "style": { "primaryColor": "#0F766E" }
+      "style": { "primaryColor": "#1A5748" }
     },
     {
       "id": "contact-1",
       "type": "contact",
       "data": {
-        "heading": "Reserve Your Stay on WhatsApp",
+        "variant": "hotel",
+        "heading": "Reserve Your Stay",
+        "subheading": "Tell us your dates and number of guests — reservations replies within a few hours, any day of the week.",
         "phone": "+256 776 112233",
         "whatsapp": "+256776112233",
         "location": "Kyabirwa Road, Bujagali, Jinja, Uganda",
-        "hours": "Reception & Check-in: 24/7 (Check-in 12:00 PM | Check-out 10:30 AM)",
-        "email": "reservations@nileviewlodge.ug"
+        "hours": "Reception 24/7 • Check-in from 12:00 PM • Check-out 10:30 AM",
+        "email": "reservations@nileviewlodge.ug",
+        "buttonText": "Send Reservation Request"
       },
-      "style": { "primaryColor": "#0F766E" }
+      "style": { "primaryColor": "#1A5748" }
     },
     {
       "id": "footer-1",
       "type": "footer",
       "data": {
         "businessName": "Nile View Lodge & Cottages",
-        "tagline": "Riverfront Cottages • Sunset Cruises • Swimming • Jinja, Uganda",
+        "tagline": "Riverside cottages, sunset cruises and slow evenings — Jinja, Uganda",
         "year": 2026
       },
-      "style": { "primaryColor": "#0F766E" }
+      "style": { "primaryColor": "#1A5748" }
     }
   ]
 }

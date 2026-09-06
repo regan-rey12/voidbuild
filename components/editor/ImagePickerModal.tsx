@@ -9,6 +9,10 @@ const CURATED_IMAGES = [
   { keyword: 'african gel nails manicure salon', label: 'Nails', category: 'salon' },
   { keyword: 'hardware shop building materials', label: 'Hardware', category: 'hardware' },
   { keyword: 'cement bags construction', label: 'Cement', category: 'hardware' },
+  { keyword: 'iron roofing sheets stack', label: 'Roofing Sheets', category: 'hardware' },
+  { keyword: 'steel rebar bundles yard', label: 'Steel Rebar', category: 'hardware' },
+  { keyword: 'paint cans shelf colors', label: 'Paint Shelf', category: 'hardware' },
+  { keyword: 'hardware delivery lorry loading', label: 'Delivery', category: 'hardware' },
   { keyword: 'ugandan food matooke plated', label: 'Local Food', category: 'restaurant' },
   { keyword: 'restaurant uganda interior food', label: 'Restaurant', category: 'restaurant' },
   { keyword: 'boutique fashion african dress', label: 'Boutique', category: 'boutique' },
@@ -17,7 +21,16 @@ const CURATED_IMAGES = [
   { keyword: 'supplements pharmacy shelf', label: 'Pharmacy Shelf', category: 'pharmacy' },
   { keyword: 'motorcycle garage repair', label: 'Boda Garage', category: 'boda' },
   { keyword: 'barbershop african man fade', label: 'Barbershop', category: 'barbershop' },
-  { keyword: 'african school children classroom', label: 'School', category: 'school' }
+  { keyword: 'barbershop hot towel shave razor', label: 'Hot Towel Shave', category: 'barbershop' },
+  { keyword: 'barbershop dreadlocks retwist men', label: 'Dreadlock Care', category: 'barbershop' },
+  { keyword: 'barber tools clippers flat lay', label: 'Barber Tools', category: 'barbershop' },
+  { keyword: 'barbershop interior leather chairs', label: 'Shop Interior', category: 'barbershop' },
+  { keyword: 'african school children classroom', label: 'School', category: 'school' },
+  { keyword: 'riverside lodge pool sunset', label: 'Lodge Pool', category: 'hotel' },
+  { keyword: 'safari cottage bedroom interior', label: 'Cottage Room', category: 'hotel' },
+  { keyword: 'boat cruise river sunset', label: 'Boat Cruise', category: 'hotel' },
+  { keyword: 'resort dining terrace lanterns', label: 'Lodge Dining', category: 'hotel' },
+  { keyword: 'resort garden wedding lawn', label: 'Events Lawn', category: 'hotel' }
 ];
 
 interface Props {

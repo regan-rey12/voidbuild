@@ -47,11 +47,63 @@ function getPharmacyAspectClass(index: number) {
   return 'aspect-[4/5]';
 }
 
+function getHotelTileClass(index: number) {
+  if (index === 0 || index === 3 || index === 6) return 'col-span-2';
+  if (index === 1 || index === 2 || index === 4 || index === 5) return 'col-span-1';
+  return 'col-span-1';
+}
+
+function getHotelMdTileClass(index: number) {
+  if (index === 0 || index === 3) return 'md:col-span-7';
+  if (index === 1 || index === 2) return 'md:col-span-5';
+  return 'md:col-span-4';
+}
+
+function getHotelAspectClass(index: number) {
+  if (index === 0 || index === 3) return 'aspect-[4/3] md:aspect-[16/11]';
+  return 'aspect-[4/5]';
+}
+
+function getBarbershopTileClass(index: number) {
+  if (index === 0 || index === 6) return 'col-span-2';
+  return 'col-span-1';
+}
+
+function getBarbershopMdTileClass(index: number) {
+  if (index === 0 || index === 6) return 'md:col-span-8';
+  return 'md:col-span-4';
+}
+
+function getBarbershopAspectClass(index: number) {
+  if (index === 0 || index === 6) return 'aspect-[4/3] md:aspect-[16/10]';
+  return 'aspect-[4/5]';
+}
+
+function getHardwareTileClass(index: number) {
+  if (index === 5) return 'col-span-2';
+  return 'col-span-1';
+}
+
+function getHardwareMdTileClass(index: number) {
+  if (index === 0 || index === 1) return 'md:col-span-6';
+  if (index === 5) return 'md:col-span-12';
+  return 'md:col-span-4';
+}
+
+function getHardwareAspectClass(index: number) {
+  if (index === 0 || index === 1) return 'aspect-[4/3]';
+  if (index === 5) return 'aspect-[4/3] md:aspect-[21/9]';
+  return 'aspect-[4/5]';
+}
+
 export default function Gallery({ data, style, editMode, onUpdateData }: Props) {
   const images = data.images && data.images.length > 0 ? data.images : DEFAULT_IMAGES.slice(0, 6);
   const variant = data.variant || 'default';
   const isBoutique = variant === 'boutique';
   const isPharmacy = variant === 'pharmacy';
+  const isHotel = variant === 'hotel';
+  const isBarbershop = variant === 'barbershop';
+  const isHardware = variant === 'hardware';
 
   const updateImage = (idx: number, newUrl: string) => {
     if (!onUpdateData) return;
@@ -61,18 +113,18 @@ export default function Gallery({ data, style, editMode, onUpdateData }: Props) 
   };
 
   return (
-    <section id="gallery" className={isBoutique ? 'py-16 md:py-20 px-4 md:px-6 bg-white' : isPharmacy ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f7fcfa]' : 'py-16 px-6 bg-white'}>
+    <section id="gallery" className={isBoutique ? 'py-16 md:py-20 px-4 md:px-6 bg-white' : isPharmacy ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f7fcfa]' : isHotel || isBarbershop || isHardware ? 'py-16 md:py-20 px-4 md:px-6 bg-white' : 'py-16 px-6 bg-white'}>
       <div className="max-w-6xl mx-auto">
-        <h2 className={isBoutique || isPharmacy ? 'text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight' : 'text-2xl font-bold text-gray-900'}>
+        <h2 className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware ? 'text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight' : 'text-2xl font-bold text-gray-900'}>
           {data.heading || 'Our Work'}
         </h2>
-        <p className={isBoutique || isPharmacy ? 'text-[13px] md:text-sm text-gray-600 mt-3 leading-relaxed max-w-3xl' : 'text-xs text-gray-500 mt-1 leading-relaxed'}>
+        <p className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware ? 'text-[13px] md:text-sm text-gray-600 mt-3 leading-relaxed max-w-3xl' : 'text-xs text-gray-500 mt-1 leading-relaxed'}>
           {data.subheading || 'Real photos of your work - click image to upload your own (in Edit Mode)'}
         </p>
-        <div className={isBoutique ? 'grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 mt-8' : isPharmacy ? 'grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4 mt-8' : 'grid grid-cols-2 md:grid-cols-3 gap-3 mt-6'}>
+        <div className={isBoutique ? 'grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 mt-8' : isPharmacy ? 'grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4 mt-8' : isHotel || isBarbershop || isHardware ? 'grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 mt-8' : 'grid grid-cols-2 md:grid-cols-3 gap-3 mt-6'}>
           {images.map((img: string, i: number) => {
-            const tileClass = isBoutique ? getBoutiqueTileClass(i) : isPharmacy ? getPharmacyTileClass(i) : '';
-            const aspectClass = isBoutique ? getBoutiqueAspectClass(i) : isPharmacy ? getPharmacyAspectClass(i) : 'aspect-[4/3]';
+            const tileClass = isBoutique ? getBoutiqueTileClass(i) : isPharmacy ? getPharmacyTileClass(i) : isHotel ? `${getHotelTileClass(i)} ${getHotelMdTileClass(i)}` : isBarbershop ? `${getBarbershopTileClass(i)} ${getBarbershopMdTileClass(i)}` : isHardware ? `${getHardwareTileClass(i)} ${getHardwareMdTileClass(i)}` : '';
+            const aspectClass = isBoutique ? getBoutiqueAspectClass(i) : isPharmacy ? getPharmacyAspectClass(i) : isHotel ? getHotelAspectClass(i) : isBarbershop ? getBarbershopAspectClass(i) : isHardware ? getHardwareAspectClass(i) : 'aspect-[4/3]';
 
             return (
               <div
@@ -82,6 +134,8 @@ export default function Gallery({ data, style, editMode, onUpdateData }: Props) 
                     ? 'rounded-[24px] border border-stone-200 bg-stone-100 shadow-sm'
                     : isPharmacy
                     ? 'rounded-[24px] border border-emerald-100 bg-white shadow-sm'
+                    : isHotel || isBarbershop || isHardware
+                    ? 'rounded-[24px] border border-stone-200 bg-stone-100 shadow-sm'
                     : 'rounded-xl bg-gray-100 border shadow-sm'
                 }`}
               >
@@ -92,7 +146,7 @@ export default function Gallery({ data, style, editMode, onUpdateData }: Props) 
                     editMode={editMode}
                     onChange={(url) => updateImage(i, url)}
                     className="w-full h-full object-cover"
-                    category={isPharmacy ? 'pharmacy' : isBoutique ? 'boutique' : undefined}
+                    category={isPharmacy ? 'pharmacy' : isBoutique ? 'boutique' : isHotel ? 'hotel' : isBarbershop ? 'barbershop' : isHardware ? 'hardware' : undefined}
                   />
                 ) : (
                   <img
