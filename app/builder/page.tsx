@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { Menu, X, Edit3, Check, Plus, Loader2, Sparkles, AlertCircle, Info } from 'lucide-react';
+import { Menu, X, Edit3, Check, Plus, Loader2, Zap, Eye, AlertCircle, Info } from 'lucide-react';
 import TemplateRenderer from '@/components/TemplateRenderer';
 import SaveButton from '@/components/SaveButton';
 import EditorSidebar from '@/components/editor/EditorSidebar';
@@ -24,10 +24,10 @@ export default function BuilderPage() {
   const [dismissSampleBanner, setDismissSampleBanner] = useState(false);
   
   const steps = [
-    'Analyzing your Ugandan business...', 
-    'Crafting UGX pricing & services...', 
-    'Connecting WhatsApp ordering & MTN MoMo...', 
-    'Finalizing professional website layout...'
+    'Setting up your business layout...',
+    'Adding UGX pricing & services...',
+    'Connecting WhatsApp ordering & MTN MoMo...',
+    'Finalizing your professional website...'
   ];
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export default function BuilderPage() {
         throw new Error('Could not parse website layout. Please try a simpler description.');
       }
     } catch (e: any) {
-      setGenerationError(e.message || 'Generation failed. Please try again.');
+      setGenerationError(e.message || 'Could not build your website. Please try again.');
     } finally {
       clearInterval(interval);
       setLoading(false);
@@ -204,7 +204,7 @@ export default function BuilderPage() {
               onKeyDown={(e) => { if (e.key === 'Enter') generate(); }}
             />
             <button onClick={() => generate()} disabled={loading} className="px-5 py-2.5 rounded-xl bg-gray-900 text-white font-bold text-sm disabled:opacity-50 hover:bg-black flex items-center gap-2 flex-shrink-0 shadow-sm">
-              {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating...</> : <><Sparkles className="w-4 h-4" /> Generate</>}
+              {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Building...</> : <><Zap className="w-4 h-4" /> Create Website</>}
             </button>
           </div>
           {inputError && (
@@ -303,7 +303,7 @@ export default function BuilderPage() {
             <div className="w-16 h-16 mx-auto rounded-2xl bg-gray-900 text-white flex items-center justify-center">
               <Loader2 className="w-8 h-8 animate-spin" />
             </div>
-            <div className="font-bold mt-4 text-gray-900">Generating your website...</div>
+            <div className="font-bold mt-4 text-gray-900">Building your website...</div>
             <div className="text-sm text-gray-600 mt-2 flex items-center justify-center gap-2">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
               {steps[step]}
@@ -328,7 +328,7 @@ export default function BuilderPage() {
               <span className="font-bold truncate text-gray-900">{template.name}</span>
               {!isGeneratedOrLoaded ? (
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-200 font-bold flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-amber-600" />
+                  <Eye className="w-3 h-3 text-amber-600" />
                   <span>Sample Preview</span>
                 </span>
               ) : (

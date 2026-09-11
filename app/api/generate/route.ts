@@ -1,77 +1,57 @@
-// VoidBuild AI Template Generation API
+// VoidBuild AI Template Generation API — P2 Premium Default Path
+// The AI only EXTRACTS business info; the site is built by merging that info
+// into a flagship base template (premium variant styling + local real photos).
+// Fallbacks: unusable AI output -> keyword-matched flagship template.
+
 export const runtime = 'nodejs';
 
 import fs from 'fs';
 import path from 'path';
 import { isRateLimited, getClientIp } from '@/lib/rateLimiter';
+import { getCachedTemplate, setCachedTemplate } from '@/lib/cache';
+import { mergeExtracted, isUsableExtraction, slugFromCategory, type ExtractedBusiness } from '@/lib/generate-merge';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-const SYSTEM_PROMPT = `You are VoidBuild AI, an expert website generator for Ugandan businesses and SMEs.
-Output ONLY a raw, valid JSON object without markdown code blocks, backticks, or preamble.
+const SYSTEM_PROMPT = `You are VoidBuild AI. You extract structured business information for a Ugandan SME website.
+Output ONLY a raw, valid JSON object — no markdown, no backticks, no commentary.
 
-Required JSON Structure:
+JSON Structure (all fields optional, but fill in as many as the description allows):
 {
-  "id": "business-slug",
-  "name": "Exact Business Name",
-  "category": "salon | hardware | restaurant | church | boutique | boda | school | clinic | barbershop | pharmacy | bakery | carwash | hotel | gym | portfolio",
-  "meta": { "target": "Target Audience and Location" },
-  "blocks": [
-    {
-      "id": "nav-1",
-      "type": "navbar",
-      "data": { "businessName": "Business Name", "phone": "+256 751 391318", "whatsapp": "+256751391318" },
-      "style": { "primaryColor": "#111827" }
-    },
-    {
-      "id": "hero-1",
-      "type": "hero",
-      "data": {
-        "title": "Compelling 5-8 word headline",
-        "subtitle": "Clear value proposition for customers in Uganda.",
-        "ctaText": "Order on WhatsApp",
-        "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&auto=format&fit=crop&q=80"
-      },
-      "style": { "primaryColor": "#111827" }
-    },
-    {
-      "id": "services-1",
-      "type": "services",
-      "data": {
-        "heading": "Our Services & Pricing",
-        "services": [
-          { "name": "Service 1", "price": "UGX 35,000", "description": "High quality service for clients." },
-          { "name": "Service 2", "price": "UGX 50,000", "description": "Professional executive package." },
-          { "name": "Service 3", "price": "UGX 20,000", "description": "Quick, affordable option." }
-        ]
-      },
-      "style": { "primaryColor": "#111827" }
-    },
-    {
-      "id": "contact-1",
-      "type": "contact",
-      "data": {
-        "phone": "+256 751 391318",
-        "whatsapp": "+256751391318",
-        "location": "Kampala, Uganda",
-        "hours": "Mon - Sat: 8:00 AM - 8:00 PM"
-      },
-      "style": { "primaryColor": "#111827" }
-    },
-    {
-      "id": "footer-1",
-      "type": "footer",
-      "data": { "businessName": "Business Name", "tagline": "Built with VoidBuild", "year": 2026 },
-      "style": { "primaryColor": "#111827" }
-    }
-  ]
+  "businessName": "Exact Business Name",
+  "category": "salon | hardware | restaurant | laundry | boutique | it | school | clinic | barbershop | pharmacy | bakery | tutoring | hotel | gym | portfolio",
+  "tagline": "Short memorable tagline (max 60 chars)",
+  "hero": {
+    "badge": "Short badge line (max 60 chars)",
+    "title": "Compelling 4-8 word headline",
+    "subtitle": "1-2 sentence value proposition (max 220 chars)",
+    "ctaText": "Short call-to-action (max 30 chars)"
+  },
+  "stats": [ { "number": "10+", "label": "Years of Experience" }, { "number": "500+", "label": "Happy Clients" }, { "number": "24/7", "label": "Support" } ],
+  "services": [
+    { "name": "Service name (max 40 chars)", "price": "UGX 35,000", "description": "One short sentence (max 120 chars)" }
+  ],
+  "plans": [
+    { "name": "Package name", "price": "UGX 50,000", "sub": "short qualifier", "features": ["Feature one", "Feature two", "Feature three", "Feature four"], "popular": false }
+  ],
+  "testimonials": [
+    { "name": "Client name", "role": "e.g. Regular Customer", "text": "One or two sentences (max 180 chars)", "rating": 5 }
+  ],
+  "contact": {
+    "phone": "+256 7XX XXXXXX",
+    "whatsapp": "+2567XXXXXXXX",
+    "location": "Street/Area, Town, Uganda",
+    "hours": "e.g. Mon-Sat 8:00am - 8:00pm",
+    "email": "name@business.ug"
+  }
 }
 
 Rules:
-1. Prices MUST be in Ugandan Shillings (UGX).
-2. Location MUST be in Uganda (Kampala, Jinja, Entebbe, Gulu, Mbale, Mbarara, etc.).
-3. Return valid JSON only.
-`;
+1. Use ONLY facts stated or clearly implied by the description. Never invent phone numbers, emails or addresses — omit them if not given.
+2. Prices in Ugandan Shillings (UGX). If the description gives no prices, give realistic Uganda market prices for that business type.
+3. Services: provide 3-6 items. Plans: provide exactly 3, with exactly one "popular": true. Testimonials: provide 3, realistic and modest.
+4. Location must be in Uganda if mentioned (Kampala, Jinja, Entebbe, Gulu, Mbale, Mbarara, etc.).
+5. Return valid JSON only.`;
 
 function loadTemplates(): Record<string, any> {
   const templates: Record<string, any> = {};
@@ -80,15 +60,15 @@ function loadTemplates(): Record<string, any> {
     'hardware-mbale-1',
     'restaurant-ug-1',
     'boutique-ug-1',
-    'church-ug-1',
-    'boda-ug-1',
+    'laundry-ug-1',
+    'it-ug-1',
     'school-ug-1',
     'clinic-ug-1',
     'barbershop-ug-1',
     'portfolio-ug-1',
     'pharmacy-ug-1',
     'bakery-ug-1',
-    'carwash-ug-1',
+    'tutoring-ug-1',
     'hotel-ug-1',
     'gym-ug-1',
   ];
@@ -117,11 +97,11 @@ function loadTemplates(): Record<string, any> {
     meta: { target: 'Ugandan SME' },
     blocks: [
       { id: 'nav-1', type: 'navbar', data: { businessName: 'My Business', phone: '+256 751 391318' }, style: { primaryColor: '#111827' } },
-      { id: 'hero-1', type: 'hero', data: { title: 'Welcome to Our Business', subtitle: 'Professional services in Kampala, Uganda.', ctaText: 'Book on WhatsApp', image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200' }, style: { primaryColor: '#111827' } },
+      { id: 'hero-1', type: 'hero', data: { title: 'Welcome to Our Business', subtitle: 'Professional services in Kampala, Uganda.', ctaText: 'Book on WhatsApp', image: '/template-images/salon/salon-1.jpg' }, style: { primaryColor: '#111827' } },
       { id: 'services-1', type: 'services', data: { heading: 'Our Services', services: [{ name: 'Standard Service', price: 'UGX 35,000', description: 'Top quality service.' }] }, style: { primaryColor: '#111827' } },
       { id: 'contact-1', type: 'contact', data: { phone: '+256 751 391318', location: 'Kampala, Uganda' }, style: { primaryColor: '#111827' } },
       { id: 'footer-1', type: 'footer', data: { businessName: 'My Business', year: 2026 }, style: { primaryColor: '#111827' } },
-    ]
+    ],
   };
 
   for (const name of names) {
@@ -135,18 +115,18 @@ function loadTemplates(): Record<string, any> {
 
 const FALLBACK_TEMPLATES = loadTemplates();
 
-function getClosestTemplate(desc: string) {
-  const lower = desc.toLowerCase();
+function getClosestTemplate(description: string) {
+  const lower = description.toLowerCase();
   if (lower.includes('pharmacy') || lower.includes('drug') || lower.includes('medicine') || lower.includes('chemist')) return FALLBACK_TEMPLATES['pharmacy-ug-1'];
   if (lower.includes('bakery') || lower.includes('cake') || lower.includes('pastry') || lower.includes('bread')) return FALLBACK_TEMPLATES['bakery-ug-1'];
-  if (lower.includes('car wash') || lower.includes('carwash') || lower.includes('auto spa') || lower.includes('detailing')) return FALLBACK_TEMPLATES['carwash-ug-1'];
+  if (lower.includes('laundry') || lower.includes('dry clean') || lower.includes('washing clothes')) return FALLBACK_TEMPLATES['laundry-ug-1'];
+  if (lower.includes('it support') || lower.includes('it consulting') || lower.includes('computer') || lower.includes('software') || lower.includes('network') || lower.includes('tech company') || lower.includes('laptops')) return FALLBACK_TEMPLATES['it-ug-1'];
+  if (lower.includes('tutor') || lower.includes('tuition') || lower.includes('lessons') || lower.includes('teaching')) return FALLBACK_TEMPLATES['tutoring-ug-1'];
   if (lower.includes('hotel') || lower.includes('lodge') || lower.includes('cottage') || lower.includes('resort') || lower.includes('jinja')) return FALLBACK_TEMPLATES['hotel-ug-1'];
   if (lower.includes('gym') || lower.includes('fitness') || lower.includes('workout') || lower.includes('zumba') || lower.includes('aerobics')) return FALLBACK_TEMPLATES['gym-ug-1'];
   if (lower.includes('hardware') || lower.includes('cement') || lower.includes('iron sheet') || lower.includes('mbale') || lower.includes('construction')) return FALLBACK_TEMPLATES['hardware-mbale-1'];
   if (lower.includes('restaurant') || lower.includes('food') || lower.includes('luwombo') || lower.includes('tilapia') || lower.includes('pilau') || lower.includes('rolex') || lower.includes('cafe')) return FALLBACK_TEMPLATES['restaurant-ug-1'];
   if (lower.includes('boutique') || lower.includes('dress') || lower.includes('ankara') || lower.includes('suit') || lower.includes('handbag') || lower.includes('clothes')) return FALLBACK_TEMPLATES['boutique-ug-1'];
-  if (lower.includes('church') || lower.includes('fellowship') || lower.includes('ministry') || lower.includes('pastor')) return FALLBACK_TEMPLATES['church-ug-1'];
-  if (lower.includes('boda') || lower.includes('motorcycle') || lower.includes('mechanic') || lower.includes('garage') || lower.includes('spare')) return FALLBACK_TEMPLATES['boda-ug-1'];
   if (lower.includes('school') || lower.includes('academy') || lower.includes('nursery') || lower.includes('primary') || lower.includes('uneb')) return FALLBACK_TEMPLATES['school-ug-1'];
   if (lower.includes('clinic') || lower.includes('hospital') || lower.includes('doctor') || lower.includes('maternity') || lower.includes('lab') || lower.includes('medical')) return FALLBACK_TEMPLATES['clinic-ug-1'];
   if (lower.includes('barbershop') || lower.includes('barber') || lower.includes('fade') || lower.includes('haircut') || lower.includes('shave')) return FALLBACK_TEMPLATES['barbershop-ug-1'];
@@ -196,11 +176,19 @@ export async function POST(req: Request) {
     const rawKey = process.env.OPENROUTER_API_KEY || '';
     const cleanKey = rawKey.trim().replace(/^['"`\[\s]+/, '').replace(/['"`\]\s]+$/, '');
 
-    // If OpenRouter key is not set, load the closest matched Ugandan template
+    // If OpenRouter key is not set, load the closest matched flagship template
     if (!cleanKey || cleanKey.includes('placeholder') || cleanKey.includes('YOUR_OPENROUTER')) {
       const fallback = getClosestTemplate(description);
       const cloned = JSON.parse(JSON.stringify(fallback));
       cloned.id = `site-${Date.now().toString(36)}`;
+      return Response.json(cloned);
+    }
+
+    // Serve repeat requests from cache (1-hour TTL)
+    const cached = getCachedTemplate(description);
+    if (cached) {
+      const cloned = JSON.parse(JSON.stringify(cached));
+      cloned.id = `gen-${Date.now().toString(36)}`;
       return Response.json(cloned);
     }
 
@@ -232,10 +220,10 @@ export async function POST(req: Request) {
             model,
             messages: [
               { role: 'system', content: SYSTEM_PROMPT },
-              { role: 'user', content: `Generate website for this Ugandan business: "${description}". Return raw JSON only.` },
+              { role: 'user', content: `Extract the business information for this Ugandan business: "${description}". Return raw JSON only.` },
             ],
-            temperature: 0.7,
-            max_tokens: 3500,
+            temperature: 0.4,
+            max_tokens: 1600,
           }),
         });
 
@@ -251,17 +239,22 @@ export async function POST(req: Request) {
         const content = data.choices?.[0]?.message?.content;
         if (!content) continue;
 
-        const json = parseJSON(content);
-        if (json.blocks && Array.isArray(json.blocks) && json.blocks.length >= 3) {
-          json.id = `gen-${Date.now().toString(36)}`;
-          return Response.json(json);
-        }
+        const ext = parseJSON(content) as ExtractedBusiness;
+        if (!isUsableExtraction(ext)) continue;
+
+        // Base template: trust a valid AI category, else keyword-match the description
+        const slug = slugFromCategory(ext.category);
+        const base = (slug && FALLBACK_TEMPLATES[slug]) || getClosestTemplate(description);
+
+        const merged = mergeExtracted(base, ext, `gen-${Date.now().toString(36)}`);
+        setCachedTemplate(description, merged);
+        return Response.json(merged);
       } catch (err: any) {
         lastError = err.message;
       }
     }
 
-    // If all models timed out/failed, load closest template
+    // If all models timed out/failed, load closest flagship template
     const fallback = getClosestTemplate(description);
     const cloned = JSON.parse(JSON.stringify(fallback));
     cloned.id = `gen-${Date.now().toString(36)}`;

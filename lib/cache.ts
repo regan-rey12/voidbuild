@@ -34,8 +34,9 @@ export function getClosestStaticTemplate(description: string): string {
   if (lower.includes('salon') || lower.includes('braids') || lower.includes('beauty')) return 'salon-ug-1';
   if (lower.includes('hardware') || lower.includes('cement') || lower.includes('iron')) return 'hardware-mbale-1';
   if (lower.includes('restaurant') || lower.includes('food')) return 'restaurant-ug-1';
-  if (lower.includes('church')) return 'church-ug-1';
-  if (lower.includes('boda') || lower.includes('garage')) return 'boda-ug-1';
+  if (lower.includes('laundry') || lower.includes('dry cleaning') || lower.includes('washing')) return 'laundry-ug-1';
+  if (lower.includes('it ') || lower.includes('computer') || lower.includes('software') || lower.includes('network') || lower.includes('tech')) return 'it-ug-1';
+  if (lower.includes('tutor') || lower.includes('tuition') || lower.includes('lessons')) return 'tutoring-ug-1';
   if (lower.includes('boutique') || lower.includes('fashion')) return 'boutique-ug-1';
   if (lower.includes('school')) return 'school-ug-1';
   if (lower.includes('clinic')) return 'clinic-ug-1';

@@ -3,7 +3,10 @@
   "name": "CityCare Pharmacy Bukoto",
   "category": "pharmacy",
   "description": "Trusted community pharmacy in Kampala with prescription refills, wellness essentials, and delivery support",
-  "meta": { "target": "Pharmacy in Bukoto, Kampala, Uganda", "language": "en" },
+  "meta": {
+    "target": "Pharmacy in Bukoto, Kampala, Uganda",
+    "language": "en"
+  },
   "blocks": [
     {
       "id": "nav-1",
@@ -14,15 +17,35 @@
         "whatsapp": "+256752814230",
         "variant": "overlay-light",
         "links": [
-          { "label": "Products", "href": "#services" },
-          { "label": "Refills", "href": "#pricing" },
-          { "label": "Inside", "href": "#gallery" },
-          { "label": "Reviews", "href": "#testimonials" },
-          { "label": "Visit Us", "href": "#map" },
-          { "label": "Contact", "href": "#contact" }
+          {
+            "label": "Products",
+            "href": "#services"
+          },
+          {
+            "label": "Refills",
+            "href": "#pricing"
+          },
+          {
+            "label": "Inside",
+            "href": "#gallery"
+          },
+          {
+            "label": "Reviews",
+            "href": "#testimonials"
+          },
+          {
+            "label": "Visit Us",
+            "href": "#map"
+          },
+          {
+            "label": "Contact",
+            "href": "#contact"
+          }
         ]
       },
-      "style": { "primaryColor": "#0F9F6E" }
+      "style": {
+        "primaryColor": "#047857"
+      }
     },
     {
       "id": "hero-1",
@@ -41,9 +64,12 @@
           "Pickup and delivery available"
         ],
         "variant": "pharmacy-background",
-        "image": "/template-images/pharmacy/pharmacy-3.jpg"
+        "image": "/template-images/pharmacy/pharmacy-1.jpg"
       },
-      "style": { "primaryColor": "#0F9F6E", "alignment": "left" }
+      "style": {
+        "primaryColor": "#047857",
+        "alignment": "left"
+      }
     },
     {
       "id": "stats-1",
@@ -52,12 +78,23 @@
         "variant": "pharmacy",
         "heading": "Why families choose us",
         "stats": [
-          { "number": "7 Days", "label": "Open daily for prescriptions and walk-ins" },
-          { "number": "Refills", "label": "Support for repeat prescriptions and collection planning" },
-          { "number": "Delivery", "label": "Helpful coordination across selected Kampala areas" }
+          {
+            "number": "7 Days",
+            "label": "Open daily for prescriptions and walk-ins"
+          },
+          {
+            "number": "Refills",
+            "label": "Support for repeat prescriptions and collection planning"
+          },
+          {
+            "number": "Delivery",
+            "label": "Helpful coordination across selected Kampala areas"
+          }
         ]
       },
-      "style": { "primaryColor": "#0F9F6E" }
+      "style": {
+        "primaryColor": "#047857"
+      }
     },
     {
       "id": "services-1",
@@ -102,7 +139,9 @@
           }
         ]
       },
-      "style": { "primaryColor": "#0F9F6E" }
+      "style": {
+        "primaryColor": "#047857"
+      }
     },
     {
       "id": "gallery-1",
@@ -113,14 +152,16 @@
         "subheading": "Clean shelves, organized stock, and a calm service desk help customers feel more confident before they visit or order.",
         "images": [
           "/template-images/pharmacy/pharmacy-3.jpg",
-          "/template-images/pharmacy/pharmacy-1.jpg",
+          "/template-images/pharmacy/pharmacy-4.jpg",
           "/template-images/pharmacy/pharmacy-7.jpg",
           "/template-images/pharmacy/pharmacy-6.jpg",
           "/template-images/pharmacy/pharmacy-8.jpg",
           "/template-images/pharmacy/pharmacy-5.jpg"
         ]
       },
-      "style": { "primaryColor": "#0F9F6E" }
+      "style": {
+        "primaryColor": "#047857"
+      }
     },
     {
       "id": "pricing-1",
@@ -168,7 +209,9 @@
           }
         ]
       },
-      "style": { "primaryColor": "#0F9F6E" }
+      "style": {
+        "primaryColor": "#047857"
+      }
     },
     {
       "id": "testimonials-1",
@@ -198,7 +241,9 @@
           }
         ]
       },
-      "style": { "primaryColor": "#0F9F6E" }
+      "style": {
+        "primaryColor": "#047857"
+      }
     },
     {
       "id": "map-1",
@@ -209,7 +254,9 @@
         "location": "Bukoto Street, near Bukoto Trading Centre, Kampala",
         "phone": "+256 752 814230"
       },
-      "style": { "primaryColor": "#0F9F6E" }
+      "style": {
+        "primaryColor": "#047857"
+      }
     },
     {
       "id": "contact-1",
@@ -225,7 +272,9 @@
         "hours": "Mon-Sun: 8:00am - 10:00pm",
         "email": "care@citycarepharmacy.ug"
       },
-      "style": { "primaryColor": "#0F9F6E" }
+      "style": {
+        "primaryColor": "#047857"
+      }
     },
     {
       "id": "footer-1",
@@ -235,7 +284,9 @@
         "tagline": "Licensed pharmacy • Genuine medicines • Delivery • Bukoto, Kampala",
         "year": 2026
       },
-      "style": { "primaryColor": "#0F9F6E" }
+      "style": {
+        "primaryColor": "#047857"
+      }
     }
   ]
 }

@@ -22,7 +22,8 @@ import {
   Copy,
   Check,
   AlertTriangle,
-  Sparkles,
+  Rocket,
+  Crown,
   MessageCircle,
   Eye,
   Globe,
@@ -379,7 +380,7 @@ export default function Dashboard() {
                 onClick={() => setPaywallDismissed(false)}
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-yellow-400 text-gray-950 text-xs font-bold hover:bg-yellow-500 transition shadow-sm"
               >
-                <Sparkles className="w-3.5 h-3.5" />
+                <Crown className="w-3.5 h-3.5" />
                 <span>Upgrade for More Sites</span>
               </button>
             ) : (
@@ -512,13 +513,13 @@ export default function Dashboard() {
               <div className="text-center border-2 border-dashed rounded-2xl p-10 md:p-14 bg-white">
                 <img src="/logo.png" alt="VoidBuild" className="w-12 h-12 object-contain mx-auto" />
                 <div className="font-bold text-base mt-4 text-gray-900">No websites built yet</div>
-                <div className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">Generate your first professional Ugandan shop website in 30 seconds.</div>
+                <div className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">Create your first professional Ugandan shop website in 30 seconds.</div>
                 <Link
                   href="/builder"
                   className="mt-5 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-gray-900 text-white text-xs font-bold hover:bg-black transition shadow-sm"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
-                  <span>Generate First Website Free</span>
+                  <Rocket className="w-3.5 h-3.5 text-yellow-400" />
+                  <span>Create First Website Free</span>
                 </Link>
               </div>
             ) : (

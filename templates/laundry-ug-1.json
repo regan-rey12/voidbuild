@@ -1,0 +1,249 @@
+{
+  "id": "laundry-ug-1",
+  "name": "FreshFold Laundry & Dry Cleaning Ntinda",
+  "category": "laundry",
+  "description": "Premium laundry template with wash & fold, dry cleaning, free pickup & delivery — real photos, clear per-kg UGX pricing and WhatsApp booking for Kampala laundry businesses.",
+  "meta": {
+    "target": "Laundry and dry cleaning service in Kampala, Uganda",
+    "language": "en"
+  },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": {
+        "businessName": "FreshFold Laundry",
+        "phone": "+256 706 222333",
+        "whatsapp": "+256706222333",
+        "variant": "overlay-light",
+        "overlaySurface": "#08202c",
+        "links": [
+          { "label": "Services", "href": "#services" },
+          { "label": "Our Shop", "href": "#gallery" },
+          { "label": "Bundles", "href": "#pricing" },
+          { "label": "Reviews", "href": "#testimonials" },
+          { "label": "Book Pickup", "href": "#contact" }
+        ]
+      },
+      "style": { "primaryColor": "#0891B2" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "Ntinda, Kampala • Free Pickup & Delivery • 48-Hour Turnaround",
+        "title": "Laundry day, done for you — pickup to delivery in 48 hours",
+        "subtitle": "Wash & fold, ironing, dry cleaning and bedding from our Ntinda shop — picked up from your door, handled in-house, and returned fresh and folded. Book on WhatsApp and we do the rest.",
+        "ctaText": "Book a Free Pickup",
+        "ctaLink": "#contact",
+        "secondaryCtaText": "See Services & Prices",
+        "secondaryCtaLink": "#services",
+        "trustPoints": [
+          "Free pickup & delivery in Ntinda–Kiwatule",
+          "Clear per-kg pricing from UGX 5,000",
+          "Washed, dried & folded in-house"
+        ],
+        "variant": "laundry-background",
+        "image": "/template-images/laundry/laundry-1.jpg"
+      },
+      "style": { "primaryColor": "#0891B2", "alignment": "left" }
+    },
+    {
+      "id": "stats-1",
+      "type": "stats",
+      "data": {
+        "variant": "laundry",
+        "heading": "Why Homes Around Ntinda Keep Sending Laundry",
+        "stats": [
+          { "number": "48 hrs", "label": "Standard pickup-to-delivery turnaround" },
+          { "number": "7 days", "label": "Open every week, Sundays included" },
+          { "number": "100%", "label": "Washed, dried and folded by our own team" }
+        ]
+      },
+      "style": { "primaryColor": "#0891B2" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "Services & Prices",
+        "subheading": "Simple per-kilo pricing for households, and contract rates for guest houses and offices.",
+        "phone": "+256 706 222333",
+        "whatsapp": "+256706222333",
+        "variant": "laundry",
+        "services": [
+          {
+            "name": "Wash & Fold",
+            "price": "UGX 5,000 / kg",
+            "description": "Everyday clothes washed, dried and neatly folded — sorted by colour and fabric so nothing runs or shrinks.",
+            "image": "/template-images/laundry/laundry-2.jpg"
+          },
+          {
+            "name": "Wash & Iron",
+            "price": "UGX 8,000 / kg",
+            "description": "Shirts, uniforms and office wear pressed and hung or neatly folded — ready to wear the moment you receive them.",
+            "image": "/template-images/laundry/laundry-3.jpg"
+          },
+          {
+            "name": "Dry Cleaning & Pressing",
+            "price": "from UGX 12,000",
+            "description": "Suits, dresses, curtains and delicate fabrics handled with proper garment care and finished by hand.",
+            "image": "/template-images/laundry/laundry-4.jpg"
+          },
+          {
+            "name": "Bedding & Household",
+            "price": "from UGX 15,000",
+            "description": "Bedsheets, duvets, blankets and towels — washed at high temperature and returned fresh and properly folded.",
+            "image": "/template-images/laundry/laundry-5.jpg"
+          },
+          {
+            "name": "Hotel & Business Linens",
+            "price": "contract rates",
+            "description": "Reliable weekly service for guest houses, salons and clinics — same-day turnaround options for busy weeks.",
+            "image": "/template-images/laundry/laundry-6.jpg"
+          },
+          {
+            "name": "Self-Service & Drop-Off",
+            "price": "UGX 4,000 / load",
+            "description": "Drop your bag at our Stretcher Road shop and collect it the next day — or use our machines yourself while you wait.",
+            "image": "/template-images/laundry/laundry-7.jpg"
+          }
+        ]
+      },
+      "style": { "primaryColor": "#0891B2" }
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery",
+      "data": {
+        "heading": "Inside Our Ntinda Shop",
+        "subheading": "Real machines, real folding tables, real fresh laundry. Replace these with your own shop photos anytime in the editor.",
+        "variant": "laundry",
+        "images": [
+          "/template-images/laundry/laundry-8.jpg",
+          "/template-images/laundry/laundry-9.jpg",
+          "/template-images/laundry/laundry-2.jpg",
+          "/template-images/laundry/laundry-5.jpg",
+          "/template-images/laundry/laundry-6.jpg",
+          "/template-images/laundry/laundry-3.jpg"
+        ]
+      },
+      "style": { "primaryColor": "#0891B2" }
+    },
+    {
+      "id": "pricing-1",
+      "type": "pricing",
+      "data": {
+        "heading": "Bundles That Make Laundry Cheaper",
+        "subheading": "Book a bundle and we pick up the same bag every week — one WhatsApp message sets it up.",
+        "phone": "+256 706 222333",
+        "whatsapp": "+256706222333",
+        "variant": "laundry",
+        "plans": [
+          {
+            "name": "Pay-As-You-Go",
+            "price": "UGX 5,000 / kg",
+            "sub": "wash & fold, no commitment",
+            "features": [
+              "Free pickup & delivery in our zone",
+              "48-hour standard turnaround",
+              "Express 24-hour option available",
+              "Pay by cash or MTN MoMo on delivery"
+            ],
+            "popular": false
+          },
+          {
+            "name": "Weekly Household Bundle",
+            "price": "UGX 80,000 / month",
+            "sub": "up to 15 kg every week",
+            "features": [
+              "One pickup and delivery every week",
+              "Wash & fold for the whole family",
+              "Bedding included once a month",
+              "Priority slots during busy weeks"
+            ],
+            "popular": true
+          },
+          {
+            "name": "Business Linen Contract",
+            "price": "from UGX 150,000 / month",
+            "sub": "guest houses, salons & clinics",
+            "features": [
+              "Two scheduled runs every week",
+              "Same-day turnaround options",
+              "Monthly invoice — no daily payments",
+              "Dedicated WhatsApp support line"
+            ],
+            "popular": false
+          }
+        ]
+      },
+      "style": { "primaryColor": "#0891B2" }
+    },
+    {
+      "id": "testimonials-1",
+      "type": "testimonials",
+      "data": {
+        "heading": "What Customers in Ntinda Say",
+        "subheading": "Homes, hostels and small businesses that send laundry every week.",
+        "variant": "laundry",
+        "testimonials": [
+          {
+            "name": "Prossy A.",
+            "role": "Mother of three, Ntinda",
+            "text": "The weekly bundle changed our home. Every Friday the bag goes out, every Sunday everything comes back folded — I have not touched a washing machine in months.",
+            "rating": 5
+          },
+          {
+            "name": "Moses K.",
+            "role": "Manager, Kiwatule guest house",
+            "text": "Our sheets and towels come back crisp and on time, every single week. One invoice at the end of the month keeps my books clean too.",
+            "rating": 5
+          },
+          {
+            "name": "Sarah N.",
+            "role": "Young professional, Kampala",
+            "text": "I send my office wear for wash & iron and it comes back looking better than when I bought it. The pickup drivers are polite and always on time.",
+            "rating": 5
+          }
+        ]
+      },
+      "style": { "primaryColor": "#0891B2" }
+    },
+    {
+      "id": "map-1",
+      "type": "map",
+      "data": {
+        "heading": "Find Our Shop in Ntinda",
+        "subheading": "On Stretcher Road, a short walk from Ntinda Complex — look for the FreshFold sign.",
+        "location": "Stretcher Road, Near Ntinda Complex, Kampala",
+        "phone": "+256 706 222333"
+      },
+      "style": { "primaryColor": "#0891B2" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": {
+        "variant": "laundry",
+        "heading": "Book a Pickup or Drop By the Shop",
+        "phone": "+256 706 222333",
+        "whatsapp": "+256706222333",
+        "location": "Stretcher Road, Near Ntinda Complex, Kampala",
+        "hours": "Mon–Sat: 7:00 AM – 8:00 PM, Sunday: 9:00 AM – 4:00 PM",
+        "email": "care@freshfold.ug"
+      },
+      "style": { "primaryColor": "#0891B2" }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "businessName": "FreshFold Laundry & Dry Cleaning",
+        "tagline": "Wash & Fold • Dry Cleaning • Free Pickup & Delivery • Ntinda, Kampala",
+        "year": 2026
+      },
+      "style": { "primaryColor": "#0891B2" }
+    }
+  ]
+}

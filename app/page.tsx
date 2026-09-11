@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import TopNav from '@/components/TopNav';
 import {
-  Sparkles,
+  Rocket,
+  LayoutTemplate,
   MessageCircle,
   Zap,
   ShieldCheck,
@@ -12,9 +13,9 @@ import {
   Scissors,
   Hammer,
   Utensils,
-  Bike,
+  Shirt,
   ShoppingBag,
-  Heart,
+  BookOpen,
   GraduationCap,
   Stethoscope,
   Camera,
@@ -22,7 +23,7 @@ import {
   PhoneCall,
   Pill,
   Cake,
-  Car,
+  Laptop,
   Hotel,
   Dumbbell,
 } from 'lucide-react';
@@ -32,14 +33,13 @@ interface TemplateItem {
   name: string;
   desc: string;
   color: string;
-  price: string;
-  category: 'beauty_health' | 'food_bakery' | 'retail_auto' | 'community_hotel';
+  category: 'beauty_health' | 'food_bakery' | 'retail_auto' | 'services' | 'community_hotel';
   icon: any;
   highlight: string;
 }
 
 export default function LandingPage() {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'beauty_health' | 'food_bakery' | 'retail_auto' | 'community_hotel'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'beauty_health' | 'food_bakery' | 'retail_auto' | 'services' | 'community_hotel'>('all');
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.hash && window.location.hash.includes('access_token')) {
@@ -48,21 +48,21 @@ export default function LandingPage() {
   }, []);
 
   const templates: TemplateItem[] = [
-    { id: 'salon', name: "Aisha's Salon", desc: 'Braids, Natural Hair & Nails', color: '#E11D48', price: 'UGX 35k', category: 'beauty_health', icon: Scissors, highlight: 'Wandegeya' },
-    { id: 'pharmacy', name: 'GoodLife Pharmacy', desc: 'Prescriptions, Baby Care & Refills', color: '#059669', price: 'UGX 15k', category: 'beauty_health', icon: Pill, highlight: 'Ntinda' },
-    { id: 'clinic', name: 'Kampala Care Clinic', desc: 'Consultation, Lab Tests & Scans', color: '#0D9488', price: 'UGX 25k', category: 'beauty_health', icon: Stethoscope, highlight: 'Ntinda' },
-    { id: 'barbershop', name: 'VIP Kigozi Barber', desc: 'Skin Fades, Shave & Dreadlocks', color: '#1C1917', price: 'UGX 10k', category: 'beauty_health', icon: Scissors, highlight: 'Kabalagala' },
-    { id: 'gym', name: 'PowerFit Gym', desc: 'Weights, Zumba, Steam & Sauna', color: '#EA580C', price: 'UGX 10k', category: 'beauty_health', icon: Dumbbell, highlight: 'Wandegeya' },
-    { id: 'restaurant', name: 'Mama Africa Kitchen', desc: 'Luwombo, Tilapia, Pilau & Rolex', color: '#DC2626', price: 'UGX 18k', category: 'food_bakery', icon: Utensils, highlight: 'Wandegeya' },
-    { id: 'bakery', name: 'Sweet Crust Bakery', desc: 'Custom Wedding & Birthday Cakes', color: '#D97706', price: 'UGX 65k', category: 'food_bakery', icon: Cake, highlight: 'Bukoto' },
-    { id: 'hardware', name: 'Musa Hardware', desc: 'Cement, Iron Sheets & Rebar', color: '#C2410C', price: 'UGX 36k', category: 'retail_auto', icon: Hammer, highlight: 'Mbale' },
-    { id: 'boutique', name: 'Zari Boutique', desc: 'Ankara Dresses, Suits & Handbags', color: '#BE185D', price: 'UGX 65k', category: 'retail_auto', icon: ShoppingBag, highlight: 'Ntinda' },
-    { id: 'boda', name: 'Speed Boda Garage', desc: 'Boxer Parts, Oil & 24/7 Rescue', color: '#1F2937', price: 'UGX 18k', category: 'retail_auto', icon: Bike, highlight: 'Ntinda' },
-    { id: 'carwash', name: 'Sparkle Auto Spa', desc: 'Snow Foam Wash & Interior Steam', color: '#2563EB', price: 'UGX 15k', category: 'retail_auto', icon: Car, highlight: 'Kabalagala' },
-    { id: 'hotel', name: 'Nile View Lodge', desc: 'River Cottages, Cruises & Dining', color: '#1A5748', price: 'UGX 220k', category: 'community_hotel', icon: Hotel, highlight: 'Jinja' },
-    { id: 'school', name: "St. Mary's Academy", desc: 'Nursery & Primary UNEB Center', color: '#0EA5E9', price: 'UGX 350k', category: 'community_hotel', icon: GraduationCap, highlight: 'Kisaasi' },
-    { id: 'church', name: 'Victory Fellowship', desc: 'Sunday Services, Youth & MoMo', color: '#4F46E5', price: 'Free', category: 'community_hotel', icon: Heart, highlight: 'Mbarara' },
-    { id: 'portfolio', name: 'Kato Photography', desc: 'Weddings, Kwanjula & 4K Video', color: '#18181B', price: 'UGX 120k', category: 'community_hotel', icon: Camera, highlight: 'Makindye' },
+    { id: 'salon', name: "Aisha's Salon", desc: 'Braids, Natural Hair & Nails', color: '#E11D48', category: 'beauty_health', icon: Scissors, highlight: 'Wandegeya' },
+    { id: 'pharmacy', name: 'GoodLife Pharmacy', desc: 'Prescriptions, Baby Care & Refills', color: '#059669', category: 'beauty_health', icon: Pill, highlight: 'Ntinda' },
+    { id: 'clinic', name: 'Kampala Care Clinic', desc: 'Consultation, Lab Tests & Scans', color: '#0E7490', category: 'beauty_health', icon: Stethoscope, highlight: 'Ntinda' },
+    { id: 'barbershop', name: 'VIP Kigozi Barber', desc: 'Skin Fades, Shave & Dreadlocks', color: '#1C1917', category: 'beauty_health', icon: Scissors, highlight: 'Kabalagala' },
+    { id: 'gym', name: 'PowerFit Gym', desc: 'Weights, Boxing & Coaching', color: '#65A30D', category: 'beauty_health', icon: Dumbbell, highlight: 'Wandegeya' },
+    { id: 'restaurant', name: 'Mama Africa Kitchen', desc: 'Luwombo, Tilapia, Pilau & Rolex', color: '#DC2626', category: 'food_bakery', icon: Utensils, highlight: 'Wandegeya' },
+    { id: 'bakery', name: 'Sweet Crust Bakery', desc: 'Custom Wedding & Birthday Cakes', color: '#D97706', category: 'food_bakery', icon: Cake, highlight: 'Bukoto' },
+    { id: 'hardware', name: 'Musa Hardware', desc: 'Cement, Iron Sheets & Rebar', color: '#C2410C', category: 'retail_auto', icon: Hammer, highlight: 'Mbale' },
+    { id: 'boutique', name: 'Zari Boutique', desc: 'Ankara Dresses, Suits & Handbags', color: '#BE185D', category: 'retail_auto', icon: ShoppingBag, highlight: 'Ntinda' },
+    { id: 'laundry', name: 'FreshFold Laundry', desc: 'Wash & Fold, Dry Cleaning & Delivery', color: '#0891B2', category: 'services', icon: Shirt, highlight: 'Ntinda' },
+    { id: 'it', name: 'Nexa IT Solutions', desc: 'IT Support, Networks & Cloud', color: '#4F46E5', category: 'services', icon: Laptop, highlight: 'Kampala Road' },
+    { id: 'hotel', name: 'Nile View Lodge', desc: 'River Cottages, Cruises & Dining', color: '#1A5748', category: 'community_hotel', icon: Hotel, highlight: 'Jinja' },
+    { id: 'school', name: "St. Mary's Academy", desc: 'Nursery & Primary UNEB Center', color: '#1E40AF', category: 'community_hotel', icon: GraduationCap, highlight: 'Kisaasi' },
+    { id: 'tutoring', name: 'BrightPath Tutors', desc: 'Maths, Sciences & Exam Prep', color: '#EA580C', category: 'community_hotel', icon: BookOpen, highlight: 'Ntinda' },
+    { id: 'portfolio', name: 'Kato Photography', desc: 'Weddings, Kwanjula & 4K Video', color: '#DC2626', category: 'community_hotel', icon: Camera, highlight: 'Makindye' },
   ];
 
   const filteredTemplates = activeFilter === 'all' ? templates : templates.filter((t) => t.category === activeFilter);
@@ -99,7 +99,7 @@ export default function LandingPage() {
               href="/builder"
               className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gray-900 text-white font-bold text-sm hover:bg-black transition shadow-sm"
             >
-              <Sparkles className="w-4 h-4 text-yellow-400" />
+              <Rocket className="w-4 h-4 text-yellow-400" />
               <span>Start Building Free</span>
             </Link>
             <a
@@ -214,7 +214,7 @@ export default function LandingPage() {
               desc: 'Start free, edit quickly, and ask our Kampala team for setup help when you need it.',
             },
             {
-              icon: Sparkles,
+              icon: ShieldCheck,
               title: 'Look more trusted online',
               desc: 'Share a clean business link on WhatsApp, Instagram bio, TikTok bio, Google Business, and beyond.',
             },
@@ -266,7 +266,7 @@ export default function LandingPage() {
       <section id="templates" className="py-12 md:py-20 px-4 md:px-6 max-w-6xl mx-auto">
         <div className="text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-100 text-yellow-900 text-xs font-bold mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
+            <LayoutTemplate className="w-3.5 h-3.5" />
             <span>Start with a proven layout, then customize it</span>
           </div>
           <h2 className="text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight">15 business templates ready to launch</h2>
@@ -278,8 +278,9 @@ export default function LandingPage() {
             { id: 'all', label: 'All Templates (15)' },
             { id: 'beauty_health', label: 'Health & Beauty (5)' },
             { id: 'food_bakery', label: 'Food & Bakery (2)' },
-            { id: 'retail_auto', label: 'Shops, Auto & Hardware (4)' },
-            { id: 'community_hotel', label: 'Hotels, School & Community (4)' },
+            { id: 'retail_auto', label: 'Shops & Hardware (2)' },
+            { id: 'services', label: 'Laundry & IT Services (2)' },
+            { id: 'community_hotel', label: 'Learning, Hotels & Community (4)' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -317,8 +318,7 @@ export default function LandingPage() {
                   <p className="text-xs text-gray-500 mt-1 leading-relaxed">{t.desc}</p>
                 </div>
 
-                <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
-                  <span className="text-xs font-extrabold text-gray-900 bg-gray-50 border border-gray-200 px-2.5 py-1 rounded-lg">{t.price}</span>
+                <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-end">
                   <span className="inline-flex items-center gap-1 text-xs font-bold text-gray-900 group-hover:translate-x-0.5 transition">
                     <span>Use Template</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -334,8 +334,8 @@ export default function LandingPage() {
             href="/builder"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-bold text-xs hover:bg-black transition shadow-sm"
           >
-            <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
-            <span>Or generate a custom business website</span>
+            <Rocket className="w-3.5 h-3.5 text-yellow-400" />
+            <span>Or create a custom business website</span>
           </Link>
         </div>
       </section>
@@ -459,7 +459,7 @@ export default function LandingPage() {
             href="/builder"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-bold text-sm hover:bg-black transition shadow-sm"
           >
-            <Sparkles className="w-4 h-4 text-yellow-400" />
+            <Rocket className="w-4 h-4 text-yellow-400" />
             <span>Build My Website Free</span>
           </Link>
           <a

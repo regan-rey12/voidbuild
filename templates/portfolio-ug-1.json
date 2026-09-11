@@ -3,7 +3,10 @@
   "name": "Kato Visuals & Photography Kampala",
   "category": "portfolio",
   "description": "Professional photography & cinematic videography for Ugandan weddings, Kwanjula, corporate events & studio portraits",
-  "meta": { "target": "Photographer in Kampala, Uganda", "language": "en" },
+  "meta": {
+    "target": "Photographer in Kampala, Uganda",
+    "language": "en"
+  },
   "blocks": [
     {
       "id": "nav-1",
@@ -13,15 +16,36 @@
         "phone": "+256 706 999000",
         "whatsapp": "+256706999000",
         "links": [
-          { "label": "Portfolio", "href": "#gallery" },
-          { "label": "Genres", "href": "#services" },
-          { "label": "Packages", "href": "#pricing" },
-          { "label": "Reviews", "href": "#testimonials" },
-          { "label": "Studio Location", "href": "#map" },
-          { "label": "Book Date", "href": "#contact" }
-        ]
+          {
+            "label": "Portfolio",
+            "href": "#gallery"
+          },
+          {
+            "label": "Genres",
+            "href": "#services"
+          },
+          {
+            "label": "Packages",
+            "href": "#pricing"
+          },
+          {
+            "label": "Reviews",
+            "href": "#testimonials"
+          },
+          {
+            "label": "Studio Location",
+            "href": "#map"
+          },
+          {
+            "label": "Book Date",
+            "href": "#contact"
+          }
+        ],
+        "variant": "overlay-light"
       },
-      "style": { "primaryColor": "#18181B" }
+      "style": {
+        "primaryColor": "#DC2626"
+      }
     },
     {
       "id": "hero-1",
@@ -32,9 +56,13 @@
         "subtitle": "Kampala-based lead photographer & filmmaker specializing in luxury weddings, traditional Kwanjula & Kuhingira ceremonies, high-fashion studio portraits, and corporate documentary films. MTN MoMo & Airtel Money accepted.",
         "ctaText": "Book Your Date on WhatsApp",
         "ctaLink": "#contact",
-        "image": "african wedding photography bride groom elegance kampala"
+        "image": "/template-images/portfolio/portfolio-1.jpg",
+        "variant": "portfolio-background"
       },
-      "style": { "primaryColor": "#18181B", "alignment": "left" }
+      "style": {
+        "primaryColor": "#DC2626",
+        "alignment": "left"
+      }
     },
     {
       "id": "gallery-1",
@@ -43,15 +71,18 @@
         "heading": "Selected Work & Lookbook",
         "subheading": "Highlights from recent traditional introductions, white weddings, and studio portraits across Uganda.",
         "images": [
-          "african traditional kwanjula ceremony bride gomesi",
-          "african white wedding couple portrait lake victoria",
-          "studio beauty portrait lighting african woman",
-          "african groom smiling suit wedding",
-          "corporate gala event speech stage",
-          "outdoor fashion portrait sunlight"
-        ]
+          "/template-images/portfolio/portfolio-8.jpg",
+          "/template-images/portfolio/portfolio-9.jpg",
+          "/template-images/portfolio/portfolio-2.jpg",
+          "/template-images/portfolio/portfolio-4.jpg",
+          "/template-images/portfolio/portfolio-3.jpg",
+          "/template-images/portfolio/portfolio-7.jpg"
+        ],
+        "variant": "portfolio"
       },
-      "style": { "primaryColor": "#18181B" }
+      "style": {
+        "primaryColor": "#DC2626"
+      }
     },
     {
       "id": "stats-1",
@@ -59,12 +90,24 @@
       "data": {
         "heading": "Experience & Reputation",
         "stats": [
-          { "number": "250+", "label": "Weddings & Traditional Ceremonies Documented" },
-          { "number": "48 Hours", "label": "Fast Delivery for Social Media Highlights" },
-          { "number": "100%", "label": "Five-Star Client Satisfaction Rate" }
-        ]
+          {
+            "number": "250+",
+            "label": "Weddings & Traditional Ceremonies Documented"
+          },
+          {
+            "number": "48 Hours",
+            "label": "Fast Delivery for Social Media Highlights"
+          },
+          {
+            "number": "100%",
+            "label": "Five-Star Client Satisfaction Rate"
+          }
+        ],
+        "variant": "portfolio"
       },
-      "style": { "primaryColor": "#18181B" }
+      "style": {
+        "primaryColor": "#DC2626"
+      }
     },
     {
       "id": "services-1",
@@ -79,41 +122,44 @@
             "name": "Kwanjula & Kuhingira Coverage",
             "price": "UGX 850,000",
             "description": "Full-day traditional ceremony photo & 4K cinematic highlight reel with custom photobook.",
-            "image": "african traditional kwanjula ceremony bride"
+            "image": "/template-images/portfolio/portfolio-2.jpg"
           },
           {
             "name": "White Wedding Photo + Cinema",
             "price": "UGX 1,800,000",
             "description": "3 Photographers, 2 Cinematographers, aerial 4K drone, and luxury Italian leather photo album.",
-            "image": "african white wedding couple lake victoria"
+            "image": "/template-images/portfolio/portfolio-3.jpg"
           },
           {
             "name": "Studio Portrait Session",
             "price": "UGX 120,000",
             "description": "1.5 Hours in studio, 2 outfit changes, 15 high-end retouched digital portraits.",
-            "image": "studio beauty portrait lighting african woman"
+            "image": "/template-images/portfolio/portfolio-4.jpg"
           },
           {
             "name": "Birthday & Milestone Celebration",
             "price": "UGX 250,000",
             "description": "Event party coverage, cake cutting, guest portraits, and instant 24-hour delivery.",
-            "image": "birthday celebration party event photo"
+            "image": "/template-images/portfolio/portfolio-5.jpg"
           },
           {
             "name": "Corporate Keynote & Headshots",
             "price": "UGX 500,000",
             "description": "Executive board headshots, conference documentary coverage, and PR press-ready files.",
-            "image": "corporate conference speaker stage microphone"
+            "image": "/template-images/portfolio/portfolio-6.jpg"
           },
           {
             "name": "4K Drone Aerial Videography",
             "price": "UGX 350,000",
             "description": "Licensed commercial drone pilot for estate landscapes, resort marketing, and outdoor venues.",
-            "image": "drone aerial photography landscape lake"
+            "image": "/template-images/portfolio/portfolio-7.jpg"
           }
-        ]
+        ],
+        "variant": "portfolio"
       },
-      "style": { "primaryColor": "#18181B" }
+      "style": {
+        "primaryColor": "#DC2626"
+      }
     },
     {
       "id": "pricing-1",
@@ -160,9 +206,12 @@
             ],
             "popular": false
           }
-        ]
+        ],
+        "variant": "portfolio"
       },
-      "style": { "primaryColor": "#18181B" }
+      "style": {
+        "primaryColor": "#DC2626"
+      }
     },
     {
       "id": "testimonials-1",
@@ -189,9 +238,12 @@
             "text": "Professional, punctual, and delivered crisp corporate headshots for our entire board of directors.",
             "rating": 5
           }
-        ]
+        ],
+        "variant": "portfolio"
       },
-      "style": { "primaryColor": "#18181B" }
+      "style": {
+        "primaryColor": "#DC2626"
+      }
     },
     {
       "id": "map-1",
@@ -202,7 +254,9 @@
         "location": "Makindye Hill, Studio 4B, Kampala",
         "phone": "+256 706 999000"
       },
-      "style": { "primaryColor": "#18181B" }
+      "style": {
+        "primaryColor": "#DC2626"
+      }
     },
     {
       "id": "contact-1",
@@ -213,9 +267,12 @@
         "whatsapp": "+256706999000",
         "location": "Makindye Hill, Studio 4B, Kampala",
         "hours": "Open Daily for Consultations & Shoots by Appointment",
-        "email": "booking@katovisuals.ug"
+        "email": "booking@katovisuals.ug",
+        "variant": "portfolio"
       },
-      "style": { "primaryColor": "#18181B" }
+      "style": {
+        "primaryColor": "#DC2626"
+      }
     },
     {
       "id": "footer-1",
@@ -225,7 +282,9 @@
         "tagline": "Weddings • Kwanjula • Portraits • Films • Kampala, Uganda",
         "year": 2026
       },
-      "style": { "primaryColor": "#18181B" }
+      "style": {
+        "primaryColor": "#DC2626"
+      }
     }
   ]
 }

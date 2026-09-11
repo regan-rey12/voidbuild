@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { PLANS, Plan, PlanInfo, getUserPlan } from '@/lib/payments';
 import { getAccessToken, getEffectiveUser } from '@/lib/auth';
-import { Sparkles, Check, ArrowRight, ShieldCheck, Trash2, X, AlertCircle } from 'lucide-react';
+import { TrendingUp, Check, ArrowRight, ShieldCheck, Trash2, X, AlertCircle } from 'lucide-react';
 
 interface PaywallProps {
   limitReached?: boolean;
@@ -66,7 +66,7 @@ export default function Paywall({
         <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white p-5 md:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-400 text-gray-950 text-xs font-bold tracking-wide">
-              <Sparkles className="w-3.5 h-3.5" />
+              <TrendingUp className="w-3.5 h-3.5" />
               <span>You&apos;re growing!</span>
             </div>
             {onDismiss && (

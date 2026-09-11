@@ -1,0 +1,251 @@
+{
+  "id": "it-ug-1",
+  "name": "Nexa IT Solutions Kampala",
+  "category": "it",
+  "description": "Premium IT consulting template with managed support plans, networking, repairs and cloud setup — real photos, clear UGX pricing and WhatsApp booking for Ugandan IT firms.",
+  "meta": {
+    "target": "IT consulting and support company in Kampala, Uganda",
+    "language": "en"
+  },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": {
+        "businessName": "Nexa IT Solutions",
+        "phone": "+256 772 100200",
+        "whatsapp": "+256772100200",
+        "variant": "overlay-light",
+        "overlaySurface": "#0d1128",
+        "links": [
+          { "label": "Services", "href": "#services" },
+          { "label": "Our Work", "href": "#gallery" },
+          { "label": "Support Plans", "href": "#pricing" },
+          { "label": "Clients", "href": "#testimonials" },
+          { "label": "Contact", "href": "#contact" }
+        ]
+      },
+      "style": { "primaryColor": "#4F46E5" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "Kampala Road • On-Site & Remote Support • SME Specialists",
+        "title": "IT that just works, so your business can too",
+        "subtitle": "Managed IT support, networks, repairs, cloud email and websites for businesses across Kampala. We monitor, fix and maintain your systems — and we explain everything in plain language.",
+        "ctaText": "Book a Free IT Assessment",
+        "ctaLink": "#contact",
+        "secondaryCtaText": "See What We Do",
+        "secondaryCtaLink": "#services",
+        "trustPoints": [
+          "Free first on-site assessment",
+          "On-site response within 24 hours",
+          "Support plans from UGX 250,000/month"
+        ],
+        "variant": "it-background",
+        "image": "/template-images/it/it-1.jpg"
+      },
+      "style": { "primaryColor": "#4F46E5", "alignment": "left" }
+    },
+    {
+      "id": "stats-1",
+      "type": "stats",
+      "data": {
+        "variant": "it",
+        "heading": "A Team Businesses Can Reach",
+        "stats": [
+          { "number": "60+", "label": "Businesses supported across Kampala" },
+          { "number": "24 hrs", "label": "On-site response target for plan clients" },
+          { "number": "10+ yrs", "label": "Combined engineering experience" }
+        ]
+      },
+      "style": { "primaryColor": "#4F46E5" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "What We Do",
+        "subheading": "From a single broken laptop to a full office network — one team for all of it.",
+        "phone": "+256 772 100200",
+        "whatsapp": "+256772100200",
+        "variant": "it",
+        "services": [
+          {
+            "name": "Managed IT Support",
+            "price": "from UGX 250,000 / month",
+            "description": "Monthly care plans covering your computers, printers and users — with remote helpdesk, patches and updates handled before they become problems.",
+            "image": "/template-images/it/it-2.jpg"
+          },
+          {
+            "name": "Networking & Server Rooms",
+            "price": "project-based",
+            "description": "Structured cabling, switches, Wi-Fi that reaches every corner and tidy server racks — installed, labelled and documented properly.",
+            "image": "/template-images/it/it-3.jpg"
+          },
+          {
+            "name": "Computer & Laptop Repairs",
+            "price": "from UGX 40,000",
+            "description": "Screen replacements, power faults, slow machines and data recovery — diagnosed the same day you bring it in.",
+            "image": "/template-images/it/it-4.jpg"
+          },
+          {
+            "name": "Office IT Setup & Cabling",
+            "price": "from UGX 150,000",
+            "description": "New office or relocation? We set up workstations, printers and clean cable management so your team starts working on day one.",
+            "image": "/template-images/it/it-5.jpg"
+          },
+          {
+            "name": "IT Consulting & Strategy",
+            "price": "from UGX 200,000 / session",
+            "description": "Practical advice on systems, budgets and vendors — we help you buy the right tools once instead of the wrong ones twice.",
+            "image": "/template-images/it/it-6.jpg"
+          },
+          {
+            "name": "Cloud, Email & Websites",
+            "price": "from UGX 900,000",
+            "description": "Business email, Google Workspace or Microsoft 365 setup, backups and a proper company website that loads fast on Ugandan networks.",
+            "image": "/template-images/it/it-7.jpg"
+          }
+        ]
+      },
+      "style": { "primaryColor": "#4F46E5" }
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery",
+      "data": {
+        "heading": "Our Work & Our Team",
+        "subheading": "Server rooms we have wired, machines we have rescued and offices we keep running. Replace these with your own project photos anytime.",
+        "variant": "it",
+        "images": [
+          "/template-images/it/it-8.jpg",
+          "/template-images/it/it-9.jpg",
+          "/template-images/it/it-3.jpg",
+          "/template-images/it/it-4.jpg",
+          "/template-images/it/it-6.jpg",
+          "/template-images/it/it-2.jpg"
+        ]
+      },
+      "style": { "primaryColor": "#4F46E5" }
+    },
+    {
+      "id": "pricing-1",
+      "type": "pricing",
+      "data": {
+        "heading": "Support Plans for Every Size",
+        "subheading": "Flat monthly fees — you always know what IT will cost before the month starts.",
+        "phone": "+256 772 100200",
+        "whatsapp": "+256772100200",
+        "variant": "it",
+        "plans": [
+          {
+            "name": "Starter Care",
+            "price": "UGX 250,000 / month",
+            "sub": "up to 5 devices",
+            "features": [
+              "Remote helpdesk Mon–Fri, 8:30–5:30",
+              "Updates, patches & antivirus checks",
+              "One on-site visit per month",
+              "Quarterly system health report"
+            ],
+            "popular": false
+          },
+          {
+            "name": "Business Care",
+            "price": "UGX 600,000 / month",
+            "sub": "up to 15 devices",
+            "features": [
+              "Everything in Starter Care",
+              "On-site response within 24 hours",
+              "Printer & network maintenance",
+              "Monthly backups verification",
+              "Priority WhatsApp support line"
+            ],
+            "popular": true
+          },
+          {
+            "name": "Projects & Setup",
+            "price": "custom quote",
+            "sub": "networks, cloud & websites",
+            "features": [
+              "Structured cabling & Wi-Fi surveys",
+              "Server room installation",
+              "Business email & cloud migration",
+              "Company websites that load fast",
+              "30 days of free support after go-live"
+            ],
+            "popular": false
+          }
+        ]
+      },
+      "style": { "primaryColor": "#4F46E5" }
+    },
+    {
+      "id": "testimonials-1",
+      "type": "testimonials",
+      "data": {
+        "heading": "What Our Clients Say",
+        "subheading": "Clinics, law firms, SACCOs and shops that run on systems we maintain.",
+        "variant": "it",
+        "testimonials": [
+          {
+            "name": "Adv. Rachel M.",
+            "role": "Law firm partner, Kampala",
+            "text": "They moved our chambers to business email and set up proper backups in one weekend. When a drive failed in March, we lost nothing — they had it restored by lunch.",
+            "rating": 5
+          },
+          {
+            "name": "Dr. Ssemakula J.",
+            "role": "Clinic director, Kamwokya",
+            "text": "Our patient records system just works now. Support tickets get answered within the hour, and they come on-site the same day when we need them.",
+            "rating": 5
+          },
+          {
+            "name": "Peter O.",
+            "role": "Retail shop owner, Kampala Road",
+            "text": "They wired our new shop, set up the receipt printers and trained my staff in one afternoon. The monthly plan costs less than the downtime I used to have.",
+            "rating": 5
+          }
+        ]
+      },
+      "style": { "primaryColor": "#4F46E5" }
+    },
+    {
+      "id": "map-1",
+      "type": "map",
+      "data": {
+        "heading": "Visit Our Kampala Road Office",
+        "subheading": "4th Floor, Mukwano Towers — walk-ins welcome, but a call ahead gets you an engineer straight away.",
+        "location": "4th Floor, Mukwano Towers, Kampala Road, Kampala",
+        "phone": "+256 772 100200"
+      },
+      "style": { "primaryColor": "#4F46E5" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": {
+        "variant": "it",
+        "heading": "Book a Free IT Assessment",
+        "phone": "+256 772 100200",
+        "whatsapp": "+256772100200",
+        "location": "4th Floor, Mukwano Towers, Kampala Road, Kampala",
+        "hours": "Mon–Fri: 8:30 AM – 5:30 PM, Sat: 9:00 AM – 1:00 PM",
+        "email": "hello@nexait.ug"
+      },
+      "style": { "primaryColor": "#4F46E5" }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "businessName": "Nexa IT Solutions",
+        "tagline": "Managed IT Support • Networks • Cloud & Websites • Kampala, Uganda",
+        "year": 2026
+      },
+      "style": { "primaryColor": "#4F46E5" }
+    }
+  ]
+}

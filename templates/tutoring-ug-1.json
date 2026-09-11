@@ -1,0 +1,249 @@
+{
+  "id": "tutoring-ug-1",
+  "name": "BrightPath Tutoring Centre Ntinda",
+  "category": "tutoring",
+  "description": "Premium tutoring template with one-on-one and group programs, exam prep and holiday intensives — real photos, clear UGX pricing and WhatsApp booking for Ugandan tutoring centres.",
+  "meta": {
+    "target": "Tutoring and learning centre in Kampala, Uganda",
+    "language": "en"
+  },
+  "blocks": [
+    {
+      "id": "nav-1",
+      "type": "navbar",
+      "data": {
+        "businessName": "BrightPath Tutors",
+        "phone": "+256 701 456789",
+        "whatsapp": "+256701456789",
+        "variant": "overlay-light",
+        "overlaySurface": "#26160a",
+        "links": [
+          { "label": "Programs", "href": "#services" },
+          { "label": "Our Centre", "href": "#gallery" },
+          { "label": "Sessions & Fees", "href": "#pricing" },
+          { "label": "Parents", "href": "#testimonials" },
+          { "label": "Book Assessment", "href": "#contact" }
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "data": {
+        "badge": "Ntinda, Kampala • Primary & Secondary • After-School & Saturdays",
+        "title": "Every learner can catch up — and get ahead",
+        "subtitle": "One-on-one and small-group tutoring in Maths, English and Sciences, plus focused exam prep for PLE, UCE and UACE. Qualified tutors, small classes and honest progress updates for every parent.",
+        "ctaText": "Book a Free Assessment",
+        "ctaLink": "#contact",
+        "secondaryCtaText": "See Programs",
+        "secondaryCtaLink": "#services",
+        "trustPoints": [
+          "Qualified, background-checked tutors",
+          "Maximum 6 learners per group",
+          "After-school, weekend & holiday programs"
+        ],
+        "variant": "tutoring-background",
+        "image": "/template-images/tutoring/tutoring-1.jpg"
+      },
+      "style": { "primaryColor": "#EA580C", "alignment": "left" }
+    },
+    {
+      "id": "stats-1",
+      "type": "stats",
+      "data": {
+        "variant": "tutoring",
+        "heading": "A Centre Built Around Real Learning",
+        "stats": [
+          { "number": "300+", "label": "Learners coached since we opened" },
+          { "number": "1:6", "label": "Tutor-to-learner ratio in group sessions" },
+          { "number": "3 levels", "label": "PLE, UCE and UACE exam preparation" }
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "services-1",
+      "type": "services",
+      "data": {
+        "heading": "Programs & Subjects",
+        "subheading": "Every learner starts with a short assessment, then joins the track that fits their level and goals.",
+        "phone": "+256 701 456789",
+        "whatsapp": "+256701456789",
+        "variant": "tutoring",
+        "services": [
+          {
+            "name": "One-on-One Tutoring",
+            "price": "UGX 40,000 / session",
+            "description": "Private sessions built around one learner's exact gaps — homework support, concept rebuilding and a clear plan after every session.",
+            "image": "/template-images/tutoring/tutoring-2.jpg"
+          },
+          {
+            "name": "Primary Maths & English",
+            "price": "UGX 15,000 / session",
+            "description": "Small-group sessions that build number sense, reading and writing confidence early — the foundation every other subject stands on.",
+            "image": "/template-images/tutoring/tutoring-3.jpg"
+          },
+          {
+            "name": "Secondary Sciences",
+            "price": "UGX 20,000 / session",
+            "description": "Biology, Chemistry and Physics in focused groups — practical revision, past papers and the concepts examiners love to test.",
+            "image": "/template-images/tutoring/tutoring-4.jpg"
+          },
+          {
+            "name": "Exam Prep — PLE, UCE & UACE",
+            "price": "UGX 25,000 / session",
+            "description": "Structured revision timetables, timed past papers and marking-scheme training for candidates in their final year.",
+            "image": "/template-images/tutoring/tutoring-5.jpg"
+          },
+          {
+            "name": "Homework Club",
+            "price": "UGX 10,000 / session",
+            "description": "A quiet, supervised space where learners finish homework properly — with a tutor nearby for the questions they would otherwise skip.",
+            "image": "/template-images/tutoring/tutoring-6.jpg"
+          },
+          {
+            "name": "Holiday & Weekend Programs",
+            "price": "from UGX 250,000",
+            "description": "Morning intensives every holiday that keep learners sharp — half revision, half fun challenges that make concepts stick.",
+            "image": "/template-images/tutoring/tutoring-7.jpg"
+          }
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery",
+      "data": {
+        "heading": "Learning Happens Here",
+        "subheading": "Small groups, patient tutors and learners who leave more confident than they came. Replace these with your own centre photos anytime.",
+        "variant": "tutoring",
+        "images": [
+          "/template-images/tutoring/tutoring-8.jpg",
+          "/template-images/tutoring/tutoring-9.jpg",
+          "/template-images/tutoring/tutoring-5.jpg",
+          "/template-images/tutoring/tutoring-2.jpg",
+          "/template-images/tutoring/tutoring-7.jpg",
+          "/template-images/tutoring/tutoring-4.jpg"
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "pricing-1",
+      "type": "pricing",
+      "data": {
+        "heading": "Sessions & Fees",
+        "subheading": "Transparent per-session pricing — no registration fee, and you only pay for the sessions your learner attends.",
+        "phone": "+256 701 456789",
+        "whatsapp": "+256701456789",
+        "variant": "tutoring",
+        "plans": [
+          {
+            "name": "Group Sessions",
+            "price": "UGX 15,000 / session",
+            "sub": "max 6 learners",
+            "features": [
+              "After-school and Saturday time slots",
+              "Primary Maths & English focus",
+              "Weekly parent progress updates",
+              "First assessment session free"
+            ],
+            "popular": false
+          },
+          {
+            "name": "One-on-One",
+            "price": "UGX 40,000 / session",
+            "sub": "private, personalised",
+            "features": [
+              "A plan built around your learner",
+              "Flexible scheduling around school",
+              "Session report after every meeting",
+              "Option to host at home or our centre"
+            ],
+            "popular": true
+          },
+          {
+            "name": "Holiday Intensive",
+            "price": "UGX 250,000 / program",
+            "sub": "3-week morning program",
+            "features": [
+              "Daily 9 AM – 12 PM sessions",
+              "Revision plus new-term head start",
+              "Timed practice under exam conditions",
+              "End-of-program report for parents"
+            ],
+            "popular": false
+          }
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "testimonials-1",
+      "type": "testimonials",
+      "data": {
+        "heading": "What Parents Say",
+        "subheading": "The honest progress updates other parents around Ntinda appreciate.",
+        "variant": "tutoring",
+        "testimonials": [
+          {
+            "name": "Mrs. Nakato J.",
+            "role": "Parent, Primary 6 learner",
+            "text": "My son used to hide his maths homework. After one term at BrightPath he asks to show me his marked past papers — his teacher says he is a different learner now.",
+            "rating": 5
+          },
+          {
+            "name": "Mr. Okello D.",
+            "role": "Parent, S4 candidate",
+            "text": "The revision timetable they built for our daughter ahead of her final year was worth every shilling. She walked into her UCE exams calm and prepared.",
+            "rating": 5
+          },
+          {
+            "name": "Mrs. Aisha K.",
+            "role": "Parent, S1 learner",
+            "text": "The progress updates are what won me — every Friday I know exactly what was covered, what improved and what still needs work. No guessing.",
+            "rating": 5
+          }
+        ]
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "map-1",
+      "type": "map",
+      "data": {
+        "heading": "Find Us in Ntinda",
+        "subheading": "A quiet learning centre just off Stretcher Road — safe parking and a waiting area for parents.",
+        "location": "Plot 24, Stretcher Road, Ntinda, Kampala",
+        "phone": "+256 701 456789"
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "data": {
+        "variant": "tutoring",
+        "heading": "Book a Free Assessment",
+        "phone": "+256 701 456789",
+        "whatsapp": "+256701456789",
+        "location": "Plot 24, Stretcher Road, Ntinda, Kampala",
+        "hours": "Mon–Fri: 3:30 PM – 7:00 PM, Sat: 8:30 AM – 4:00 PM",
+        "email": "learn@brightpath.ug"
+      },
+      "style": { "primaryColor": "#EA580C" }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "businessName": "BrightPath Tutoring Centre",
+        "tagline": "One-on-One • Small Groups • Exam Prep • Ntinda, Kampala",
+        "year": 2026
+      },
+      "style": { "primaryColor": "#EA580C" }
+    }
+  ]
+}

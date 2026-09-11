@@ -4,7 +4,7 @@ import Link from 'next/link';
 import TopNav from '@/components/TopNav';
 import { PLANS, Plan, PlanInfo } from '@/lib/payments';
 import { getAccessToken, getEffectiveUser } from '@/lib/auth';
-import { Check, Sparkles, ShieldCheck, ArrowRight, AlertCircle } from 'lucide-react';
+import { Check, Zap, Rocket, ShieldCheck, ArrowRight, AlertCircle } from 'lucide-react';
 
 export default function PricingPage() {
   const [loading, setLoading] = useState<Plan | null>(null);
@@ -150,15 +150,15 @@ export default function PricingPage() {
         {/* How Flow B Works Card */}
         <div className="mt-14 bg-gray-900 text-white rounded-2xl p-6 md:p-8 shadow-sm">
           <div className="flex items-center gap-2 text-yellow-400 text-xs font-bold uppercase tracking-wider">
-            <Sparkles className="w-4 h-4" />
+            <Zap className="w-4 h-4" />
             <span>Try Before You Pay (Flow B)</span>
           </div>
           <h3 className="font-bold text-lg md:text-xl mt-2">How VoidBuild Works</h3>
           <div className="grid md:grid-cols-3 gap-5 mt-6 text-xs text-gray-300">
             <div className="bg-white/5 p-4 rounded-xl border border-white/10">
-              <div className="font-bold text-white text-sm mb-1">1. Generate Free</div>
+              <div className="font-bold text-white text-sm mb-1">1. Create Free</div>
               <p className="leading-relaxed">
-                Describe your shop (e.g. salon, clinic, hardware). Our AI crafts a full website in 30 seconds.
+                Describe your shop (e.g. salon, clinic, hardware) and a full website is ready in about 30 seconds.
               </p>
             </div>
             <div className="bg-white/5 p-4 rounded-xl border border-white/10">
@@ -197,7 +197,7 @@ export default function PricingPage() {
             href="/builder"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-bold text-sm hover:bg-black transition shadow-sm"
           >
-            <Sparkles className="w-4 h-4 text-yellow-400" />
+            <Rocket className="w-4 h-4 text-yellow-400" />
             <span>Start Building Free — No Card Required</span>
           </Link>
         </div>

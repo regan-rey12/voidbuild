@@ -43,7 +43,7 @@ export default function TermsPage() {
             <h2 className="font-bold text-base">4. Our Responsibilities</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1">
               <li>Provide website hosting and VoidBuild subdomain routing on a best-effort basis with a 99.9% target uptime.</li>
-              <li>Maintain AI generation with fallback Ugandan templates if upstream providers are unavailable.</li>
+              <li>Maintain website generation with Ugandan template fallbacks if upstream providers are unavailable.</li>
               <li>Protect project, payment, analytics, and lead data using Supabase access controls, HTTPS encryption, and server-side processing.</li>
               <li>Provide customer support via WhatsApp (+256 751 391318) and email (hello@voidbuild.com).</li>
             </ul>

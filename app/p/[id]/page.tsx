@@ -71,20 +71,6 @@ export default async function PublicPage({ params, searchParams }: PageProps) {
   return (
     <div>
       {!isFallback && <PublicPageTracker projectId={project.id} />}
-      <div className="relative z-40 bg-gray-950 text-white text-center text-xs py-2 px-4 flex items-center justify-center gap-2 border-b border-white/10">
-        <img src="/logo.png" alt="VoidBuild" className="w-4 h-4 object-contain flex-shrink-0" />
-        {isFallback ? (
-          <span>
-            Shared via secure link • Built with{' '}
-            <Link href="/" className="font-bold underline text-yellow-400">VoidBuild</Link>
-          </span>
-        ) : (
-          <span>
-            {project.business_name} • Built with{' '}
-            <Link href="/" className="font-bold underline text-yellow-400">VoidBuild</Link>
-          </span>
-        )}
-      </div>
       <TemplateRenderer template={project.template_json} projectId={isFallback ? undefined : project.id} />
       {isFallback && (
         <div className="bg-blue-50 border-t text-center text-[11px] text-blue-700 py-2">

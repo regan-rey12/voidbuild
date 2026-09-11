@@ -2,233 +2,251 @@
   "id": "clinic-ug-1",
   "name": "Kampala Care Medical Centre Ntinda",
   "category": "clinic",
-  "description": "Doctor consultation, laboratory testing, maternity, 3D ultrasound, and licensed pharmacy in Ntinda, Kampala",
+  "description": "Doctor consultations, laboratory tests, ultrasound scans, antenatal visits, child immunization and an in-house dispensing pharmacy in Ntinda, Kampala",
   "meta": { "target": "Medical clinic in Ntinda, Kampala", "language": "en" },
   "blocks": [
     {
       "id": "nav-1",
       "type": "navbar",
       "data": {
-        "businessName": "Kampala Care Clinic",
+        "businessName": "Kampala Care Medical Centre",
         "phone": "+256 700 555666",
         "whatsapp": "+256700555666",
+        "variant": "overlay-light",
+        "overlaySurface": "#06181e",
         "links": [
           { "label": "Services", "href": "#services" },
-          { "label": "Facilities", "href": "#gallery" },
-          { "label": "Health Packages", "href": "#pricing" },
-          { "label": "Reviews", "href": "#testimonials" },
-          { "label": "Location", "href": "#map" },
-          { "label": "Emergency", "href": "#contact" }
+          { "label": "Our Clinic", "href": "#gallery" },
+          { "label": "Visit Support", "href": "#pricing" },
+          { "label": "Patient Reviews", "href": "#testimonials" },
+          { "label": "Find Us", "href": "#map" },
+          { "label": "Book a Visit", "href": "#contact" }
         ]
       },
-      "style": { "primaryColor": "#0D9488" }
+      "style": { "primaryColor": "#0E7490" }
     },
     {
       "id": "hero-1",
       "type": "hero",
       "data": {
-        "badge": "MOH Licensed • 24/7 Emergency Medical Care • Certified Lab & 3D Ultrasound",
-        "title": "Compassionate, Certified & Affordable Healthcare for Your Family",
-        "subtitle": "Experienced medical officers, rapid diagnostic laboratory (Malaria, Typhoid, Complete Blood Count), 3D baby ultrasound scans, prenatal maternity care, pediatric immunizations, and fully stocked NDA-approved pharmacy in Ntinda. MTN MoMo & Airtel Money accepted.",
-        "ctaText": "Consult Doctor on WhatsApp",
+        "badge": "Ntinda, Kampala • Open daily • Walk-ins welcome",
+        "title": "Care for the whole family, close to home",
+        "subtitle": "Doctor consultations, laboratory tests, ultrasound scans, antenatal visits and child immunization — under one roof, with every result explained in plain language.",
+        "ctaText": "Book a Consultation",
         "ctaLink": "#contact",
-        "image": "african doctor patient consultation clinic hospital kampala"
+        "secondaryCtaText": "See Our Services",
+        "secondaryCtaLink": "#services",
+        "trustPoints": [
+          "Walk-ins welcome",
+          "On-site laboratory & ultrasound",
+          "Results explained clearly",
+          "Registered doctors & nurses"
+        ],
+        "variant": "clinic-background",
+        "image": "/template-images/clinic/clinic-1.jpg"
       },
-      "style": { "primaryColor": "#0D9488", "alignment": "left" }
+      "style": { "primaryColor": "#0E7490", "alignment": "left" }
     },
     {
       "id": "stats-1",
       "type": "stats",
       "data": {
-        "heading": "Certified Clinical Standards",
+        "variant": "clinic",
+        "heading": "Why families choose our clinic",
         "stats": [
-          { "number": "15 Mins", "label": "Fast Rapid Diagnostic Lab Results" },
-          { "number": "100%", "label": "NDA Approved Authentic Medicines" },
-          { "number": "24/7", "label": "Doctor On-Call & Emergency Response" }
+          { "number": "On-site", "label": "Laboratory, ultrasound and dispensing under one roof" },
+          { "number": "Walk-ins", "label": "No appointment needed for general consultations" },
+          { "number": "Open daily", "label": "Monday to Saturday, with Sunday morning hours" }
         ]
       },
-      "style": { "primaryColor": "#0D9488" }
+      "style": { "primaryColor": "#0E7490" }
     },
     {
       "id": "services-1",
       "type": "services",
       "data": {
+        "variant": "clinic",
+        "buttonLabel": "Ask About This Service",
         "heading": "Clinical Services & Diagnostics",
-        "subheading": "Affordable UGX consultation and testing rates. Insurance and corporate staff packages accepted.",
+        "subheading": "Consultations, tests and check-ups for every age — with clear next steps after every visit.",
         "phone": "+256 700 555666",
         "whatsapp": "+256700555666",
         "services": [
           {
-            "name": "General Doctor Consultation",
-            "price": "UGX 25,000",
-            "description": "Comprehensive clinical exam, vital signs check, diagnosis, and personalized treatment plan.",
-            "image": "african doctor consultation stethoscope"
+            "name": "General Consultations",
+            "price": "",
+            "description": "See a registered doctor for everyday health concerns — with a proper history, examination and clear guidance on next steps.",
+            "image": "/template-images/clinic/clinic-2.jpg"
           },
           {
-            "name": "Full Blood Count & Infection Lab",
-            "price": "UGX 18,000",
-            "description": "Fast automated testing for Malaria RDT/BS, Typhoid, Complete Hemogram, and Urinalysis.",
-            "image": "medical laboratory microscope testing"
+            "name": "Laboratory Tests & Results",
+            "price": "",
+            "description": "Common tests carried out in our on-site laboratory, with results explained in language you can actually use.",
+            "image": "/template-images/clinic/clinic-3.jpg"
           },
           {
-            "name": "Obstetric & Abdominal 3D Ultrasound",
-            "price": "UGX 45,000",
-            "description": "High-resolution 2D/3D pregnancy baby scan, fetal heart monitoring, and pelvic ultrasound.",
-            "image": "ultrasound scan pregnant woman clinic"
+            "name": "Ultrasound Scans",
+            "price": "",
+            "description": "Obstetric and abdominal scans performed in a private room, with the sonographer walking you through what you are seeing.",
+            "image": "/template-images/clinic/clinic-4.jpg"
           },
           {
-            "name": "Antenatal & Maternity Care",
-            "price": "UGX 60,000",
-            "description": "Routine pregnancy checkups, fetal growth tracking, tetanus immunization, and counseling.",
-            "image": "african maternity pregnant clinic nurse"
+            "name": "Antenatal & Maternal Health Visits",
+            "price": "",
+            "description": "Scheduled check-ups for expectant mothers with our nursing team — monitoring, guidance and support through your pregnancy.",
+            "image": "/template-images/clinic/clinic-5.jpg"
           },
           {
-            "name": "Pediatric Child Health & Vaccines",
-            "price": "UGX 20,000",
-            "description": "Childhood fever treatment, growth monitoring, and routine UNEPI child immunizations.",
-            "image": "african child pediatrician clinic checkup"
+            "name": "Child Health & Immunization",
+            "price": "",
+            "description": "Growth monitoring, developmental check-ups and immunization visits for little ones, handled gently and patiently.",
+            "image": "/template-images/clinic/clinic-6.jpg"
           },
           {
-            "name": "Fully Stocked Licensed Pharmacy",
-            "price": "From UGX 5,000",
-            "description": "Authentic antibiotics, pain relievers, diabetes/hypertension maintenance, and child syrups.",
-            "image": "pharmacy medicine bottles shelves"
+            "name": "In-House Dispensing Pharmacy",
+            "price": "",
+            "description": "Prescriptions from your consultation dispensed on the spot — so you can head straight home after your visit.",
+            "image": "/template-images/clinic/clinic-7.jpg"
           }
         ]
       },
-      "style": { "primaryColor": "#0D9488" }
+      "style": { "primaryColor": "#0E7490" }
     },
     {
       "id": "gallery-1",
       "type": "gallery",
       "data": {
-        "heading": "Our Medical Facilities & Care",
-        "subheading": "Clean, sanitized consultation rooms, automated diagnostic lab, and pharmacy dispensary.",
+        "variant": "clinic",
+        "heading": "Inside Our Clinic",
+        "subheading": "Clean consultation rooms, a calm waiting area and an on-site laboratory — designed to put patients at ease.",
         "images": [
-          "doctor consultation room clinic",
-          "medical laboratory testing equipment",
-          "ultrasound monitor baby scan",
-          "maternity hospital bed clean",
-          "pharmacy dispensary medicine shelves",
-          "nurse patient care smiling"
+          "/template-images/clinic/clinic-8.jpg",
+          "/template-images/clinic/clinic-9.jpg",
+          "/template-images/clinic/clinic-2.jpg",
+          "/template-images/clinic/clinic-6.jpg",
+          "/template-images/clinic/clinic-3.jpg",
+          "/template-images/clinic/clinic-5.jpg"
         ]
       },
-      "style": { "primaryColor": "#0D9488" }
+      "style": { "primaryColor": "#0E7490" }
     },
     {
       "id": "pricing-1",
       "type": "pricing",
       "data": {
-        "heading": "Family & Executive Health Packages",
-        "subheading": "Preventive screening packages designed for early detection and comprehensive family wellness.",
+        "variant": "clinic",
+        "ctaText": "Ask About This Service",
+        "heading": "Visits & Patient Support",
+        "subheading": "How we make visits simple — from walk-in consultations to follow-up care.",
         "phone": "+256 700 555666",
         "whatsapp": "+256700555666",
         "plans": [
           {
-            "name": "Basic Wellness Check",
-            "price": "UGX 35,000",
-            "sub": "routine screening",
+            "name": "Walk-In Consultations",
+            "price": "",
+            "sub": "no appointment needed",
             "features": [
-              "Doctor Clinical Consultation",
-              "Blood Pressure & Body Mass Index",
-              "Random Blood Sugar diabetes test",
-              "Malaria RDT & Urinalysis check",
-              "Prescription & lifestyle advice"
+              "See a registered doctor the same day",
+              "Proper history and examination",
+              "Clear guidance on next steps",
+              "Prescriptions dispensed in-house"
             ],
             "popular": false
           },
           {
-            "name": "Antenatal Maternity Package",
-            "price": "UGX 80,000",
-            "sub": "most popular for mothers",
+            "name": "Laboratory & Results Support",
+            "price": "",
+            "sub": "on-site laboratory",
             "features": [
-              "High-resolution 3D baby ultrasound",
-              "Doctor Obstetric examination",
-              "Full Hemoglobin & Blood Group lab",
-              "Tetanus Toxoid immunization",
-              "1-Month supply of prenatal vitamins"
+              "Common tests carried out in-house",
+              "Results explained in plain language",
+              "Copies you can take to any referral hospital",
+              "Follow-up consultation available"
             ],
             "popular": true
           },
           {
-            "name": "Executive Comprehensive Screen",
-            "price": "UGX 160,000",
-            "sub": "complete annual checkup",
+            "name": "Antenatal & Child Health Visits",
+            "price": "",
+            "sub": "scheduled visits",
             "features": [
-              "Complete Liver & Kidney panel",
-              "Full Lipid / Cholesterol profile",
-              "ECG Cardiac Heart Screening",
-              "Full Complete Blood Hemogram",
-              "Detailed physician medical report"
+              "Ante-natal check-ups with our nurses",
+              "Growth monitoring for little ones",
+              "Immunization reminders by message",
+              "Guidance you can understand"
             ],
             "popular": false
           }
         ]
       },
-      "style": { "primaryColor": "#0D9488" }
+      "style": { "primaryColor": "#0E7490" }
     },
     {
       "id": "testimonials-1",
       "type": "testimonials",
       "data": {
+        "variant": "clinic",
         "heading": "What Our Patients Say",
-        "subheading": "Reviews from families and corporate patients treated at our Ntinda clinic.",
+        "subheading": "Families from Ntinda and neighbouring areas who visit us regularly.",
         "testimonials": [
           {
-            "name": "Patricia N.",
-            "role": "Ntinda Resident & Mother",
-            "text": "The doctors here are kind, patient, and thorough. Lab tests took only 15 minutes and the prescription worked quickly.",
+            "name": "Miriam K.",
+            "role": "Mother of two, Ntinda",
+            "text": "The doctor sat down and explained my son's results step by step, then wrote down what to do next. I left knowing exactly what was happening.",
             "rating": 5
           },
           {
-            "name": "Dr. Ronald T.",
-            "role": "Corporate Executive, Nakawa",
-            "text": "Excellent antenatal care for my wife. The ultrasound scan doctor was very professional and reassuring throughout.",
+            "name": "Robert S.",
+            "role": "Regular patient",
+            "text": "I came in as a walk-in on a Saturday morning and was seen within the hour. Lab results were ready before I left the building.",
             "rating": 5
           },
           {
-            "name": "Agnes K.",
-            "role": "Mother of two, Bukoto",
-            "text": "Brought my daughter at night with a high fever. The emergency doctor attended to us immediately. God bless this clinic.",
+            "name": "Grace A.",
+            "role": "Expectant mother, Nakawa",
+            "text": "My ante-natal visits have been calm and thorough. The nurses are patient with questions and the reminder messages mean I never miss one.",
             "rating": 5
           }
         ]
       },
-      "style": { "primaryColor": "#0D9488" }
+      "style": { "primaryColor": "#0E7490" }
     },
     {
       "id": "map-1",
       "type": "map",
       "data": {
-        "heading": "Find Our Medical Centre in Ntinda",
-        "subheading": "Conveniently located along Ntinda-Nakawa Road with 24/7 ambulance access.",
-        "location": "Plot 18, Ntinda-Nakawa Road, Near Capital Shoppers, Kampala",
+        "heading": "Find Our Clinic in Ntinda",
+        "subheading": "Plot 18, Ntinda-Nakawa Road — near Capital Shoppers, with parking available.",
+        "location": "Plot 18, Ntinda-Nakawa Road, Near Capital Shoppers, Ntinda, Kampala",
         "phone": "+256 700 555666"
       },
-      "style": { "primaryColor": "#0D9488" }
+      "style": { "primaryColor": "#0E7490" }
     },
     {
       "id": "contact-1",
       "type": "contact",
       "data": {
-        "heading": "Consult a Doctor or Emergency Care",
+        "variant": "clinic",
+        "heading": "Book a Visit",
+        "subheading": "Walk in any time during opening hours, or send a message ahead and reception will confirm your visit.",
         "phone": "+256 700 555666",
         "whatsapp": "+256700555666",
-        "location": "Plot 18, Ntinda-Nakawa Road, Near Capital Shoppers, Kampala",
-        "hours": "Open 24 Hours Daily (Doctors & Nurses Always On Duty)",
-        "email": "care@kampalaclinic.ug"
+        "location": "Plot 18, Ntinda-Nakawa Road, Near Capital Shoppers, Ntinda, Kampala",
+        "hours": "Mon–Sat: 7:30 AM – 9:00 PM • Sun: 9:00 AM – 1:00 PM",
+        "email": "care@kampalacare.ug",
+        "buttonText": "Send Visit Request"
       },
-      "style": { "primaryColor": "#0D9488" }
+      "style": { "primaryColor": "#0E7490" }
     },
     {
       "id": "footer-1",
       "type": "footer",
       "data": {
         "businessName": "Kampala Care Medical Centre",
-        "tagline": "Certified Clinical Care • 3D Ultrasound • 24/7 Emergency • Ntinda, Kampala",
+        "tagline": "Consultations • Laboratory • Ultrasound • Maternal & Child Health • Ntinda, Kampala",
         "year": 2026
       },
-      "style": { "primaryColor": "#0D9488" }
+      "style": { "primaryColor": "#0E7490" }
     }
   ]
 }

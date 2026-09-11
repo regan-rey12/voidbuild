@@ -41,17 +41,17 @@ export interface Template {
     | 'salon'
     | 'hardware'
     | 'restaurant'
-    | 'church'
+    | 'laundry'
     | 'portfolio'
     | 'shop'
-    | 'boda'
+    | 'it'
     | 'school'
     | 'clinic'
     | 'boutique'
     | 'barbershop'
     | 'pharmacy'
     | 'bakery'
-    | 'carwash'
+    | 'tutoring'
     | 'hotel'
     | 'gym';
   description: string;
@@ -66,7 +66,7 @@ export interface Template {
 // Example data shape for each block type (for AI to follow)
 export const BlockSchemas = {
   navbar: { businessName: "string", phone: "string", whatsapp: "string" },
-  hero: { title: "string", subtitle: "string", ctaText: "string", ctaLink: "string", image: "string (unsplash keyword)" },
+  hero: { title: "string", subtitle: "string", ctaText: "string", ctaLink: "string", image: "string (local /template-images path or full image URL)" },
   services: { heading: "string", services: [{ name: "string", price: "string (UGX)", description: "string", icon: "string" }] },
   contact: { phone: "string", whatsapp: "string", location: "string", hours: "string", email: "string" },
   footer: { businessName: "string", year: "number", tagline: "string" }

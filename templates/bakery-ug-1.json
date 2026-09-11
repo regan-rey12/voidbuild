@@ -2,8 +2,11 @@
   "id": "bakery-ug-1",
   "name": "Sweet Crust Bakery & Cake Studio Bukoto",
   "category": "bakery",
-  "description": "Custom wedding cakes, birthday cakes, fresh pastries, meat pies, and bread in Kampala",
-  "meta": { "target": "Bakery and custom cake shop in Kampala, Uganda", "language": "en" },
+  "description": "Premium bakery template with fresh bread, pastries and custom cake orders — real photos, clear UGX prices and WhatsApp ordering for Kampala bakeries.",
+  "meta": {
+    "target": "Bakery and custom cake shop in Kampala, Uganda",
+    "language": "en"
+  },
   "blocks": [
     {
       "id": "nav-1",
@@ -12,220 +15,280 @@
         "businessName": "Sweet Crust Bakery",
         "phone": "+256 704 888999",
         "whatsapp": "+256704888999",
+        "variant": "overlay-light",
+        "overlaySurface": "#1a120d",
         "links": [
-          { "label": "Cakes & Treats", "href": "#services" },
-          { "label": "Cake Studio", "href": "#gallery" },
-          { "label": "Celebration Packages", "href": "#pricing" },
-          { "label": "Reviews", "href": "#testimonials" },
-          { "label": "Location", "href": "#map" },
-          { "label": "Order Custom Cake", "href": "#contact" }
+          {
+            "label": "Menu",
+            "href": "#services"
+          },
+          {
+            "label": "Our Work",
+            "href": "#gallery"
+          },
+          {
+            "label": "Cake Packages",
+            "href": "#pricing"
+          },
+          {
+            "label": "Reviews",
+            "href": "#testimonials"
+          },
+          {
+            "label": "Visit Us",
+            "href": "#contact"
+          }
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": {
+        "primaryColor": "#D97706"
+      }
     },
     {
       "id": "hero-1",
       "type": "hero",
       "data": {
-        "badge": "Freshly Baked Daily • Custom Birthday & Wedding Cakes • Same-Day Delivery",
-        "title": "Baking Sweet Memories with Passion & Perfection",
-        "subtitle": "Kampala's favorite boutique bakery. Custom tiered wedding cakes, birthday theme cakes, warm buttery croissants, golden meat pies, and artisanal milk bread. Order your custom celebration cake on WhatsApp.",
-        "ctaText": "Order Custom Cake on WhatsApp",
+        "badge": "Baked Fresh Daily • Bukoto, Kampala • Cake Orders on WhatsApp",
+        "title": "Warm from the oven, every single morning",
+        "subtitle": "Soft milk bread, buttery croissants, meat pies and samosas from our Bukoto ovens — plus custom birthday and wedding cakes made to order. Message us on WhatsApp and your order is ready for pick-up or delivery.",
+        "ctaText": "Order on WhatsApp",
         "ctaLink": "#contact",
-        "image": "custom birthday wedding cake bakery pastry chef kampala"
+        "secondaryCtaText": "See What We Bake",
+        "secondaryCtaLink": "#services",
+        "trustPoints": [
+          "First bake at 6:00 AM daily",
+          "Custom cakes with 48 hrs notice",
+          "Pick-up or local delivery"
+        ],
+        "variant": "bakery-background",
+        "image": "/template-images/bakery/bakery-1.jpg"
       },
-      "style": { "primaryColor": "#D97706", "alignment": "left" }
+      "style": {
+        "primaryColor": "#D97706",
+        "alignment": "left"
+      }
     },
     {
       "id": "stats-1",
       "type": "stats",
       "data": {
-        "heading": "Our Sweet Journey",
+        "variant": "bakery",
+        "heading": "Why Bukoto Keeps Coming Back",
         "stats": [
-          { "number": "1,500+", "label": "Celebration & Wedding Cakes Crafted" },
-          { "number": "100%", "label": "Pure Butter & Premium Ingredients" },
-          { "number": "6:30 AM", "label": "Warm Bread & Pastries Baked Daily" }
+          {
+            "number": "6:00 AM",
+            "label": "First bake out of the oven daily"
+          },
+          {
+            "number": "48 hrs",
+            "label": "Notice for custom celebration cakes"
+          },
+          {
+            "number": "100%",
+            "label": "Baked fresh in-house every day"
+          }
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": {
+        "primaryColor": "#D97706"
+      }
     },
     {
       "id": "services-1",
       "type": "services",
       "data": {
-        "heading": "Custom Cakes, Pastries & Daily Bakery",
-        "subheading": "All our cakes are baked fresh to order with rich buttercream, fondant, or whipped cream finishes.",
+        "heading": "The Daily Menu & Cake Counter",
+        "subheading": "Everything is baked on-site in Bukoto. Prices are clear, and orders go straight through WhatsApp.",
         "phone": "+256 704 888999",
         "whatsapp": "+256704888999",
+        "variant": "bakery",
         "services": [
           {
-            "name": "Custom 2-Tier Birthday Cake (2kg)",
-            "price": "UGX 90,000",
-            "description": "Choice of Red Velvet, Chocolate Fudge, or Vanilla Caramel with personalized name topper.",
-            "image": "custom birthday cake two tier decorated"
+            "name": "Fresh Bread & Buns",
+            "price": "UGX 2,000",
+            "description": "Soft milk bread, dinner rolls and buns out of the oven every morning — the 6 AM batch always sells out first.",
+            "image": "/template-images/bakery/bakery-2.jpg"
           },
           {
-            "name": "Royal Wedding & Kwanjula Cake",
-            "price": "UGX 650,000",
-            "description": "3 to 5 Tier luxury fruit & sponge cake with handcrafted sugar flowers and wedding table setup.",
-            "image": "wedding cake luxury tiered flowers"
+            "name": "Pastries & Croissants",
+            "price": "UGX 3,500",
+            "description": "Buttery croissants, cinnamon rolls, meat pies and samosas — baked in small batches through the day so they stay warm.",
+            "image": "/template-images/bakery/bakery-5.jpg"
           },
           {
-            "name": "Golden Beef & Chicken Pies (Pack of 6)",
-            "price": "UGX 24,000",
-            "description": "Flaky puff pastry stuffed with seasoned minced beef, carrots, and aromatic spices.",
-            "image": "fresh baked meat pies puff pastry"
+            "name": "Custom Birthday Cakes",
+            "price": "from UGX 60,000",
+            "description": "Theme cakes, photo cakes and buttercream classics. Send us a reference photo on WhatsApp and we confirm the design and price the same day.",
+            "image": "/template-images/bakery/bakery-3.jpg"
           },
           {
-            "name": "Assorted Cupcake Gift Box (12 Pcs)",
-            "price": "UGX 40,000",
-            "description": "Assorted gourmet cupcakes (Oreo, Strawberry, Salted Caramel, Vanilla) in elegant gift box.",
-            "image": "gourmet cupcakes gift box decorated"
+            "name": "Wedding & Event Cakes",
+            "price": "from UGX 350,000",
+            "description": "Tiered cakes with a tasting session at our studio, plus delivery and set-up at your venue anywhere in Kampala.",
+            "image": "/template-images/bakery/bakery-6.jpg"
           },
           {
-            "name": "Artisanal Brioche & Milk Bread",
-            "price": "UGX 6,500",
-            "description": "Soft, fluffy, golden-baked everyday sandwich bread made with fresh farm milk and butter.",
-            "image": "fresh artisanal bread loaf bakery"
+            "name": "Cookies, Cupcakes & Snack Packs",
+            "price": "from UGX 1,500",
+            "description": "Boxes for offices, schools and small celebrations — mixed flavours, packed and labelled, ready to hand out.",
+            "image": "/template-images/bakery/bakery-8.jpg"
           },
           {
-            "name": "French Butter Croissants (Pack of 4)",
-            "price": "UGX 18,000",
-            "description": "Laminated flaky French croissants with rich butter aroma, perfect with morning coffee.",
-            "image": "french butter croissants bakery breakfast"
+            "name": "Daily Counter & Bulk Orders",
+            "price": "order ahead",
+            "description": "Breakfast trays and bread in quantity for offices, churches and events. Order by 5 PM the day before and pick up warm.",
+            "image": "/template-images/bakery/bakery-7.jpg"
           }
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": {
+        "primaryColor": "#D97706"
+      }
     },
     {
       "id": "gallery-1",
       "type": "gallery",
       "data": {
-        "heading": "Our Cake Studio Portfolio",
-        "subheading": "Real creations made for weddings, birthdays, baby showers, and corporate milestones.",
+        "heading": "From Our Ovens & Cake Studio",
+        "subheading": "Real bread, real cakes, made fresh in Bukoto every day. Replace these with your own photos anytime in the editor.",
+        "variant": "bakery",
         "images": [
-          "custom birthday cake design",
-          "luxury wedding cake tiered",
-          "cupcakes gift box colorful",
-          "fresh meat pies pastry bakery",
-          "artisan bread loaves display",
-          "baker decorating cake icing"
+          "/template-images/bakery/bakery-9.jpg",
+          "/template-images/bakery/bakery-4.jpg",
+          "/template-images/bakery/bakery-2.jpg",
+          "/template-images/bakery/bakery-5.jpg",
+          "/template-images/bakery/bakery-6.jpg",
+          "/template-images/bakery/bakery-8.jpg"
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": {
+        "primaryColor": "#D97706"
+      }
     },
     {
       "id": "pricing-1",
       "type": "pricing",
       "data": {
         "heading": "Celebration & Party Packages",
-        "subheading": "Bundle your party desserts and save with our special event packages.",
+        "subheading": "Bundle your event desserts in one order — clear prices, one WhatsApp conversation, done.",
         "phone": "+256 704 888999",
         "whatsapp": "+256704888999",
+        "variant": "bakery",
         "plans": [
           {
-            "name": "Mini Birthday Special",
-            "price": "UGX 65,000",
-            "sub": "feeds 8–10 people",
+            "name": "Birthday Party Pack",
+            "price": "from UGX 85,000",
+            "sub": "cake + treats combo",
             "features": [
-              "1.5kg Single-tier drip cake",
-              "Personalized message & candle set",
-              "Choice of 2 flavor fillings",
-              "Same-day Kampala boda delivery"
+              "Half-kg theme cake with buttercream",
+              "12 assorted cupcakes",
+              "Candles, topper & box included",
+              "48-hour order notice"
             ],
             "popular": false
           },
           {
-            "name": "Kids Birthday Party Pack",
-            "price": "UGX 140,000",
-            "sub": "most popular combo",
+            "name": "Wedding Cake Starter",
+            "price": "from UGX 350,000",
+            "sub": "two tiers, tasting included",
             "features": [
-              "2.5kg Themed cartoon/character cake",
-              "12 Matching theme cupcakes",
-              "12 Fresh beef meat pies",
-              "Party cake sparkler & banner"
+              "Two-tier cake for up to 60 guests",
+              "Tasting session at the studio",
+              "Delivery & set-up in Kampala",
+              "Fondant or buttercream finish"
             ],
             "popular": true
           },
           {
-            "name": "Full Dessert Table Setup",
-            "price": "UGX 450,000",
-            "sub": "events up to 50 guests",
+            "name": "Office Breakfast Tray",
+            "price": "from UGX 45,000",
+            "sub": "order by 5 PM the day before",
             "features": [
-              "Centerpiece 2-tier celebration cake",
-              "24 Gourmet cupcakes & 24 meat pies",
-              "Dessert table display stands rental",
-              "On-site event delivery & styling"
+              "Assorted pastries & meat pies",
+              "Fresh bread rolls & buns",
+              "Serves 10–15 people",
+              "Free delivery within Bukoto–Kisaasi"
             ],
             "popular": false
           }
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": {
+        "primaryColor": "#D97706"
+      }
     },
     {
       "id": "testimonials-1",
       "type": "testimonials",
       "data": {
-        "heading": "Sweet Words from Clients",
-        "subheading": "Reviews from party organizers, parents, and couples in Kampala.",
+        "heading": "What Customers Around Kampala Say",
+        "subheading": "Reviews from parents, offices and couples who order from us regularly.",
+        "variant": "bakery",
         "testimonials": [
           {
-            "name": "Lillian K.",
-            "role": "Parent, Bukoto",
-            "text": "The Spiderman cake for my son's 5th birthday was magnificent! It tasted even better than it looked. Moist and not too sugary.",
+            "name": "Sarah N.",
+            "role": "Birthday mom, Ntinda",
+            "text": "The two-tier cake came out exactly like the photo I sent on WhatsApp, and it was ready a day early. The kids finished every crumb.",
             "rating": 5
           },
           {
-            "name": "Mark & Claire T.",
-            "role": "Wedding in Munyonyo",
-            "text": "Sweet Crust delivered our 4-tier wedding cake in perfect condition. Guests are still talking about the passion-chocolate flavor!",
+            "name": "David O.",
+            "role": "Office manager, Kamwokya",
+            "text": "Our breakfast trays arrive warm every Friday before 8 AM. One message the day before and everything is sorted — no follow-ups needed.",
             "rating": 5
           },
           {
-            "name": "Denis A.",
-            "role": "Office Manager, Kololo",
-            "text": "We order their meat pies and croissants for our weekly Monday morning meetings. Always fresh, warm, and punctual.",
+            "name": "Grace M.",
+            "role": "Bride, Kampala",
+            "text": "They sat with us for the tasting, adjusted the design twice without complaining, and set the cake up at the venue on time. Guests kept asking who made it.",
             "rating": 5
           }
         ]
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": {
+        "primaryColor": "#D97706"
+      }
     },
     {
       "id": "map-1",
       "type": "map",
       "data": {
         "heading": "Visit Our Bukoto Bakery Studio",
-        "subheading": "Conveniently located along Bukoto-Kisaasi Road near Kabira Country Club.",
+        "subheading": "Along Bukoto–Kisaasi Road, a short walk from Kabira Country Club — follow the smell of fresh bread.",
         "location": "Bukoto-Kisaasi Road, Near Kabira Country Club, Bukoto, Kampala",
         "phone": "+256 704 888999"
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": {
+        "primaryColor": "#D97706"
+      }
     },
     {
       "id": "contact-1",
       "type": "contact",
       "data": {
-        "heading": "Order Your Custom Cake on WhatsApp",
+        "variant": "bakery",
+        "heading": "Order Fresh or Reserve Your Cake",
         "phone": "+256 704 888999",
         "whatsapp": "+256704888999",
         "location": "Bukoto-Kisaasi Road, Near Kabira Country Club, Bukoto, Kampala",
-        "hours": "Mon-Sat: 6:30am - 8:30pm, Sunday: 7:30am - 6:00pm",
+        "hours": "Mon–Sat: 6:30 AM – 8:30 PM, Sunday: 7:30 AM – 6:00 PM",
         "email": "orders@sweetcrustbakery.ug"
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": {
+        "primaryColor": "#D97706"
+      }
     },
     {
       "id": "footer-1",
       "type": "footer",
       "data": {
         "businessName": "Sweet Crust Bakery & Cake Studio",
-        "tagline": "Custom Cakes • Fresh Pastries • Artisanal Bread • Bukoto, Kampala",
+        "tagline": "Fresh Bread • Custom Cakes • Pastries • Bukoto, Kampala",
         "year": 2026
       },
-      "style": { "primaryColor": "#D97706" }
+      "style": {
+        "primaryColor": "#D97706"
+      }
     }
   ]
 }

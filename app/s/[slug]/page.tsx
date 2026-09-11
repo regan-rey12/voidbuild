@@ -47,16 +47,6 @@ export default async function SubdomainPage({ params }: PageProps) {
   return (
     <div>
       <PublicPageTracker projectId={project.id} />
-      <div className="relative z-40 bg-gray-950 text-white text-center text-[11px] py-1.5 px-4 flex items-center justify-center gap-2 border-b border-white/10">
-        <img src="/logo.png" alt="VoidBuild" className="w-3.5 h-3.5 object-contain flex-shrink-0" />
-        <span className="font-bold">{project.business_name}</span>
-        <span>•</span>
-        <span className="text-gray-300">{project.subdomain || slug}.voidbuild.com</span>
-        <span>•</span>
-        <Link href="/" className="underline text-yellow-400 font-bold hover:text-yellow-300">
-          Built with VoidBuild
-        </Link>
-      </div>
       <TemplateRenderer template={project.template_json} projectId={project.id} />
     </div>
   );

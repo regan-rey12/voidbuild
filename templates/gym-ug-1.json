@@ -2,8 +2,11 @@
   "id": "gym-ug-1",
   "name": "PowerFit Gym & Fitness Centre Wandegeya",
   "category": "gym",
-  "description": "State-of-the-art gym, aerobics, Zumba, heavy free weights, steam bath, and personal training in Kampala",
-  "meta": { "target": "Gym and fitness centre in Wandegeya, Kampala", "language": "en" },
+  "description": "Premium gym template with training programs, membership plans and a free trial CTA — real photos, clear UGX pricing and WhatsApp booking for Kampala gyms.",
+  "meta": {
+    "target": "Gym and fitness centre in Kampala, Uganda",
+    "language": "en"
+  },
   "blocks": [
     {
       "id": "nav-1",
@@ -12,220 +15,280 @@
         "businessName": "PowerFit Gym",
         "phone": "+256 705 444666",
         "whatsapp": "+256705444666",
+        "variant": "overlay-light",
+        "overlaySurface": "#0a0f0a",
         "links": [
-          { "label": "Workouts", "href": "#services" },
-          { "label": "Gym Floor", "href": "#gallery" },
-          { "label": "Memberships", "href": "#pricing" },
-          { "label": "Transformations", "href": "#testimonials" },
-          { "label": "Location", "href": "#map" },
-          { "label": "Join Now", "href": "#contact" }
+          {
+            "label": "Programs",
+            "href": "#services"
+          },
+          {
+            "label": "Inside the Gym",
+            "href": "#gallery"
+          },
+          {
+            "label": "Membership",
+            "href": "#pricing"
+          },
+          {
+            "label": "Reviews",
+            "href": "#testimonials"
+          },
+          {
+            "label": "Visit Us",
+            "href": "#contact"
+          }
         ]
       },
-      "style": { "primaryColor": "#EA580C" }
+      "style": {
+        "primaryColor": "#65A30D"
+      }
     },
     {
       "id": "hero-1",
       "type": "hero",
       "data": {
-        "badge": "Open 5:30 AM – 10:00 PM • Heavy Free Weights • Steam & Sauna Included",
-        "title": "Transform Your Body, Build Strength & Level Up Your Fitness",
-        "subtitle": "Kampala's premier strength and functional fitness facility in Wandegeya. Olympic barbells, imported cardio treadmills, daily high-energy Zumba & Aerobics, certified personal trainers, clean showers, and detox steam bath.",
-        "ctaText": "Get Free Trial Pass on WhatsApp",
+        "badge": "Wandegeya, Kampala • Open Daily 6 AM–10 PM • Day Passes Available",
+        "title": "Stronger every session — right here in Wandegeya",
+        "subtitle": "Free weights, a full machine floor, a boxing corner and trainers who watch your form. Join with a simple monthly plan or walk in with a day pass — your first session is on us.",
+        "ctaText": "Book a Free Trial Session",
         "ctaLink": "#contact",
-        "image": "african fitness gym training workout bodybuilding kampala"
+        "secondaryCtaText": "See Programs",
+        "secondaryCtaLink": "#services",
+        "trustPoints": [
+          "Day passes from UGX 10,000",
+          "Trainers on the floor daily",
+          "Student-friendly monthly rates"
+        ],
+        "variant": "gym-background",
+        "image": "/template-images/gym/gym-1.jpg"
       },
-      "style": { "primaryColor": "#EA580C", "alignment": "left" }
+      "style": {
+        "primaryColor": "#65A30D",
+        "alignment": "left"
+      }
     },
     {
       "id": "stats-1",
       "type": "stats",
       "data": {
-        "heading": "Results That Speak",
+        "variant": "gym",
+        "heading": "A Gym That Shows Up Every Day",
         "stats": [
-          { "number": "2,400+", "label": "Active Gym Members & Athletes" },
-          { "number": "15+", "label": "Weekly Zumba, Aerobics & HIIT Classes" },
-          { "number": "5:30 AM", "label": "Early Morning Open for Busy Professionals" }
+          {
+            "number": "500+",
+            "label": "Active members training every week"
+          },
+          {
+            "number": "6 AM–10 PM",
+            "label": "Open every day of the week"
+          },
+          {
+            "number": "2",
+            "label": "Qualified trainers on the floor daily"
+          }
         ]
       },
-      "style": { "primaryColor": "#EA580C" }
+      "style": {
+        "primaryColor": "#65A30D"
+      }
     },
     {
       "id": "services-1",
       "type": "services",
       "data": {
-        "heading": "Gym Facilities, Classes & Training",
-        "subheading": "All memberships include full access to weights floor, cardio machines, locker rooms, and steam bath.",
+        "heading": "Programs & Training Zones",
+        "subheading": "Whether you are starting out or getting back in shape, there is a lane for you on our floor.",
         "phone": "+256 705 444666",
         "whatsapp": "+256705444666",
+        "variant": "gym",
         "services": [
           {
-            "name": "Heavy Iron & Olympic Free Weights",
-            "price": "Included in Membership",
-            "description": "Dumbbells up to 50kg, power squat racks, Olympic bench presses, deadlift platforms, and cable machines.",
-            "image": "gym free weights dumbbells barbells workout"
+            "name": "Strength & Free Weights",
+            "price": "included",
+            "description": "Barbells, plates, benches and racks with room to train properly — no queuing for equipment, even at peak hours.",
+            "image": "/template-images/gym/gym-2.jpg"
           },
           {
-            "name": "High-Energy Zumba & Aerobics",
-            "price": "Free for Members",
-            "description": "Daily evening calorie-burning cardio dance and step aerobics led by energetic certified instructors.",
-            "image": "zumba aerobics group fitness class dance"
+            "name": "Personal Training",
+            "price": "from UGX 40,000 / session",
+            "description": "One-on-one coaching with a program built around your body, your schedule and your goals — reviewed every month.",
+            "image": "/template-images/gym/gym-3.jpg"
           },
           {
-            "name": "1-on-1 Personal Body Transformation",
-            "price": "UGX 150,000 / month",
-            "description": "Customized workout plan, body fat tracking, nutrition guidance, and dedicated coach for fast results.",
-            "image": "personal trainer coaching client gym workout"
+            "name": "Boxing & Conditioning",
+            "price": "included",
+            "description": "Heavy bags, pads and footwork drills that build engine and confidence — gloves provided for your first sessions.",
+            "image": "/template-images/gym/gym-4.jpg"
           },
           {
-            "name": "Cardio Deck & Treadmills",
-            "price": "Included in Membership",
-            "description": "Commercial running treadmills, cross trainers, rowing machines, and stationary spin bikes with heart rate monitors.",
-            "image": "gym cardio treadmills running fitness"
+            "name": "Kettlebells & Functional Zone",
+            "price": "included",
+            "description": "Kettlebells, medicine balls and open floor space for circuits, mobility work and athletic conditioning.",
+            "image": "/template-images/gym/gym-5.jpg"
           },
           {
-            "name": "Detox Herbal Steam Bath & Sauna",
-            "price": "Free for Members",
-            "description": "Post-workout eucalyptus steam bath for muscle recovery, joint pain relief, and skin detoxification.",
-            "image": "spa steam bath sauna wellness relaxation"
+            "name": "Small-Group Training",
+            "price": "from UGX 15,000 / session",
+            "description": "Capped groups of six so the coach still sees every rep — the smart middle ground between a class and personal training.",
+            "image": "/template-images/gym/gym-7.jpg"
           },
           {
-            "name": "Protein Shake & Smoothie Bar",
-            "price": "From UGX 8,000",
-            "description": "Post-workout whey protein shakes, fresh fruit smoothies, pre-workout energy boosters, and chilled water.",
-            "image": "protein shake smoothie fitness nutrition"
+            "name": "Open Gym Floor Access",
+            "price": "day pass UGX 10,000",
+            "description": "Walk in, pay at the desk and use the full floor — machines, weights, boxing corner and changing rooms. No registration needed.",
+            "image": "/template-images/gym/gym-9.jpg"
           }
         ]
       },
-      "style": { "primaryColor": "#EA580C" }
+      "style": {
+        "primaryColor": "#65A30D"
+      }
     },
     {
       "id": "gallery-1",
       "type": "gallery",
       "data": {
-        "heading": "Inside PowerFit Gym",
-        "subheading": "Spacious, clean, well-ventilated training floors and high-energy workout sessions.",
+        "heading": "Inside PowerFit",
+        "subheading": "A real training floor with real equipment. Replace these with your own gym photos anytime in the editor.",
+        "variant": "gym",
         "images": [
-          "gym weights training floor modern",
-          "african woman workout fitness gym",
-          "african man lifting weights barbell",
-          "zumba fitness class group smiling",
-          "steam bath sauna interior wooden",
-          "cardio treadmills gym runners"
+          "/template-images/gym/gym-8.jpg",
+          "/template-images/gym/gym-6.jpg",
+          "/template-images/gym/gym-5.jpg",
+          "/template-images/gym/gym-4.jpg",
+          "/template-images/gym/gym-7.jpg",
+          "/template-images/gym/gym-9.jpg"
         ]
       },
-      "style": { "primaryColor": "#EA580C" }
+      "style": {
+        "primaryColor": "#65A30D"
+      }
     },
     {
       "id": "pricing-1",
       "type": "pricing",
       "data": {
-        "heading": "Flexible Membership Plans (UGX)",
-        "subheading": "No joining fees. Pay conveniently via MTN MoMo or Airtel Money.",
+        "heading": "Memberships & Passes",
+        "subheading": "Honest pricing with no hidden registration fees — pay monthly, quarterly, or just for the day.",
         "phone": "+256 705 444666",
         "whatsapp": "+256705444666",
+        "variant": "gym",
         "plans": [
           {
-            "name": "Daily Drop-In Pass",
+            "name": "Day Pass",
             "price": "UGX 10,000",
-            "sub": "single day access",
+            "sub": "full floor, one day",
             "features": [
-              "Full access to weights & cardio floor",
-              "Access to any scheduled class on the day",
-              "Locker room & hot shower access",
-              "Complimentary steam bath session"
+              "Full equipment floor access",
+              "Boxing & conditioning corner",
+              "Locker & changing room",
+              "No registration needed"
             ],
             "popular": false
           },
           {
-            "name": "Full Monthly Membership",
-            "price": "UGX 90,000",
-            "sub": "most popular plan",
+            "name": "Monthly Membership",
+            "price": "UGX 70,000 / month",
+            "sub": "most popular",
             "features": [
-              "Unlimited daily gym visits (5:30am - 10pm)",
-              "All Zumba, Aerobics & HIIT classes included",
-              "Unlimited daily steam bath access",
-              "Free fitness assessment & workout guide"
+              "Unlimited gym floor access",
+              "Free induction & starter program",
+              "Boxing corner included",
+              "Pause up to 2 weeks when you travel"
             ],
             "popular": true
           },
           {
-            "name": "Student Monthly Pass",
-            "price": "UGX 65,000",
-            "sub": "with student ID",
+            "name": "3-Month Membership",
+            "price": "UGX 180,000",
+            "sub": "save UGX 30,000",
             "features": [
-              "Discounted full monthly access",
-              "Weights, cardio & class access",
-              "Valid for Makerere, Kyambogo & all campuses",
-              "Lockers & shower facilities"
+              "Everything in the monthly plan",
+              "One free personal training session",
+              "Monthly program review with a trainer",
+              "Bring a friend free every last Saturday"
             ],
             "popular": false
           }
         ]
       },
-      "style": { "primaryColor": "#EA580C" }
+      "style": {
+        "primaryColor": "#65A30D"
+      }
     },
     {
       "id": "testimonials-1",
       "type": "testimonials",
       "data": {
-        "heading": "Member Transformation Stories",
-        "subheading": "How our members lost weight, gained muscle, and leveled up their health.",
+        "heading": "What Our Members Say",
+        "subheading": "Real people who train here every week — students, professionals and morning regulars.",
+        "variant": "gym",
         "testimonials": [
           {
-            "name": "Arthur K.",
-            "role": "Lost 14kg in 4 Months",
-            "text": "The trainers here push you with positive energy. The combination of weights and evening Zumba helped me drop from 96kg to 82kg.",
+            "name": "Brian K.",
+            "role": "Member since 2024",
+            "text": "The trainers actually watch your form. I walked in barely benching the bar — six months later I have a real program and the strength to match.",
             "rating": 5
           },
           {
-            "name": "Ritah N.",
-            "role": "Makerere University Student",
-            "text": "The student discount is very affordable and the gym is super clean. The steam bath after a heavy workout is heaven!",
+            "name": "Sharon A.",
+            "role": "Student, Makerere",
+            "text": "The monthly rate is honest for students and it opens early before lectures. The boxing corner on Fridays is my favourite part of the week.",
             "rating": 5
           },
           {
-            "name": "David M.",
-            "role": "Corporate Banker",
-            "text": "Being able to workout at 6:00 AM, shower, and get to work in town by 7:30 AM has been a game-changer for my routine.",
+            "name": "Peter S.",
+            "role": "Morning regular, Wandegeya",
+            "text": "Clean equipment, good music, no pressure to sign anything. I have kept my 6 AM routine for a year now — this place made it stick.",
             "rating": 5
           }
         ]
       },
-      "style": { "primaryColor": "#EA580C" }
+      "style": {
+        "primaryColor": "#65A30D"
+      }
     },
     {
       "id": "map-1",
       "type": "map",
       "data": {
         "heading": "Find Our Wandegeya Fitness Centre",
-        "subheading": "Located along Bombo Road, 2nd Floor, Next to Shell Wandegeya.",
+        "subheading": "Along Bombo Road, 2nd Floor, next to Shell Wandegeya — look for the lime green signage.",
         "location": "Bombo Road, Next to Shell Wandegeya, Kampala",
         "phone": "+256 705 444666"
       },
-      "style": { "primaryColor": "#EA580C" }
+      "style": {
+        "primaryColor": "#65A30D"
+      }
     },
     {
       "id": "contact-1",
       "type": "contact",
       "data": {
-        "heading": "Claim Your Free Day Pass on WhatsApp",
+        "variant": "gym",
+        "heading": "Visit the Gym or Book Your First Session",
         "phone": "+256 705 444666",
         "whatsapp": "+256705444666",
         "location": "Bombo Road, Next to Shell Wandegeya, Kampala",
-        "hours": "Mon-Sat: 5:30am - 10:00pm, Sunday: 7:00am - 6:00pm",
+        "hours": "Mon–Sat: 6:00 AM – 10:00 PM, Sunday: 8:00 AM – 6:00 PM",
         "email": "fit@powerfitgym.ug"
       },
-      "style": { "primaryColor": "#EA580C" }
+      "style": {
+        "primaryColor": "#65A30D"
+      }
     },
     {
       "id": "footer-1",
       "type": "footer",
       "data": {
         "businessName": "PowerFit Gym & Fitness Centre",
-        "tagline": "Strength Training • Zumba • Aerobics • Steam Bath • Wandegeya, Kampala",
+        "tagline": "Strength • Boxing • Personal Training • Wandegeya, Kampala",
         "year": 2026
       },
-      "style": { "primaryColor": "#EA580C" }
+      "style": {
+        "primaryColor": "#65A30D"
+      }
     }
   ]
 }

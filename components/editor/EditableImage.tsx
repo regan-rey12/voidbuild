@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { getSupabase } from '@/lib/supabase';
 import ImagePickerModal from './ImagePickerModal';
+import ImagePlaceholder from '@/components/ImagePlaceholder';
 
 interface Props {
   imageKeyword: string;
@@ -16,9 +17,8 @@ export default function EditableImage({ imageKeyword, alt, editMode, onChange, c
   const [showPicker, setShowPicker] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
 
-  const displaySrc = preview || (imageKeyword?.startsWith('http') || imageKeyword?.startsWith('data:') || imageKeyword?.startsWith('/')
-    ? imageKeyword
-    : `https://source.unsplash.com/800x600/?${encodeURIComponent(imageKeyword || 'business')}`);
+  const usable = imageKeyword?.startsWith('http') || imageKeyword?.startsWith('data:') || imageKeyword?.startsWith('/');
+  const displaySrc = preview || (usable ? imageKeyword : null);
 
   const handleSelect = async (url: string) => {
     setShowPicker(false);
@@ -36,6 +36,9 @@ export default function EditableImage({ imageKeyword, alt, editMode, onChange, c
   };
 
   if (!editMode) {
+    if (!displaySrc) {
+      return <ImagePlaceholder className={className} />;
+    }
     return <img src={displaySrc} alt={alt} className={className} loading="lazy" />;
   }
 
@@ -48,7 +51,11 @@ export default function EditableImage({ imageKeyword, alt, editMode, onChange, c
           setShowPicker(true);
         }}
       >
-        <img src={displaySrc} alt={alt} className={`${className} group-hover:brightness-75 transition duration-200`} loading="lazy" />
+        {displaySrc ? (
+          <img src={displaySrc} alt={alt} className={`${className} group-hover:brightness-75 transition duration-200`} loading="lazy" />
+        ) : (
+          <ImagePlaceholder className={className} label="Add a photo" />
+        )}
         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-200 flex flex-col items-center justify-center text-white p-2 text-center">
           <div className="bg-white text-black px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">📷 Change Image</div>
           <div className="text-[10px] mt-1.5 opacity-90">Upload your photo</div>

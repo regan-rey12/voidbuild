@@ -1,6 +1,6 @@
 "use client";
 import { useState } from 'react';
-import { Save, Link2, Check, Loader2, X, Sparkles, ArrowRight, LayoutDashboard, MessageCircle } from 'lucide-react';
+import { Save, Link2, Check, Loader2, X, ArrowRight, LayoutDashboard, MessageCircle } from 'lucide-react';
 import { Template } from '@/lib/types';
 import { saveProject, generateShareLink } from '@/lib/projects';
 import Paywall from './Paywall';

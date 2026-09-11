@@ -24,7 +24,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="font-bold text-base">2. How We Use Data</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1">
-              <li>Generate, save, and host websites on VoidBuild subdomains and share links.</li>
+              <li>Create, save, and host websites on VoidBuild subdomains and share links.</li>
               <li>Show your project list, subscription state, analytics, and inquiry leads in the dashboard.</li>
               <li>Process secure payment verification and subscription activation via Pesapal.</li>
               <li>Improve templates and product quality using operational feedback.</li>

@@ -3,7 +3,10 @@
   "name": "Aisha's Beauty Braids & Salon Wandegeya",
   "category": "salon",
   "description": "Braids, cornrows, wash and steam treatment, nails, and soft glam makeup in Wandegeya Market, Kampala",
-  "meta": { "target": "Beauty Salon in Wandegeya, Kampala", "language": "en" },
+  "meta": {
+    "target": "Beauty Salon in Wandegeya, Kampala",
+    "language": "en"
+  },
   "blocks": [
     {
       "id": "nav-1",
@@ -14,14 +17,31 @@
         "whatsapp": "+256700123456",
         "variant": "overlay-light",
         "links": [
-          { "label": "Services", "href": "#services" },
-          { "label": "Gallery", "href": "#gallery" },
-          { "label": "Packages", "href": "#pricing" },
-          { "label": "Find Us", "href": "#map" },
-          { "label": "Book", "href": "#contact" }
+          {
+            "label": "Services",
+            "href": "#services"
+          },
+          {
+            "label": "Gallery",
+            "href": "#gallery"
+          },
+          {
+            "label": "Packages",
+            "href": "#pricing"
+          },
+          {
+            "label": "Find Us",
+            "href": "#map"
+          },
+          {
+            "label": "Book",
+            "href": "#contact"
+          }
         ]
       },
-      "style": { "primaryColor": "#E11D48" }
+      "style": {
+        "primaryColor": "#E11D48"
+      }
     },
     {
       "id": "hero-1",
@@ -40,9 +60,12 @@
           "Walk-ins welcome"
         ],
         "variant": "salon-background",
-        "image": "african hair salon stylist braids portrait premium beauty"
+        "image": "/template-images/salon/salon-1.jpg"
       },
-      "style": { "primaryColor": "#E11D48", "alignment": "left" }
+      "style": {
+        "primaryColor": "#E11D48",
+        "alignment": "left"
+      }
     },
     {
       "id": "stats-1",
@@ -50,12 +73,23 @@
       "data": {
         "heading": "Why Clients Come Back",
         "stats": [
-          { "number": "1,200+", "label": "Clients served around Wandegeya and Makerere" },
-          { "number": "2-3 Hrs", "label": "Average finish time for neat medium braids" },
-          { "number": "7 Days", "label": "Open every week for walk-ins and bookings" }
+          {
+            "number": "1,200+",
+            "label": "Clients served around Wandegeya and Makerere"
+          },
+          {
+            "number": "2-3 Hrs",
+            "label": "Average finish time for neat medium braids"
+          },
+          {
+            "number": "7 Days",
+            "label": "Open every week for walk-ins and bookings"
+          }
         ]
       },
-      "style": { "primaryColor": "#E11D48" }
+      "style": {
+        "primaryColor": "#E11D48"
+      }
     },
     {
       "id": "services-1",
@@ -70,41 +104,43 @@
             "name": "Knotless Box Braids (Mid-Back)",
             "price": "UGX 35,000",
             "description": "Clean parting, lightweight finish, and comfortable wear for classes, work, and everyday style.",
-            "image": "african woman knotless braids salon chair"
+            "image": "/template-images/salon/salon-2.jpg"
           },
           {
             "name": "Bohemian Goddess Braids",
             "price": "UGX 50,000",
             "description": "Soft curly finish with a fuller look for weekends, birthdays, and special events.",
-            "image": "bohemian goddess braids african salon"
+            "image": "/template-images/salon/salon-3.jpg"
           },
           {
             "name": "Natural Cornrows & Lines",
             "price": "UGX 20,000",
             "description": "Neat protective lines for school, work, or a quick fresh look without spending the whole day in the salon.",
-            "image": "african cornrows salon hairstyle"
+            "image": "/template-images/salon/salon-4.jpg"
           },
           {
             "name": "Wash, Steam & Deep Treatment",
             "price": "UGX 25,000",
             "description": "A simple recovery session for dry or tired hair with steam, scalp care, and moisture treatment.",
-            "image": "african natural hair steam treatment salon"
+            "image": "/template-images/salon/salon-5.jpg"
           },
           {
             "name": "Gel Nails & Simple Art",
             "price": "UGX 25,000",
             "description": "Clean gel finish with basic nail art for a neat, lasting everyday look.",
-            "image": "gel nails simple art salon"
+            "image": "/template-images/salon/salon-6.jpg"
           },
           {
             "name": "Soft Glam Event Makeup",
             "price": "UGX 30,000",
             "description": "Natural-looking event makeup with lashes, smooth finish, and photo-ready blending.",
-            "image": "soft glam makeup african woman salon"
+            "image": "/template-images/salon/salon-7.jpg"
           }
         ]
       },
-      "style": { "primaryColor": "#E11D48" }
+      "style": {
+        "primaryColor": "#E11D48"
+      }
     },
     {
       "id": "gallery-1",
@@ -113,15 +149,17 @@
         "heading": "Recent Styles from Our Salon",
         "subheading": "Real client photos build trust faster. Replace these sample images with your own best work in Edit Mode.",
         "images": [
-          "african woman knotless braids salon chair",
-          "neat cornrows african salon uganda",
-          "gel nails close up salon",
-          "soft glam makeup african bride",
-          "hair steaming treatment salon",
-          "braided hairstyle smiling client salon"
+          "/template-images/salon/salon-2.jpg",
+          "/template-images/salon/salon-3.jpg",
+          "/template-images/salon/salon-6.jpg",
+          "/template-images/salon/salon-7.jpg",
+          "/template-images/salon/salon-8.jpg",
+          "/template-images/salon/salon-9.jpg"
         ]
       },
-      "style": { "primaryColor": "#E11D48" }
+      "style": {
+        "primaryColor": "#E11D48"
+      }
     },
     {
       "id": "pricing-1",
@@ -171,7 +209,9 @@
           }
         ]
       },
-      "style": { "primaryColor": "#E11D48" }
+      "style": {
+        "primaryColor": "#E11D48"
+      }
     },
     {
       "id": "testimonials-1",
@@ -201,7 +241,9 @@
           }
         ]
       },
-      "style": { "primaryColor": "#E11D48" }
+      "style": {
+        "primaryColor": "#E11D48"
+      }
     },
     {
       "id": "map-1",
@@ -212,7 +254,9 @@
         "location": "Wandegeya Market, Second Floor, Shop 12A (Near Shell Petrol Station), Kampala",
         "phone": "+256 700 123456"
       },
-      "style": { "primaryColor": "#E11D48" }
+      "style": {
+        "primaryColor": "#E11D48"
+      }
     },
     {
       "id": "contact-1",
@@ -225,7 +269,9 @@
         "hours": "Mon-Sun: 7:00am - 9:30pm (Open Every Day)",
         "email": "aisha@beautybraids.ug"
       },
-      "style": { "primaryColor": "#E11D48" }
+      "style": {
+        "primaryColor": "#E11D48"
+      }
     },
     {
       "id": "footer-1",
@@ -235,7 +281,9 @@
         "tagline": "Braids • Cornrows • Treatments • Nails • Makeup • Wandegeya, Kampala",
         "year": 2026
       },
-      "style": { "primaryColor": "#E11D48" }
+      "style": {
+        "primaryColor": "#E11D48"
+      }
     }
   ]
 }
