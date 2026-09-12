@@ -115,6 +115,7 @@ export default function Gallery({ data, style, editMode, onUpdateData }: Props) 
   const isSchool = variant === 'school';
   const isPortfolio = variant === 'portfolio';
   const isRestaurant = variant === 'restaurant';
+  const isSalon = variant === 'salon';
 
   const updateImage = (idx: number, newUrl: string) => {
     if (!onUpdateData) return;
@@ -124,18 +125,18 @@ export default function Gallery({ data, style, editMode, onUpdateData }: Props) 
   };
 
   return (
-    <section id="gallery" className={isBoutique ? 'py-16 md:py-20 px-4 md:px-6 bg-white' : isPharmacy ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f7fcfa]' : isHotel || isBarbershop || isHardware || isGym ? 'py-16 md:py-20 px-4 md:px-6 bg-white' : isClinic ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f7fcfd]' : isBakery ? 'py-16 md:py-20 px-4 md:px-6 bg-[#fdf8f0]' : isLaundry ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f2fafc]' : isIt ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f6f7fd]' : isTutoring ? 'py-16 md:py-20 px-4 md:px-6 bg-[#fdf7f0]' : isSchool ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f3f6fd]' : isPortfolio ? 'py-16 md:py-20 px-4 md:px-6 bg-[#100c0b]' : isRestaurant ? 'py-16 md:py-20 px-4 md:px-6 bg-[#fdf7ec]' : 'py-16 px-6 bg-white'}>
+    <section id="gallery" className={isBoutique ? 'py-16 md:py-20 px-4 md:px-6 bg-white' : isPharmacy ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f7fcfa]' : isHotel || isBarbershop || isHardware || isGym ? 'py-16 md:py-20 px-4 md:px-6 bg-white' : isClinic ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f7fcfd]' : isBakery ? 'py-16 md:py-20 px-4 md:px-6 bg-[#fdf8f0]' : isLaundry ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f2fafc]' : isIt ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f6f7fd]' : isTutoring ? 'py-16 md:py-20 px-4 md:px-6 bg-[#fdf7f0]' : isSchool ? 'py-16 md:py-20 px-4 md:px-6 bg-[#f3f6fd]' : isPortfolio ? 'py-16 md:py-20 px-4 md:px-6 bg-[#100c0b]' : isRestaurant ? 'py-16 md:py-20 px-4 md:px-6 bg-[#fdf7ec]' : isSalon ? 'py-16 md:py-20 px-4 md:px-6 bg-[#fdf5f7]' : 'py-16 px-6 bg-white'}>
       <div className="max-w-6xl mx-auto">
-        <h2 className={isPortfolio ? 'text-2xl md:text-4xl font-extrabold text-white tracking-tight' : isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isBakery || isGym || isLaundry || isIt || isTutoring || isSchool || isRestaurant ? 'text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight' : 'text-2xl font-bold text-gray-900'}>
+        <h2 className={isPortfolio ? 'text-2xl md:text-4xl font-extrabold text-white tracking-tight' : isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isBakery || isGym || isLaundry || isIt || isTutoring || isSchool || isRestaurant || isSalon ? 'text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight' : 'text-2xl font-bold text-gray-900'}>
           {data.heading || 'Our Work'}
         </h2>
-        <p className={isPortfolio ? 'text-[13px] md:text-sm text-white/70 mt-3 leading-relaxed max-w-3xl' : isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isBakery || isGym || isLaundry || isIt || isTutoring || isSchool || isRestaurant ? 'text-[13px] md:text-sm text-gray-600 mt-3 leading-relaxed max-w-3xl' : 'text-xs text-gray-500 mt-1 leading-relaxed'}>
+        <p className={isPortfolio ? 'text-[13px] md:text-sm text-white/70 mt-3 leading-relaxed max-w-3xl' : isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isBakery || isGym || isLaundry || isIt || isTutoring || isSchool || isRestaurant || isSalon ? 'text-[13px] md:text-sm text-gray-600 mt-3 leading-relaxed max-w-3xl' : 'text-xs text-gray-500 mt-1 leading-relaxed'}>
           {data.subheading || 'Real photos of your work - click image to upload your own (in Edit Mode)'}
         </p>
-        <div className={isBoutique ? 'grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 mt-8' : isPharmacy || isBakery || isLaundry || isIt || isTutoring || isSchool || isPortfolio || isRestaurant ? 'grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4 mt-8' : isHotel || isBarbershop || isHardware || isGym ? 'grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 mt-8' : isClinic ? 'grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4 mt-8' : 'grid grid-cols-2 md:grid-cols-3 gap-3 mt-6'}>
+        <div className={isBoutique ? 'grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 mt-8' : isPharmacy || isBakery || isLaundry || isIt || isTutoring || isSchool || isPortfolio || isRestaurant || isSalon ? 'grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4 mt-8' : isHotel || isBarbershop || isHardware || isGym ? 'grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-4 mt-8' : isClinic ? 'grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4 mt-8' : 'grid grid-cols-2 md:grid-cols-3 gap-3 mt-6'}>
           {images.map((img: string, i: number) => {
-            const tileClass = isBoutique ? getBoutiqueTileClass(i) : isPharmacy || isClinic || isBakery || isLaundry || isIt || isTutoring || isSchool || isPortfolio || isRestaurant ? getPharmacyTileClass(i) : isHotel ? `${getHotelTileClass(i)} ${getHotelMdTileClass(i)}` : isBarbershop || isGym ? `${getBarbershopTileClass(i)} ${getBarbershopMdTileClass(i)}` : isHardware ? `${getHardwareTileClass(i)} ${getHardwareMdTileClass(i)}` : '';
-            const aspectClass = isBoutique ? getBoutiqueAspectClass(i) : isPharmacy || isClinic || isBakery || isLaundry || isIt || isTutoring || isSchool || isPortfolio || isRestaurant ? getPharmacyAspectClass(i) : isHotel ? getHotelAspectClass(i) : isBarbershop || isGym ? getBarbershopAspectClass(i) : isHardware ? getHardwareAspectClass(i) : 'aspect-[4/3]';
+            const tileClass = isBoutique ? getBoutiqueTileClass(i) : isPharmacy || isClinic || isBakery || isLaundry || isIt || isTutoring || isSchool || isPortfolio || isRestaurant || isSalon ? getPharmacyTileClass(i) : isHotel ? `${getHotelTileClass(i)} ${getHotelMdTileClass(i)}` : isBarbershop || isGym ? `${getBarbershopTileClass(i)} ${getBarbershopMdTileClass(i)}` : isHardware ? `${getHardwareTileClass(i)} ${getHardwareMdTileClass(i)}` : '';
+            const aspectClass = isBoutique ? getBoutiqueAspectClass(i) : isPharmacy || isClinic || isBakery || isLaundry || isIt || isTutoring || isSchool || isPortfolio || isRestaurant || isSalon ? getPharmacyAspectClass(i) : isHotel ? getHotelAspectClass(i) : isBarbershop || isGym ? getBarbershopAspectClass(i) : isHardware ? getHardwareAspectClass(i) : 'aspect-[4/3]';
 
             return (
               <div
@@ -155,6 +156,8 @@ export default function Gallery({ data, style, editMode, onUpdateData }: Props) 
                     ? 'rounded-[24px] border border-white/10 bg-white/5 shadow-sm'
                     : isRestaurant
                     ? 'rounded-[24px] border border-amber-100 bg-white shadow-sm'
+                    : isSalon
+                    ? 'rounded-[24px] border border-rose-100 bg-white shadow-sm'
                     : 'rounded-xl bg-gray-100 border shadow-sm'
                 }`}
               >
@@ -165,7 +168,7 @@ export default function Gallery({ data, style, editMode, onUpdateData }: Props) 
                     editMode={editMode}
                     onChange={(url) => updateImage(i, url)}
                     className="w-full h-full object-cover"
-                    category={isPharmacy ? 'pharmacy' : isBoutique ? 'boutique' : isHotel ? 'hotel' : isBarbershop ? 'barbershop' : isHardware ? 'hardware' : isClinic ? 'clinic' : isBakery ? 'bakery' : isGym ? 'gym' : isLaundry ? 'laundry' : isIt ? 'it' : isTutoring ? 'tutoring' : isSchool ? 'school' : isPortfolio ? 'portfolio' : isRestaurant ? 'restaurant' : undefined}
+                    category={isPharmacy ? 'pharmacy' : isBoutique ? 'boutique' : isHotel ? 'hotel' : isBarbershop ? 'barbershop' : isHardware ? 'hardware' : isClinic ? 'clinic' : isBakery ? 'bakery' : isGym ? 'gym' : isLaundry ? 'laundry' : isIt ? 'it' : isTutoring ? 'tutoring' : isSchool ? 'school' : isPortfolio ? 'portfolio' : isRestaurant ? 'restaurant' : isSalon ? 'salon' : undefined}
                   />
                 ) : isUsableImageSrc(img) ? (
                   <img

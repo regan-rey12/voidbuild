@@ -57,6 +57,7 @@ export default function Services({ data, style, projectId, editMode, onUpdateDat
   const isSchool = variant === 'school';
   const isPortfolio = variant === 'portfolio';
   const isRestaurant = variant === 'restaurant';
+  const isSalon = variant === 'salon';
 
   const updateField = (field: string, value: string) => {
     if (onUpdateData) onUpdateData({ ...data, [field]: value });
@@ -127,9 +128,11 @@ export default function Services({ data, style, projectId, editMode, onUpdateDat
     ? 'py-16 md:py-20 px-4 md:px-6 bg-[#faf8f7]'
     : isRestaurant
     ? 'py-16 md:py-20 px-4 md:px-6 bg-[#fdf7ec]'
+    : isSalon
+    ? 'py-16 md:py-20 px-4 md:px-6 bg-[#fdf5f7]'
     : 'py-12 md:py-16 px-4 md:px-6 bg-gray-50';
-  const headingClass = isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isBakery || isGym || isLaundry || isIt || isTutoring || isSchool || isPortfolio || isRestaurant ? 'text-2xl md:text-4xl font-extrabold text-center text-gray-900 tracking-tight' : 'text-xl md:text-2xl font-bold text-center text-gray-900';
-  const subheadingClass = isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isBakery || isGym || isLaundry || isIt || isTutoring || isSchool || isPortfolio || isRestaurant ? 'text-center text-[13px] md:text-sm text-gray-600 mt-3 max-w-3xl mx-auto leading-relaxed' : 'text-center text-gray-600 mt-2 max-w-2xl mx-auto text-xs md:text-sm';
+  const headingClass = isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isBakery || isGym || isLaundry || isIt || isTutoring || isSchool || isPortfolio || isRestaurant || isSalon ? 'text-2xl md:text-4xl font-extrabold text-center text-gray-900 tracking-tight' : 'text-xl md:text-2xl font-bold text-center text-gray-900';
+  const subheadingClass = isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isBakery || isGym || isLaundry || isIt || isTutoring || isSchool || isPortfolio || isRestaurant || isSalon ? 'text-center text-[13px] md:text-sm text-gray-600 mt-3 max-w-3xl mx-auto leading-relaxed' : 'text-center text-gray-600 mt-2 max-w-2xl mx-auto text-xs md:text-sm';
   const gridClass = isBoutique
     ? 'grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mt-10'
     : isPharmacy
@@ -140,7 +143,7 @@ export default function Services({ data, style, projectId, editMode, onUpdateDat
     ? 'grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mt-10'
     : isHardware
     ? 'grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mt-10'
-    : isClinic || isBakery || isLaundry || isIt || isTutoring || isSchool || isRestaurant
+    : isClinic || isBakery || isLaundry || isIt || isTutoring || isSchool || isRestaurant || isSalon
     ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-6 mt-10'
     : 'grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mt-8';
   const defaultButtonLabel = data.buttonLabel || (isBoutique ? 'Ask About This Collection' : isPharmacy ? 'Ask About Availability' : isHotel ? 'Enquire About This Stay' : isBarbershop ? 'Book This Cut' : isHardware ? 'Ask Price & Stock' : variant === 'restaurant' ? 'Order This Meal' : variant === 'salon' ? 'Book This Service' : isBakery ? 'Order This Treat' : isGym ? 'Ask About This Program' : isLaundry ? 'Ask About This Service' : isIt ? 'Request a Quote' : isTutoring ? 'Ask About This Program' : isSchool ? 'Ask About This Section' : isPortfolio ? 'Ask About This Package' : 'Ask About This Service');
@@ -150,7 +153,7 @@ export default function Services({ data, style, projectId, editMode, onUpdateDat
       <div className="max-w-6xl mx-auto">
         <h2 className={headingClass}>
           {editMode && onUpdateData ? (
-            <EditableText value={data.heading || 'Our Services'} onChange={(v) => updateField('heading', v)} editMode={editMode} as="span" className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isRestaurant ? 'text-2xl md:text-4xl font-extrabold' : 'text-xl md:text-2xl font-bold'} />
+            <EditableText value={data.heading || 'Our Services'} onChange={(v) => updateField('heading', v)} editMode={editMode} as="span" className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isSalon || isRestaurant ? 'text-2xl md:text-4xl font-extrabold' : 'text-xl md:text-2xl font-bold'} />
           ) : (
             data.heading || 'Our Services'
           )}
@@ -158,7 +161,7 @@ export default function Services({ data, style, projectId, editMode, onUpdateDat
         {data.subheading && (
           <p className={subheadingClass}>
             {editMode && onUpdateData ? (
-              <EditableText value={data.subheading} onChange={(v) => updateField('subheading', v)} editMode={editMode} as="span" multiline className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isRestaurant ? 'text-[13px] md:text-sm' : 'text-xs md:text-sm'} />
+              <EditableText value={data.subheading} onChange={(v) => updateField('subheading', v)} editMode={editMode} as="span" multiline className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isSalon || isRestaurant ? 'text-[13px] md:text-sm' : 'text-xs md:text-sm'} />
             ) : (
               data.subheading
             )}
@@ -234,13 +237,15 @@ export default function Services({ data, style, projectId, editMode, onUpdateDat
                     ? 'bg-white rounded-[26px] border border-stone-200 hover:border-red-800/25 hover:shadow-xl hover:-translate-y-1 shadow-sm'
                     : isRestaurant
                     ? 'bg-white rounded-[26px] border border-amber-100 hover:border-amber-200 hover:shadow-lg shadow-sm'
+                    : isSalon
+                    ? 'bg-white rounded-[26px] border border-rose-100 hover:border-rose-200 hover:shadow-lg shadow-sm'
                     : 'bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg hover:border-gray-300'
                 }`}
               >
                 <div>
-                  <div className={`relative ${isBoutique ? 'aspect-[4/5]' : isPharmacy ? 'aspect-[16/11]' : isHotel || isBarbershop || isHardware || isGym || isPortfolio ? 'aspect-[4/3]' : isClinic || isBakery || isLaundry || isIt || isTutoring || isSchool || isRestaurant ? 'aspect-[16/11]' : 'aspect-[16/9] md:aspect-[4/3]'} bg-gray-100`}>
+                  <div className={`relative ${isBoutique ? 'aspect-[4/5]' : isPharmacy ? 'aspect-[16/11]' : isHotel || isBarbershop || isHardware || isGym || isPortfolio ? 'aspect-[4/3]' : isClinic || isBakery || isLaundry || isIt || isTutoring || isSchool || isRestaurant || isSalon ? 'aspect-[16/11]' : 'aspect-[16/9] md:aspect-[4/3]'} bg-gray-100`}>
                     {editMode && onUpdateData ? (
-                      <EditableImage imageKeyword={imageToShow} alt={service.name} editMode={editMode} onChange={(url) => updateService(i, 'image', url)} className="w-full h-full object-cover" category={isPharmacy ? 'pharmacy' : isBoutique ? 'boutique' : isHotel ? 'hotel' : isBarbershop ? 'barbershop' : isHardware ? 'hardware' : isClinic ? 'clinic' : isBakery ? 'bakery' : isGym ? 'gym' : isLaundry ? 'laundry' : isIt ? 'it' : isTutoring ? 'tutoring' : isSchool ? 'school' : isPortfolio ? 'portfolio' : isRestaurant ? 'restaurant' : undefined} />
+                      <EditableImage imageKeyword={imageToShow} alt={service.name} editMode={editMode} onChange={(url) => updateService(i, 'image', url)} className="w-full h-full object-cover" category={isPharmacy ? 'pharmacy' : isBoutique ? 'boutique' : isHotel ? 'hotel' : isBarbershop ? 'barbershop' : isHardware ? 'hardware' : isClinic ? 'clinic' : isBakery ? 'bakery' : isGym ? 'gym' : isLaundry ? 'laundry' : isIt ? 'it' : isTutoring ? 'tutoring' : isSchool ? 'school' : isPortfolio ? 'portfolio' : isRestaurant ? 'restaurant' : isSalon ? 'salon' : undefined} />
                     ) : isUsableImageSrc(imageToShow) ? (
                       <img
                         src={imageToShow}
@@ -280,6 +285,8 @@ export default function Services({ data, style, projectId, editMode, onUpdateDat
                             ? 'bg-[#14100e] text-red-100 border border-red-400/25'
                             : isRestaurant
                             ? 'bg-[#231509] text-amber-100 border border-amber-400/25'
+                            : isSalon
+                            ? 'bg-white/95 text-rose-900 border border-rose-100'
                             : 'bg-gray-900 text-white shadow'
                         }`}
                       >
@@ -301,17 +308,17 @@ export default function Services({ data, style, projectId, editMode, onUpdateDat
                     )}
                   </div>
 
-                  <div className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isRestaurant ? 'p-6' : 'p-5'}>
-                    <h3 className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isRestaurant ? 'font-bold text-base text-gray-900 tracking-tight' : 'font-bold text-sm text-gray-900'}>
+                  <div className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isSalon || isRestaurant ? 'p-6' : 'p-5'}>
+                    <h3 className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isSalon || isRestaurant ? 'font-bold text-base text-gray-900 tracking-tight' : 'font-bold text-sm text-gray-900'}>
                       {editMode && onUpdateData ? (
-                        <EditableText value={service.name} onChange={(v) => updateService(i, 'name', v)} editMode={editMode} as="span" className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isRestaurant ? 'font-bold text-base' : 'font-bold text-sm'} />
+                        <EditableText value={service.name} onChange={(v) => updateService(i, 'name', v)} editMode={editMode} as="span" className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isSalon || isRestaurant ? 'font-bold text-base' : 'font-bold text-sm'} />
                       ) : (
                         service.name
                       )}
                     </h3>
-                    <div className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isRestaurant ? 'mt-2 text-[13px] md:text-sm text-gray-600 leading-relaxed' : 'mt-1.5 text-xs text-gray-600 leading-relaxed'}>
+                    <div className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isSalon || isRestaurant ? 'mt-2 text-[13px] md:text-sm text-gray-600 leading-relaxed' : 'mt-1.5 text-xs text-gray-600 leading-relaxed'}>
                       {editMode && onUpdateData ? (
-                        <EditableText value={service.description || ''} onChange={(v) => updateService(i, 'description', v)} editMode={editMode} as="span" multiline className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isRestaurant ? 'text-[13px] md:text-sm' : 'text-xs'} />
+                        <EditableText value={service.description || ''} onChange={(v) => updateService(i, 'description', v)} editMode={editMode} as="span" multiline className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isSalon || isRestaurant ? 'text-[13px] md:text-sm' : 'text-xs'} />
                       ) : (
                         service.description
                       )}
@@ -319,16 +326,16 @@ export default function Services({ data, style, projectId, editMode, onUpdateDat
                   </div>
                 </div>
 
-                <div className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isRestaurant ? 'px-6 pb-6 pt-0' : 'p-5 pt-0'}>
+                <div className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isSalon || isRestaurant ? 'px-6 pb-6 pt-0' : 'p-5 pt-0'}>
                   <a
                     href={itemWaLink}
                     target={waNumber ? '_blank' : '_self'}
                     rel={waNumber ? 'noopener noreferrer' : undefined}
                     onClick={(e) => handleServiceOrderClick(e)}
-                    className={`w-full rounded-xl text-white font-bold text-center transition flex items-center justify-center gap-1.5 shadow-sm hover:opacity-95 ${isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isRestaurant ? 'py-3 text-sm' : 'py-2.5 text-xs'}`}
+                    className={`w-full rounded-xl text-white font-bold text-center transition flex items-center justify-center gap-1.5 shadow-sm hover:opacity-95 ${isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isSalon || isRestaurant ? 'py-3 text-sm' : 'py-2.5 text-xs'}`}
                     style={{ backgroundColor: primary }}
                   >
-                    <MessageCircle className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isRestaurant ? 'w-4 h-4' : 'w-3.5 h-3.5'} />
+                    <MessageCircle className={isBoutique || isPharmacy || isHotel || isBarbershop || isHardware || isClinic || isSalon || isRestaurant ? 'w-4 h-4' : 'w-3.5 h-3.5'} />
                     <span>{defaultButtonLabel}</span>
                   </a>
                 </div>

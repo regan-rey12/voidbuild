@@ -9,17 +9,17 @@ import fs from 'fs';
 import path from 'path';
 import { isRateLimited, getClientIp } from '@/lib/rateLimiter';
 import { getCachedTemplate, setCachedTemplate } from '@/lib/cache';
-import { mergeExtracted, isUsableExtraction, slugFromCategory, type ExtractedBusiness } from '@/lib/generate-merge';
+import { mergeExtracted, isUsableExtraction, slugFromCategory, extractionScore, type ExtractedBusiness } from '@/lib/generate-merge';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-const SYSTEM_PROMPT = `You are VoidBuild AI. You extract structured business information for a Ugandan SME website.
+const SYSTEM_PROMPT = `You write the COMPLETE text content for a Ugandan SME business website. The user gives a short description; you produce every section so the site reads as one consistent, ready-to-publish page about THAT business.
 Output ONLY a raw, valid JSON object — no markdown, no backticks, no commentary.
 
-JSON Structure (all fields optional, but fill in as many as the description allows):
+JSON Structure (write EVERY field in EVERY section — a missing section leaves a broken, generic website):
 {
   "businessName": "Exact Business Name",
-  "category": "salon | hardware | restaurant | laundry | boutique | it | school | clinic | barbershop | pharmacy | bakery | tutoring | hotel | gym | portfolio",
+  "category": "salon | hardware | restaurant | laundry | boutique | it | school | clinic | barbershop | pharmacy | bakery | tutoring | hotel | gym | portfolio | accounting | consulting | legal | construction | spa | tours",
   "tagline": "Short memorable tagline (max 60 chars)",
   "hero": {
     "badge": "Short badge line (max 60 chars)",
@@ -47,11 +47,13 @@ JSON Structure (all fields optional, but fill in as many as the description allo
 }
 
 Rules:
-1. Use ONLY facts stated or clearly implied by the description. Never invent phone numbers, emails or addresses — omit them if not given.
-2. Prices in Ugandan Shillings (UGX). If the description gives no prices, give realistic Uganda market prices for that business type.
-3. Services: provide 3-6 items. Plans: provide exactly 3, with exactly one "popular": true. Testimonials: provide 3, realistic and modest.
-4. Location must be in Uganda if mentioned (Kampala, Jinja, Entebbe, Gulu, Mbale, Mbarara, etc.).
-5. Return valid JSON only.`;
+1. ONE BUSINESS, ONE TOPIC: every section is about THIS business. Services, plans, stats and testimonials must all match the business type in the description — never describe a different trade.
+2. FACTS vs CONTENT: businessName, phone, whatsapp, email and location may ONLY come from the description — if the description doesn't give them, omit that field. Everything else (hero copy, services, prices, plans, testimonials, stats, opening hours) you WRITE yourself: natural, specific to this business type, realistic for the Ugandan market.
+3. Services: write 4-6. Plans: exactly 3, with exactly one "popular": true. Testimonials: exactly 3, realistic and modest, with ordinary Ugandan names. Stats: exactly 3, plausible numbers for this business type.
+4. Category: pick the closest match from the list (e.g. accounting, audit, tax, insurance, finance or consulting firm -> "accounting" or "consulting"; law firm or advocate -> "legal"; construction, contractor or engineering -> "construction"; spa or massage -> "spa"; tours or travel -> "tours").
+5. Prices in Ugandan Shillings (UGX) at realistic Uganda market rates for this business type.
+6. Location must be in Uganda if mentioned (Kampala, Jinja, Entebbe, Gulu, Mbale, Mbarara, etc.).
+7. Return valid JSON only.`;
 
 function loadTemplates(): Record<string, any> {
   const templates: Record<string, any> = {};
@@ -115,23 +117,30 @@ function loadTemplates(): Record<string, any> {
 
 const FALLBACK_TEMPLATES = loadTemplates();
 
-function getClosestTemplate(description: string) {
+function getClosestTemplate(description: string): { template: any; matched: boolean } {
   const lower = description.toLowerCase();
-  if (lower.includes('pharmacy') || lower.includes('drug') || lower.includes('medicine') || lower.includes('chemist')) return FALLBACK_TEMPLATES['pharmacy-ug-1'];
-  if (lower.includes('bakery') || lower.includes('cake') || lower.includes('pastry') || lower.includes('bread')) return FALLBACK_TEMPLATES['bakery-ug-1'];
-  if (lower.includes('laundry') || lower.includes('dry clean') || lower.includes('washing clothes')) return FALLBACK_TEMPLATES['laundry-ug-1'];
-  if (lower.includes('it support') || lower.includes('it consulting') || lower.includes('computer') || lower.includes('software') || lower.includes('network') || lower.includes('tech company') || lower.includes('laptops')) return FALLBACK_TEMPLATES['it-ug-1'];
-  if (lower.includes('tutor') || lower.includes('tuition') || lower.includes('lessons') || lower.includes('teaching')) return FALLBACK_TEMPLATES['tutoring-ug-1'];
-  if (lower.includes('hotel') || lower.includes('lodge') || lower.includes('cottage') || lower.includes('resort') || lower.includes('jinja')) return FALLBACK_TEMPLATES['hotel-ug-1'];
-  if (lower.includes('gym') || lower.includes('fitness') || lower.includes('workout') || lower.includes('zumba') || lower.includes('aerobics')) return FALLBACK_TEMPLATES['gym-ug-1'];
-  if (lower.includes('hardware') || lower.includes('cement') || lower.includes('iron sheet') || lower.includes('mbale') || lower.includes('construction')) return FALLBACK_TEMPLATES['hardware-mbale-1'];
-  if (lower.includes('restaurant') || lower.includes('food') || lower.includes('luwombo') || lower.includes('tilapia') || lower.includes('pilau') || lower.includes('rolex') || lower.includes('cafe')) return FALLBACK_TEMPLATES['restaurant-ug-1'];
-  if (lower.includes('boutique') || lower.includes('dress') || lower.includes('ankara') || lower.includes('suit') || lower.includes('handbag') || lower.includes('clothes')) return FALLBACK_TEMPLATES['boutique-ug-1'];
-  if (lower.includes('school') || lower.includes('academy') || lower.includes('nursery') || lower.includes('primary') || lower.includes('uneb')) return FALLBACK_TEMPLATES['school-ug-1'];
-  if (lower.includes('clinic') || lower.includes('hospital') || lower.includes('doctor') || lower.includes('maternity') || lower.includes('lab') || lower.includes('medical')) return FALLBACK_TEMPLATES['clinic-ug-1'];
-  if (lower.includes('barbershop') || lower.includes('barber') || lower.includes('fade') || lower.includes('haircut') || lower.includes('shave')) return FALLBACK_TEMPLATES['barbershop-ug-1'];
-  if (lower.includes('portfolio') || lower.includes('photography') || lower.includes('photographer') || lower.includes('wedding') || lower.includes('video')) return FALLBACK_TEMPLATES['portfolio-ug-1'];
-  return FALLBACK_TEMPLATES['salon-ug-1'];
+  // single words match on word boundaries (so "tax" doesn't hijack "taxi",
+  // "lab" doesn't hijack "available"); phrases match as substrings.
+  const hit = (...words: string[]) =>
+    words.some((w) => (w.includes(' ') ? lower.includes(w) : new RegExp(`\\b${w}\\b`, 'i').test(lower)));
+  if (hit('pharmacy', 'drug', 'medicine', 'chemist')) return { template: FALLBACK_TEMPLATES['pharmacy-ug-1'], matched: true };
+  if (hit('bakery', 'cake', 'pastries', 'pastry', 'bread')) return { template: FALLBACK_TEMPLATES['bakery-ug-1'], matched: true };
+  if (hit('laundry', 'dry clean', 'washing clothes')) return { template: FALLBACK_TEMPLATES['laundry-ug-1'], matched: true };
+  if (hit('tutor', 'tuition', 'lessons', 'teaching')) return { template: FALLBACK_TEMPLATES['tutoring-ug-1'], matched: true };
+  if (hit('gym', 'fitness', 'workout', 'zumba', 'aerobics', 'bodybuilding')) return { template: FALLBACK_TEMPLATES['gym-ug-1'], matched: true };
+  if (hit('restaurant', 'food', 'luwombo', 'tilapia', 'pilau', 'rolex', 'cafe', 'café')) return { template: FALLBACK_TEMPLATES['restaurant-ug-1'], matched: true };
+  if (hit('boutique', 'dresses', 'dress', 'ankara', 'suits', 'handbag', 'handbags', 'clothes', 'clothing')) return { template: FALLBACK_TEMPLATES['boutique-ug-1'], matched: true };
+  if (hit('school', 'academy', 'nursery', 'primary', 'uneb')) return { template: FALLBACK_TEMPLATES['school-ug-1'], matched: true };
+  if (hit('clinic', 'hospital', 'doctor', 'maternity', 'lab', 'laboratory', 'medical', 'dental')) return { template: FALLBACK_TEMPLATES['clinic-ug-1'], matched: true };
+  if (hit('barbershop', 'barber', 'fade', 'haircut', 'shave')) return { template: FALLBACK_TEMPLATES['barbershop-ug-1'], matched: true };
+  if (hit('salon', 'braids', 'braid', 'hairdresser', 'hairdressing', 'hairstyle', 'weave', 'hair', 'spa', 'massage', 'makeup', 'nails', 'facial', 'beautician')) return { template: FALLBACK_TEMPLATES['salon-ug-1'], matched: true };
+  if (hit('hotel', 'lodge', 'cottage', 'resort', 'guesthouse', 'tours', 'travel', 'safari', 'tourism')) return { template: FALLBACK_TEMPLATES['hotel-ug-1'], matched: true };
+  if (hit('portfolio', 'photography', 'photographer', 'wedding', 'video', 'filming', 'studio')) return { template: FALLBACK_TEMPLATES['portfolio-ug-1'], matched: true };
+  if (hit('it support', 'it consulting', 'computer', 'computers', 'laptop', 'laptops', 'software', 'network', 'networking', 'tech company', 'website', 'web design', 'accounting', 'accountant', 'audit', 'auditing', 'tax', 'taxes', 'bookkeeping', 'consulting', 'consultant', 'consultancy', 'advisory', 'insurance', 'finance', 'financial', 'lawyer', 'advocate', 'law firm', 'legal', 'attorney', 'notary')) return { template: FALLBACK_TEMPLATES['it-ug-1'], matched: true };
+  if (hit('hardware', 'cement', 'iron sheet', 'iron sheets', 'construction', 'contractor', 'building', 'builder', 'architecture', 'architect', 'engineering', 'engineer', 'welding', 'fabrication', 'renovation', 'supermarket', 'grocery', 'plumbing', 'electrical', 'paint')) return { template: FALLBACK_TEMPLATES['hardware-mbale-1'], matched: true };
+  // No keyword match: neutral professional-services layout (NOT a niche template),
+  // so an unmatched business never lands on an obviously wrong design.
+  return { template: FALLBACK_TEMPLATES['it-ug-1'], matched: false };
 }
 
 function parseJSON(raw: string) {
@@ -179,8 +188,9 @@ export async function POST(req: Request) {
     // If OpenRouter key is not set, load the closest matched flagship template
     if (!cleanKey || cleanKey.includes('placeholder') || cleanKey.includes('YOUR_OPENROUTER')) {
       const fallback = getClosestTemplate(description);
-      const cloned = JSON.parse(JSON.stringify(fallback));
+      const cloned = JSON.parse(JSON.stringify(fallback.template));
       cloned.id = `site-${Date.now().toString(36)}`;
+      cloned.generationNotice = 'fallback';
       return Response.json(cloned);
     }
 
@@ -200,13 +210,10 @@ export async function POST(req: Request) {
       'nvidia/nemotron-3-ultra:free',
     ];
 
-    let lastError: any = null;
-
-    for (const model of models) {
+    const attemptModel = async (model: string): Promise<ExtractedBusiness> => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 14000);
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 14000);
-
         const res = await fetch(OPENROUTER_URL, {
           method: 'POST',
           signal: controller.signal,
@@ -220,49 +227,95 @@ export async function POST(req: Request) {
             model,
             messages: [
               { role: 'system', content: SYSTEM_PROMPT },
-              { role: 'user', content: `Extract the business information for this Ugandan business: "${description}". Return raw JSON only.` },
+              { role: 'user', content: `Write the complete website content JSON for this Ugandan business: \"${description}\". Return raw JSON only.` },
             ],
             temperature: 0.4,
-            max_tokens: 1600,
+            max_tokens: 2500,
           }),
         });
 
-        clearTimeout(timeoutId);
-
         if (!res.ok) {
           const errText = await res.text();
-          lastError = `Model ${model} returned ${res.status}: ${errText.slice(0, 100)}`;
-          continue;
+          throw new Error(`Model ${model} returned ${res.status}: ${errText.slice(0, 100)}`);
         }
 
         const data = await res.json();
         const content = data.choices?.[0]?.message?.content;
-        if (!content) continue;
+        if (!content) throw new Error(`Model ${model} returned empty content`);
 
         const ext = parseJSON(content) as ExtractedBusiness;
-        if (!isUsableExtraction(ext)) continue;
-
-        // Base template: trust a valid AI category, else keyword-match the description
-        const slug = slugFromCategory(ext.category);
-        const base = (slug && FALLBACK_TEMPLATES[slug]) || getClosestTemplate(description);
-
-        const merged = mergeExtracted(base, ext, `gen-${Date.now().toString(36)}`);
-        setCachedTemplate(description, merged);
-        return Response.json(merged);
-      } catch (err: any) {
-        lastError = err.message;
+        if (!isUsableExtraction(ext)) throw new Error(`Model ${model} returned an unusable extraction`);
+        return ext;
+      } finally {
+        clearTimeout(timeoutId);
       }
+    };
+
+    try {
+      // Race all free models in parallel, collecting every usable extraction that
+      // lands. A thin-but-fast result doesn't automatically win: we keep waiting
+      // (max ~14s) for a richer one — only a COMPLETE extraction (every website
+      // section covered) exits the race early.
+      const results = await new Promise<ExtractedBusiness[]>((resolve) => {
+        const out: ExtractedBusiness[] = [];
+        let settledCount = 0;
+        let finished = false;
+        const finish = () => { if (!finished) { finished = true; resolve(out); } };
+        for (const model of models) {
+          attemptModel(model)
+            .then((ext) => {
+              out.push(ext);
+              if (extractionScore(ext).complete) finish(); // full coverage — stop waiting
+            })
+            .catch(() => {})
+            .finally(() => { settledCount += 1; if (settledCount === models.length) finish(); });
+        }
+        // every attemptModel aborts at 14s, so all .finally fire by then; this is a belt-and-braces guard
+        const guard = setTimeout(finish, 15500);
+        if (typeof guard.unref === 'function') guard.unref();
+      });
+
+      if (!results.length) {
+        throw new Error('All models failed or returned unusable extractions');
+      }
+      results.sort((a, b) => extractionScore(b).rich - extractionScore(a).rich);
+      const ext = results[0];
+
+      // Base template: trust a valid AI category, else keyword-match the description
+      const rawCat = typeof ext.category === 'string' ? ext.category.toLowerCase().trim() : '';
+      const slug = slugFromCategory(rawCat);
+      let base: any;
+      let keywordMatched = false;
+      if (slug && FALLBACK_TEMPLATES[slug]) {
+        base = FALLBACK_TEMPLATES[slug];
+      } else {
+        const closest = getClosestTemplate(description);
+        base = closest.template;
+        keywordMatched = closest.matched;
+      }
+      // Repurposed = the chosen layout's own category doesn't fit the requested
+      // business (e.g. "accounting" on the professional-services layout) → merge
+      // neutralizes every field the extraction doesn't cover.
+      const repurposed = slug ? rawCat !== base.category : !keywordMatched;
+
+      const merged = mergeExtracted(base, ext, `gen-${Date.now().toString(36)}`, { repurposed });
+      if (repurposed) merged.generationNotice = 'matched';
+      setCachedTemplate(description, merged);
+      return Response.json(merged);
+    } catch (agg: any) {
+      console.warn('All generation models failed:', (agg?.errors ?? [agg]).map((e: any) => e?.message).join(' | ').slice(0, 300));
     }
 
-    // If all models timed out/failed, load closest flagship template
+    // If all models timed out/failed, load closest flagship template — with an honest notice
     const fallback = getClosestTemplate(description);
-    const cloned = JSON.parse(JSON.stringify(fallback));
+    const cloned = JSON.parse(JSON.stringify(fallback.template));
     cloned.id = `gen-${Date.now().toString(36)}`;
+    cloned.generationNotice = 'fallback';
     return Response.json(cloned);
 
   } catch (e: any) {
     console.error('Generate route exception:', e);
     const fallback = FALLBACK_TEMPLATES['salon-ug-1'];
-    return Response.json({ ...JSON.parse(JSON.stringify(fallback)), id: `gen-${Date.now().toString(36)}` });
+    return Response.json({ ...JSON.parse(JSON.stringify(fallback)), id: `gen-${Date.now().toString(36)}`, generationNotice: 'fallback' });
   }
 }

@@ -85,7 +85,7 @@ export default function Testimonials({ data, style, editMode, onUpdateData }: Te
     : isRestaurant
     ? 'py-16 md:py-20 px-4 md:px-6 bg-white border-t border-amber-100'
     : 'py-16 md:py-20 px-4 md:px-6 bg-gray-50 border-t';
-  const badgeLabel = variant === 'restaurant' ? 'Guest Favorite' : isBoutique ? 'Style Favorite' : isPharmacy ? 'Verified Customer' : isHotel ? 'Guest Review' : isBarbershop ? 'Regular Client' : isHardware ? 'Verified Buyer' : isClinic ? 'Verified Patient' : isBakery ? 'Happy Customer' : isGym ? 'Active Member' : isLaundry ? 'Regular Customer' : isIt ? 'Business Client' : isTutoring ? 'Parent Review' : isSchool ? 'Parent Review' : isPortfolio ? 'Happy Couple' : 'Verified Client';
+  const badgeLabel = variant === 'restaurant' ? 'Guest Favorite' : variant === 'salon' ? 'Happy Client' : isBoutique ? 'Style Favorite' : isPharmacy ? 'Verified Customer' : isHotel ? 'Guest Review' : isBarbershop ? 'Regular Client' : isHardware ? 'Verified Buyer' : isClinic ? 'Verified Patient' : isBakery ? 'Happy Customer' : isGym ? 'Active Member' : isLaundry ? 'Regular Customer' : isIt ? 'Business Client' : isTutoring ? 'Parent Review' : isSchool ? 'Parent Review' : isPortfolio ? 'Happy Couple' : 'Verified Client';
 
   return (
     <section id="testimonials" className={sectionClass}>

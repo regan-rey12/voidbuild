@@ -22,6 +22,7 @@ export default function BuilderPage() {
   const [inputError, setInputError] = useState<string | null>(null);
   const [isGeneratedOrLoaded, setIsGeneratedOrLoaded] = useState(false);
   const [dismissSampleBanner, setDismissSampleBanner] = useState(false);
+  const [dismissNotice, setDismissNotice] = useState(false);
   
   const steps = [
     'Setting up your business layout...',
@@ -87,6 +88,7 @@ export default function BuilderPage() {
         setEditMode(true);
         setIsGeneratedOrLoaded(true);
         setInput('');
+        setDismissNotice(false); // a new result deserves a fresh notice (if any)
       } else {
         throw new Error('Could not parse website layout. Please try a simpler description.');
       }
@@ -224,6 +226,46 @@ export default function BuilderPage() {
           )}
         </div>
       </div>
+
+      {/* Generation Notice Banner (fallback / repurposed match) */}
+      {isGeneratedOrLoaded && !dismissNotice && template.generationNotice && (
+        <div
+          className={
+            'px-4 py-2 text-xs flex items-center justify-between gap-3 border-b ' +
+            (template.generationNotice === 'fallback'
+              ? 'bg-amber-50 border-amber-200/80 text-amber-950'
+              : 'bg-blue-50 border-blue-200/80 text-blue-950')
+          }
+        >
+          <div className="flex items-center gap-2 max-w-4xl">
+            {template.generationNotice === 'fallback' ? (
+              <AlertCircle className="w-4 h-4 text-amber-700 flex-shrink-0" />
+            ) : (
+              <Info className="w-4 h-4 text-blue-700 flex-shrink-0" />
+            )}
+            <span>
+              {template.generationNotice === 'fallback' ? (
+                <>
+                  <strong>We couldn&apos;t customize a site from that description just now.</strong> This is the closest starter template — edit the text directly above each section, or try generating again with a little more detail.
+                </>
+              ) : (
+                <>
+                  <strong>We matched your business to a close starter layout.</strong> Review each section and edit anything that doesn&apos;t fit — text, prices and images are all editable.
+                </>
+              )}
+            </span>
+          </div>
+          <button
+            onClick={() => setDismissNotice(true)}
+            className={
+              'font-bold text-[11px] underline ml-2 flex-shrink-0 ' +
+              (template.generationNotice === 'fallback' ? 'text-amber-800 hover:text-black' : 'text-blue-800 hover:text-black')
+            }
+          >
+            Got it
+          </button>
+        </div>
+      )}
 
       {/* Sample Guidance Banner */}
       {!isGeneratedOrLoaded && !dismissSampleBanner && (

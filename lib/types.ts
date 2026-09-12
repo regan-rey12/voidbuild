@@ -61,6 +61,10 @@ export interface Template {
     language: 'en' | 'luganda' | 'swahili';
     createdWith?: string;
   };
+  // Set by the generation pipeline, read by the builder to show an honest notice.
+  // 'fallback' = no customization possible (all models failed / no key) — closest starter template returned.
+  // 'matched'  = customized, but onto a repurposed starter layout — user should review sections.
+  generationNotice?: 'fallback' | 'matched';
 }
 
 // Example data shape for each block type (for AI to follow)

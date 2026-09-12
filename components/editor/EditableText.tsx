@@ -53,7 +53,7 @@ export default function EditableText({ value, onChange, editMode, as = 'div', cl
         }}
         autoFocus
         rows={3}
-        className={`${className} w-full bg-white border-2 border-blue-500 rounded-lg p-2 outline-none resize-none`}
+        className={`${className} w-full bg-white !text-gray-900 placeholder:text-gray-400 border-2 border-blue-500 rounded-lg p-2 outline-none resize-none`}
         placeholder={placeholder}
       />
     );
@@ -79,7 +79,7 @@ export default function EditableText({ value, onChange, editMode, as = 'div', cl
         }
       }}
       autoFocus
-      className={`${className} w-full bg-white border-2 border-blue-500 rounded-lg px-2 py-1 outline-none`}
+      className={`${className} w-full bg-white !text-gray-900 placeholder:text-gray-400 border-2 border-blue-500 rounded-lg px-2 py-1 outline-none`}
       placeholder={placeholder}
     />
   );

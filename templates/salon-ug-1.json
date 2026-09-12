@@ -85,7 +85,8 @@
             "number": "7 Days",
             "label": "Open every week for walk-ins and bookings"
           }
-        ]
+        ],
+        "variant": "salon"
       },
       "style": {
         "primaryColor": "#E11D48"
@@ -136,7 +137,8 @@
             "description": "Natural-looking event makeup with lashes, smooth finish, and photo-ready blending.",
             "image": "/template-images/salon/salon-7.jpg"
           }
-        ]
+        ],
+        "variant": "salon"
       },
       "style": {
         "primaryColor": "#E11D48"
@@ -155,7 +157,8 @@
           "/template-images/salon/salon-7.jpg",
           "/template-images/salon/salon-8.jpg",
           "/template-images/salon/salon-9.jpg"
-        ]
+        ],
+        "variant": "salon"
       },
       "style": {
         "primaryColor": "#E11D48"
@@ -267,7 +270,8 @@
         "whatsapp": "+256700123456",
         "location": "Wandegeya Market, Second Floor, Shop 12A (Near Shell Petrol Station), Kampala",
         "hours": "Mon-Sun: 7:00am - 9:30pm (Open Every Day)",
-        "email": "aisha@beautybraids.ug"
+        "email": "aisha@beautybraids.ug",
+        "variant": "salon"
       },
       "style": {
         "primaryColor": "#E11D48"
