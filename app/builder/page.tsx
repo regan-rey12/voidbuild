@@ -30,6 +30,7 @@ export default function BuilderPage() {
     'Connecting WhatsApp ordering & MTN MoMo...',
     'Finalizing your professional website...'
   ];
+  const templateBadge = template.generationNotice ? 'starter layout' : template.category;
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -227,40 +228,19 @@ export default function BuilderPage() {
         </div>
       </div>
 
-      {/* Generation Notice Banner (fallback / repurposed match) */}
-      {isGeneratedOrLoaded && !dismissNotice && template.generationNotice && (
-        <div
-          className={
-            'px-4 py-2 text-xs flex items-center justify-between gap-3 border-b ' +
-            (template.generationNotice === 'fallback'
-              ? 'bg-amber-50 border-amber-200/80 text-amber-950'
-              : 'bg-blue-50 border-blue-200/80 text-blue-950')
-          }
-        >
+      {/* Only a true fallback needs a notice. A successful starter-layout match is
+          shown quietly in the project badge instead of interrupting the workspace. */}
+      {isGeneratedOrLoaded && !dismissNotice && template.generationNotice === 'fallback' && (
+        <div className="px-4 py-2 text-xs flex items-center justify-between gap-3 border-b bg-amber-50 border-amber-200/80 text-amber-950">
           <div className="flex items-center gap-2 max-w-4xl">
-            {template.generationNotice === 'fallback' ? (
-              <AlertCircle className="w-4 h-4 text-amber-700 flex-shrink-0" />
-            ) : (
-              <Info className="w-4 h-4 text-blue-700 flex-shrink-0" />
-            )}
+            <Info className="w-4 h-4 text-amber-700 flex-shrink-0" />
             <span>
-              {template.generationNotice === 'fallback' ? (
-                <>
-                  <strong>We couldn&apos;t customize a site from that description just now.</strong> This is the closest starter template — edit the text directly above each section, or try generating again with a little more detail.
-                </>
-              ) : (
-                <>
-                  <strong>We matched your business to a close starter layout.</strong> Review each section and edit anything that doesn&apos;t fit — text, prices and images are all editable.
-                </>
-              )}
+              <strong>Starter site ready.</strong> We used a neutral starter layout this time. Review and edit each section, or try again when you&apos;re ready for a more tailored result.
             </span>
           </div>
           <button
             onClick={() => setDismissNotice(true)}
-            className={
-              'font-bold text-[11px] underline ml-2 flex-shrink-0 ' +
-              (template.generationNotice === 'fallback' ? 'text-amber-800 hover:text-black' : 'text-blue-800 hover:text-black')
-            }
+            className="font-bold text-[11px] underline ml-2 flex-shrink-0 text-amber-800 hover:text-black"
           >
             Got it
           </button>
@@ -309,7 +289,7 @@ export default function BuilderPage() {
                 <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Your Project</div>
                 <div className="bg-gray-50 border rounded-xl p-3">
                   <div className="font-bold text-sm truncate">{template.name}</div>
-                  <div className="text-xs text-gray-500 mt-1">{template.category} • {template.blocks.length} sections</div>
+                  <div className="text-xs text-gray-500 mt-1">{templateBadge} • {template.blocks.length} sections</div>
                   <div className="text-[11px] text-gray-400 mt-2">You can come back and edit anytime via Dashboard → Edit</div>
                 </div>
               </div>
@@ -374,7 +354,7 @@ export default function BuilderPage() {
                   <span>Sample Preview</span>
                 </span>
               ) : (
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-gray-100 hidden md:inline-flex font-medium text-gray-600">{template.category} • {template.blocks.length} sections</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-gray-100 hidden md:inline-flex font-medium text-gray-600">{templateBadge} • {template.blocks.length} sections</span>
               )}
             </div>
             <SaveButton template={template} />

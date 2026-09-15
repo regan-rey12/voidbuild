@@ -13,6 +13,7 @@ import { getUserPlan, PLANS, Plan, refreshUserPlanFromCloud, getSubscriptionSnap
 import { getSupabase } from '@/lib/supabase';
 import TopNav from '@/components/TopNav';
 import Paywall from '@/components/Paywall';
+import DomainCenter from '@/components/DomainCenter';
 import Link from 'next/link';
 import {
   Plus,
@@ -106,6 +107,10 @@ export default function Dashboard() {
   const [subdomainSaving, setSubdomainSaving] = useState(false);
   const [subdomainSuccess, setSubdomainSuccess] = useState(false);
   const [confirmSubdomainChange, setConfirmSubdomainChange] = useState(false);
+  const [customDomainStatus, setCustomDomainStatus] = useState<'none' | 'pending_dns' | 'active' | 'provider_unconfigured' | 'error'>('none');
+  const [customDomainVerification, setCustomDomainVerification] = useState<Array<{ type?: string; domain?: string; value?: string; reason?: string }>>([]);
+  const [customDomainBusy, setCustomDomainBusy] = useState(false);
+  const [customDomainMessage, setCustomDomainMessage] = useState<string | null>(null);
 
   const fetchUserProjects = async (currentUser: User | null) => {
     try {
@@ -200,6 +205,18 @@ export default function Dashboard() {
       window.history.replaceState({}, '', '/dashboard');
     }
 
+    const domainOrder = params.get('domainOrder');
+    if (domainOrder === 'success') {
+      setPaymentMsg(`Domain registration payment confirmed${params.get('domain') ? ` for ${params.get('domain')}` : ''}. Check Domain Center for DNS instructions.`);
+      window.history.replaceState({}, '', '/dashboard');
+    } else if (domainOrder === 'pending') {
+      setPaymentMsg('Your domain payment was confirmed, but the registrar is still completing the order. Check Domain Center again shortly.');
+      window.history.replaceState({}, '', '/dashboard');
+    } else if (domainOrder === 'failed' || domainOrder === 'error') {
+      setPaymentMsg('The domain order could not be completed. No subscription changes were made.');
+      window.history.replaceState({}, '', '/dashboard');
+    }
+
     const checkUser = async () => {
       let u = await getEffectiveUser();
       if (!u) {
@@ -247,6 +264,22 @@ export default function Dashboard() {
     }
   };
 
+  const loadCustomDomainStatus = async (projectId: string) => {
+    try {
+      const token = await getAccessToken();
+      if (!token) return;
+      const res = await fetch(`/api/domains?projectId=${encodeURIComponent(projectId)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Unable to load domain status.');
+      setCustomDomainStatus(data.status || 'none');
+      setCustomDomainVerification(Array.isArray(data.verification) ? data.verification : []);
+    } catch (e: any) {
+      setCustomDomainMessage(e.message || 'Unable to load domain status.');
+    }
+  };
+
   const openLinkManager = (p: SavedProject) => {
     setManagingProj(p);
     setSubdomainInput(p.subdomain || p.id.split('-')[0] || 'my-shop');
@@ -254,6 +287,103 @@ export default function Dashboard() {
     setSubdomainError(null);
     setSubdomainSuccess(false);
     setConfirmSubdomainChange(false);
+    setCustomDomainStatus(p.custom_domain ? 'pending_dns' : 'none');
+    setCustomDomainVerification([]);
+    setCustomDomainMessage(null);
+    if (p.custom_domain) void loadCustomDomainStatus(p.id);
+  };
+
+  const handleConnectCustomDomain = async () => {
+    if (!managingProj || !customDomainInput.trim()) {
+      setCustomDomainMessage('Enter the domain you want to connect.');
+      return;
+    }
+    setCustomDomainBusy(true);
+    setCustomDomainMessage(null);
+    try {
+      const token = await getAccessToken();
+      if (!token) throw new Error('Please sign in again to connect a domain.');
+      const res = await fetch('/api/domains', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ projectId: managingProj.id, domain: customDomainInput }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Unable to connect this domain.');
+      const domain = data.domain || customDomainInput.trim().toLowerCase();
+      setCustomDomainInput(domain);
+      setCustomDomainStatus(data.status || 'pending_dns');
+      setCustomDomainVerification(Array.isArray(data.verification) ? data.verification : []);
+      setProjects((prev) => prev.map((p) => p.id === managingProj.id ? { ...p, custom_domain: domain } : p));
+      setCustomDomainMessage(data.verified ? 'Domain connected and ready.' : 'Domain saved. Add the DNS record below, then check again.');
+    } catch (e: any) {
+      setCustomDomainStatus('error');
+      setCustomDomainMessage(e.message || 'Unable to connect this domain.');
+    } finally {
+      setCustomDomainBusy(false);
+    }
+  };
+
+  const handleCheckCustomDomain = async () => {
+    if (!managingProj || !customDomainInput.trim()) return;
+    setCustomDomainBusy(true);
+    setCustomDomainMessage(null);
+    try {
+      const token = await getAccessToken();
+      if (!token) throw new Error('Please sign in again to check this domain.');
+      const res = await fetch('/api/domains/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ projectId: managingProj.id, domain: customDomainInput }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Unable to check DNS right now.');
+      setCustomDomainStatus(data.status || 'pending_dns');
+      setCustomDomainVerification(Array.isArray(data.verification) ? data.verification : []);
+      setCustomDomainMessage(data.verified ? 'Domain connected and ready.' : 'DNS is not ready yet. Check the record and try again.');
+    } catch (e: any) {
+      setCustomDomainStatus('error');
+      setCustomDomainMessage(e.message || 'Unable to check DNS right now.');
+    } finally {
+      setCustomDomainBusy(false);
+    }
+  };
+
+  const handleDisconnectCustomDomain = async () => {
+    if (!managingProj || !customDomainInput.trim()) return;
+    if (!window.confirm(`Disconnect ${customDomainInput}? The website will keep working on its VoidBuild subdomain.`)) return;
+    setCustomDomainBusy(true);
+    setCustomDomainMessage(null);
+    try {
+      const token = await getAccessToken();
+      if (!token) throw new Error('Please sign in again to disconnect this domain.');
+      const res = await fetch(`/api/domains?projectId=${encodeURIComponent(managingProj.id)}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Unable to disconnect this domain.');
+      setCustomDomainInput('');
+      setCustomDomainStatus('none');
+      setCustomDomainVerification([]);
+      setCustomDomainMessage('Domain disconnected. Your VoidBuild subdomain is still available.');
+      setProjects((prev) => prev.map((p) => p.id === managingProj.id ? { ...p, custom_domain: undefined } : p));
+    } catch (e: any) {
+      setCustomDomainStatus('error');
+      setCustomDomainMessage(e.message || 'Unable to disconnect this domain.');
+    } finally {
+      setCustomDomainBusy(false);
+    }
+  };
+
+  const copyDomainText = async (value: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCustomDomainMessage('DNS value copied.');
+      setTimeout(() => setCustomDomainMessage(null), 2500);
+    } catch {
+      setCustomDomainMessage('Copy failed. Select the DNS value manually.');
+    }
   };
 
   const handleSaveSubdomain = async () => {
@@ -277,14 +407,14 @@ export default function Dashboard() {
       return;
     }
 
-    const res = await updateProjectSubdomain(managingProj.id, subdomainInput, customDomainInput);
+    const res = await updateProjectSubdomain(managingProj.id, subdomainInput);
     if (!res.success) {
       setSubdomainError(res.error || 'Failed to update subdomain');
     } else {
       setProjects((prev) =>
         prev.map((p) =>
           p.id === managingProj.id
-            ? { ...p, subdomain: subdomainInput.toLowerCase().trim(), custom_domain: customDomainInput.trim() || undefined }
+            ? { ...p, subdomain: subdomainInput.toLowerCase().trim() }
             : p
         )
       );
@@ -526,7 +656,11 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
                 {projects.map((p) => {
                   const subSlug = p.subdomain || p.id.split('-')[0] || 'shop';
-                  const directUrl = typeof window !== 'undefined' ? `${window.location.origin}/s/${subSlug}` : `/s/${subSlug}`;
+                  const directUrl = p.custom_domain
+                    ? `https://${p.custom_domain}`
+                    : typeof window !== 'undefined'
+                    ? `${window.location.origin}/s/${subSlug}`
+                    : `/s/${subSlug}`;
                   const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/p/${p.id}` : `/p/${p.id}`;
 
                   return (
@@ -542,7 +676,7 @@ export default function Dashboard() {
                         <div className="mt-2.5 flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl px-3 py-2">
                           <div className="flex items-center gap-2 min-w-0">
                             <Globe className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
-                            <span className="text-xs font-mono text-gray-800 truncate font-semibold">{subSlug}.voidbuild.com</span>
+                            <span className="text-xs font-mono text-gray-800 truncate font-semibold">{p.custom_domain || `${subSlug}.voidbuild.com`}</span>
                           </div>
                           <button
                             onClick={() => openLinkManager(p)}
@@ -704,9 +838,9 @@ export default function Dashboard() {
       </div>
 
       {managingProj && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl border overflow-hidden">
-            <div className="p-5 border-b flex items-center justify-between bg-gray-900 text-white">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto overscroll-contain">
+          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-2rem)] shadow-2xl border flex flex-col overflow-hidden">
+            <div className="p-4 sm:p-5 border-b flex items-center justify-between bg-gray-900 text-white flex-shrink-0">
               <div className="flex items-center gap-2.5">
                 <img src="/logo.png" alt="VoidBuild" className="w-6 h-6 object-contain flex-shrink-0" />
                 <h3 className="font-bold text-sm">Manage Website Link &amp; Domain Request</h3>
@@ -719,7 +853,7 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <div className="p-6 space-y-6">
+            <div className="p-4 sm:p-6 space-y-6 overflow-y-auto overscroll-contain">
               <div>
                 <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">Custom Subdomain (.voidbuild.com)</label>
                 <div className="mt-2 flex rounded-xl border border-gray-300 overflow-hidden focus-within:ring-2 focus-within:ring-gray-900/10 focus-within:border-gray-900">
@@ -768,64 +902,15 @@ export default function Dashboard() {
                 )}
               </div>
 
-              <div className="pt-4 border-t border-gray-100">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
-                    <span>Custom Domain Rollout</span>
-                    {currentPlan === 'free' || currentPlan === 'hustler' ? (
-                      <span className="text-[9px] bg-yellow-100 text-yellow-900 px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1">
-                        <Lock className="w-3 h-3" /> BUSINESS PLAN
-                      </span>
-                    ) : null}
-                  </label>
-                </div>
-
-                {currentPlan === 'business' || currentPlan === 'pro' ? (
-                  <div className="mt-2">
-                    <input
-                      value={customDomainInput}
-                      onChange={(e) => setCustomDomainInput(e.target.value)}
-                      placeholder="e.g. www.aishasalon.ug"
-                      readOnly={!!managingProj?.custom_domain}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono outline-none ${managingProj?.custom_domain ? 'border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed' : 'border-gray-300 focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900'}`}
-                    />
-                    {managingProj?.custom_domain ? (
-                      <div className="mt-2 bg-blue-50 border border-blue-200 rounded-xl p-3 text-[11px] text-blue-900 space-y-1">
-                        <div className="font-bold">Custom domain locked for safe changes:</div>
-                        <div>This website already has a custom-domain request or connection recorded. To change it again, contact support so old links and DNS do not break unexpectedly.</div>
-                      </div>
-                    ) : (
-                      <div className="mt-2 bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-900 space-y-1">
-                        <div className="font-bold">Assisted rollout:</div>
-                        <div>Save the domain you want us to connect. Automatic self-serve custom-domain routing is still rolling out.</div>
-                        <div>For now, our Kampala team can review and help complete domain setup manually for selected Business and Pro customers.</div>
-                      </div>
-                    )}
-                    <a
-                      href={`https://wa.me/256751391318?text=${encodeURIComponent(`Hello VoidBuild, I want help connecting my custom domain ${customDomainInput || 'for my website'}.`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-3 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-[11px] font-bold transition"
-                    >
-                      {managingProj?.custom_domain ? 'Request Domain Change on WhatsApp' : 'Request Domain Setup on WhatsApp'}
-                    </a>
-                  </div>
-                ) : (
-                  <div className="mt-2 bg-gray-50 border border-gray-200 rounded-xl p-3 flex items-center justify-between text-xs">
-                    <span className="text-gray-600">Upgrade to Business to join the custom-domain rollout and request assisted setup for domains like www.myshop.ug.</span>
-                    <button
-                      onClick={() => {
-                        setManagingProj(null);
-                        const el = document.getElementById('paywall-section');
-                        if (el) el.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                      className="ml-3 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-[11px] font-bold hover:bg-black whitespace-nowrap"
-                    >
-                      Upgrade
-                    </button>
-                  </div>
-                )}
-              </div>
+              <DomainCenter
+                projectId={managingProj.id}
+                currentDomain={managingProj.custom_domain}
+                plan={currentPlan}
+                onDomainChange={(domain) => {
+                  setProjects((prev) => prev.map((p) => p.id === managingProj.id ? { ...p, custom_domain: domain } : p));
+                  setManagingProj((prev) => prev ? { ...prev, custom_domain: domain } : prev);
+                }}
+              />
 
               <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center gap-3">
                 <a

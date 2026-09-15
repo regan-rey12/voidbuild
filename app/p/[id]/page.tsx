@@ -29,7 +29,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
   if (!project) {
     return {
-      title: 'Website Not Found | VoidBuild',
+      title: 'Website Not Found',
       description: 'This shared VoidBuild website could not be found.',
       robots: { index: false, follow: false },
     };

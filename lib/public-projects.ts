@@ -17,6 +17,12 @@ export interface PublicProject {
   user_id?: string;
   subdomain?: string;
   custom_domain?: string;
+  custom_domain_status?: 'none' | 'pending_dns' | 'verifying' | 'active' | 'error' | 'removed' | 'provider_unconfigured';
+  custom_domain_verification?: Array<{ type?: string; domain?: string; value?: string; reason?: string }>;
+  custom_domain_error?: string;
+  custom_domain_connected_at?: string;
+  custom_domain_verified_at?: string;
+  custom_domain_removed_at?: string;
 }
 
 function safeDecodeBase64Json(input: string): any | null {
@@ -94,6 +100,50 @@ export async function getPublicProjectBySlugServer(slug: string): Promise<Public
   }
 }
 
+function cleanHost(host: string): string {
+  return String(host || '').split(',')[0].trim().toLowerCase().replace(/:\d+$/, '').replace(/\.$/, '');
+}
+
+export async function getPublicProjectByHostServer(host: string): Promise<PublicProject | null> {
+  const clean = cleanHost(host);
+  if (!clean) return null;
+
+  const supabase = getSupabaseServer();
+  if (!supabase) return null;
+
+  const isVoidBuildSubdomain = clean.endsWith('.voidbuild.com');
+  const lookup = isVoidBuildSubdomain ? clean.slice(0, -'.voidbuild.com'.length) : clean;
+  const column = isVoidBuildSubdomain ? 'subdomain' : 'custom_domain';
+
+  try {
+    let query = supabase
+      .from('projects')
+      .select('*')
+      .eq(column, lookup)
+      .eq('published', true);
+    if (!isVoidBuildSubdomain) query = query.eq('custom_domain_status', 'active');
+    const { data, error } = await query.limit(1).maybeSingle();
+
+    if (!error) return (data as PublicProject | null) || null;
+
+    // Keep existing deployments readable while the Domain Center migration
+    // rolls out. New custom domains still require the active state above.
+    if (!isVoidBuildSubdomain) {
+      const legacy = await supabase
+        .from('projects')
+        .select('*')
+        .eq(column, lookup)
+        .eq('published', true)
+        .limit(1)
+        .maybeSingle();
+      return (legacy.data as PublicProject | null) || null;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 function readHeroSubtitle(project: PublicProject): string {
   const hero = project.template_json?.blocks?.find((b: any) => b.type === 'hero');
   return String(hero?.data?.subtitle || '').trim();
@@ -122,7 +172,7 @@ export function buildProjectDescription(project: PublicProject): string {
 }
 
 export function buildProjectMetadata(project: PublicProject, url: string, options?: { noIndex?: boolean }): Metadata {
-  const title = `${project.business_name} | VoidBuild`;
+  const title = project.business_name;
   const description = buildProjectDescription(project);
 
   return {

@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!project) {
     return {
-      title: 'Website Not Found | VoidBuild',
+      title: 'Website Not Found',
       description: 'This business website could not be found on VoidBuild.',
       robots: { index: false, follow: false },
     };

@@ -16,6 +16,12 @@ export interface SavedProject {
   user_id?: string;
   subdomain?: string;
   custom_domain?: string;
+  custom_domain_status?: 'none' | 'pending_dns' | 'verifying' | 'active' | 'error' | 'removed' | 'provider_unconfigured';
+  custom_domain_verification?: Array<{ type?: string; domain?: string; value?: string; reason?: string }>;
+  custom_domain_error?: string;
+  custom_domain_connected_at?: string;
+  custom_domain_verified_at?: string;
+  custom_domain_removed_at?: string;
 }
 
 export interface LeadInput {

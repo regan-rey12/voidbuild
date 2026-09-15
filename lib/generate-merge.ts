@@ -182,17 +182,25 @@ export function mergeExtracted(base: Template, ext: ExtractedBusiness, genId: st
   const repurposed = opts.repurposed ?? (!!rawCat && rawCat !== t.category);
 
   const businessName = cleanString(ext.businessName, 40);
-  if (businessName) t.name = businessName;
+  // A repurposed starter must never expose the starter business name when the
+  // extractor did not provide one (especially on no-key/all-models-failed paths).
+  const displayName = businessName || (repurposed ? 'Your Business' : null);
+  if (displayName) t.name = displayName;
+  if (repurposed) t.description = 'Flexible starter layout for Ugandan businesses.';
 
   // navbar
   const nav = block(t, 'navbar');
   if (nav) {
-    if (businessName) nav.data.businessName = businessName;
+    if (displayName) nav.data.businessName = displayName;
     const phone = cleanPhone(ext.contact?.phone);
     const wa = cleanWhatsapp(ext.contact?.whatsapp ?? ext.contact?.phone);
     if (phone) nav.data.phone = phone;
     else if (wa) nav.data.phone = `+${wa}`;
     if (wa) nav.data.whatsapp = wa;
+    if (repurposed && !phone && !wa) {
+      delete nav.data.phone;
+      delete nav.data.whatsapp;
+    }
     if (repurposed && Array.isArray(nav.data.links)) {
       nav.data.links = nav.data.links.map((l: { href?: string; label?: string }) => ({
         ...l,
@@ -242,6 +250,15 @@ export function mergeExtracted(base: Template, ext: ExtractedBusiness, genId: st
   // generic heading. When the category matches, extra base slots are on-topic
   // richness and stay.
   const services = block(t, 'services');
+  if (services && repurposed) {
+    const phone = cleanPhone(ext.contact?.phone);
+    const wa = cleanWhatsapp(ext.contact?.whatsapp ?? ext.contact?.phone);
+    if (phone) services.data.phone = phone;
+    else if (wa) services.data.phone = `+${wa}`;
+    else delete services.data.phone;
+    if (wa) services.data.whatsapp = wa;
+    else delete services.data.whatsapp;
+  }
   if (services && Array.isArray(ext.services) && ext.services.length > 0) {
     const list = services.data.services || [];
     const incoming = (ext.services as ExtractedService[]).slice(0, Math.max(list.length, 6));
@@ -279,6 +296,15 @@ export function mergeExtracted(base: Template, ext: ExtractedBusiness, genId: st
 
   // pricing plans
   const pricing = block(t, 'pricing');
+  if (pricing && repurposed) {
+    const phone = cleanPhone(ext.contact?.phone);
+    const wa = cleanWhatsapp(ext.contact?.whatsapp ?? ext.contact?.phone);
+    if (phone) pricing.data.phone = phone;
+    else if (wa) pricing.data.phone = `+${wa}`;
+    else delete pricing.data.phone;
+    if (wa) pricing.data.whatsapp = wa;
+    else delete pricing.data.whatsapp;
+  }
   if (pricing && Array.isArray(ext.plans) && ext.plans.length > 0) {
     const plans = pricing.data.plans || [];
     const incoming = (ext.plans as ExtractedPlan[]).slice(0, plans.length);
@@ -384,18 +410,28 @@ export function mergeExtracted(base: Template, ext: ExtractedBusiness, genId: st
     if (phone) contact.data.phone = phone;
     else if (wa) contact.data.phone = `+${wa}`;
     if (wa) contact.data.whatsapp = wa;
+    if (repurposed && !phone && !wa) {
+      delete contact.data.phone;
+      delete contact.data.whatsapp;
+    }
     if (location) contact.data.location = location;
     else if (repurposed) contact.data.location = 'Kampala, Uganda';
     if (hours) contact.data.hours = hours;
     else if (repurposed) contact.data.hours = 'Mon-Sat 8:00am - 6:00pm';
     if (email) contact.data.email = email;
+    else if (repurposed) delete contact.data.email;
     if (repurposed) contact.data.heading = 'Get in Touch';
   }
   const map = block(t, 'map');
   if (map) {
     const location = cleanString(ext.contact?.location, 90);
+    const phone = cleanPhone(ext.contact?.phone);
+    const wa = cleanWhatsapp(ext.contact?.whatsapp ?? ext.contact?.phone);
     if (location) map.data.location = location;
     else if (repurposed) map.data.location = 'Kampala, Uganda';
+    if (phone) map.data.phone = phone;
+    else if (wa) map.data.phone = `+${wa}`;
+    else if (repurposed) delete map.data.phone;
     if (repurposed) {
       map.data.heading = 'Find Us';
       if ('subheading' in map.data) map.data.subheading = 'Visit us or call ahead — we are easy to reach.';
@@ -412,7 +448,7 @@ export function mergeExtracted(base: Template, ext: ExtractedBusiness, genId: st
   // footer
   const footer = block(t, 'footer');
   if (footer) {
-    if (businessName) footer.data.businessName = businessName;
+    if (displayName) footer.data.businessName = displayName;
     const tagline = cleanString(ext.tagline, 90);
     if (tagline) footer.data.tagline = tagline;
     else if (repurposed) footer.data.tagline = 'Quality service you can rely on.';

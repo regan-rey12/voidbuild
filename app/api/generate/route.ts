@@ -133,26 +133,82 @@ function getClosestTemplate(description: string): { template: any; matched: bool
   if (hit('school', 'academy', 'nursery', 'primary', 'uneb')) return { template: FALLBACK_TEMPLATES['school-ug-1'], matched: true };
   if (hit('clinic', 'hospital', 'doctor', 'maternity', 'lab', 'laboratory', 'medical', 'dental')) return { template: FALLBACK_TEMPLATES['clinic-ug-1'], matched: true };
   if (hit('barbershop', 'barber', 'fade', 'haircut', 'shave')) return { template: FALLBACK_TEMPLATES['barbershop-ug-1'], matched: true };
-  if (hit('salon', 'braids', 'braid', 'hairdresser', 'hairdressing', 'hairstyle', 'weave', 'hair', 'spa', 'massage', 'makeup', 'nails', 'facial', 'beautician')) return { template: FALLBACK_TEMPLATES['salon-ug-1'], matched: true };
-  if (hit('hotel', 'lodge', 'cottage', 'resort', 'guesthouse', 'tours', 'travel', 'safari', 'tourism')) return { template: FALLBACK_TEMPLATES['hotel-ug-1'], matched: true };
+  if (hit('salon', 'braids', 'braid', 'hairdresser', 'hairdressing', 'hairstyle', 'weave', 'hair')) return { template: FALLBACK_TEMPLATES['salon-ug-1'], matched: true };
+  if (hit('spa', 'massage', 'makeup', 'nails', 'facial', 'beautician')) return { template: FALLBACK_TEMPLATES['salon-ug-1'], matched: false };
+  if (hit('hotel', 'lodge', 'cottage', 'resort', 'guesthouse')) return { template: FALLBACK_TEMPLATES['hotel-ug-1'], matched: true };
+  if (hit('tours', 'travel', 'safari', 'tourism')) return { template: FALLBACK_TEMPLATES['hotel-ug-1'], matched: false };
   if (hit('portfolio', 'photography', 'photographer', 'wedding', 'video', 'filming', 'studio')) return { template: FALLBACK_TEMPLATES['portfolio-ug-1'], matched: true };
-  if (hit('it support', 'it consulting', 'computer', 'computers', 'laptop', 'laptops', 'software', 'network', 'networking', 'tech company', 'website', 'web design', 'accounting', 'accountant', 'audit', 'auditing', 'tax', 'taxes', 'bookkeeping', 'consulting', 'consultant', 'consultancy', 'advisory', 'insurance', 'finance', 'financial', 'lawyer', 'advocate', 'law firm', 'legal', 'attorney', 'notary')) return { template: FALLBACK_TEMPLATES['it-ug-1'], matched: true };
-  if (hit('hardware', 'cement', 'iron sheet', 'iron sheets', 'construction', 'contractor', 'building', 'builder', 'architecture', 'architect', 'engineering', 'engineer', 'welding', 'fabrication', 'renovation', 'supermarket', 'grocery', 'plumbing', 'electrical', 'paint')) return { template: FALLBACK_TEMPLATES['hardware-mbale-1'], matched: true };
+  if (hit('it support', 'it consulting', 'computer', 'computers', 'laptop', 'laptops', 'software', 'network', 'networking', 'tech company')) return { template: FALLBACK_TEMPLATES['it-ug-1'], matched: true };
+  if (hit('accounting', 'accountant', 'audit', 'auditing', 'tax', 'taxes', 'bookkeeping', 'consulting', 'consultant', 'consultancy', 'advisory', 'insurance', 'finance', 'financial', 'lawyer', 'advocate', 'law firm', 'legal', 'attorney', 'notary')) return { template: FALLBACK_TEMPLATES['it-ug-1'], matched: false };
+  if (hit('hardware', 'cement', 'iron sheet', 'iron sheets', 'supermarket', 'grocery', 'plumbing', 'electrical', 'paint')) return { template: FALLBACK_TEMPLATES['hardware-mbale-1'], matched: true };
+  if (hit('construction', 'contractor', 'building', 'builder', 'architecture', 'architect', 'engineering', 'engineer', 'welding', 'fabrication', 'renovation')) return { template: FALLBACK_TEMPLATES['hardware-mbale-1'], matched: false };
   // No keyword match: neutral professional-services layout (NOT a niche template),
   // so an unmatched business never lands on an obviously wrong design.
   return { template: FALLBACK_TEMPLATES['it-ug-1'], matched: false };
+}
+
+// Fallbacks must be safe for businesses that do not have a dedicated template.
+// Returning the raw IT starter here would publish another company's name, copy,
+// phone number and WhatsApp link. Keep a known matched starter rich; otherwise
+// neutralize the professional starter and preserve only a safely detected name.
+function inferBusinessName(description: string): string | undefined {
+  const quoted = description.match(/\b(?:called|named)\s+["“]([^"”]+)["”]/i)?.[1];
+  const plain = description.match(/\b(?:called|named)\s+(.+?)(?=\s+(?:in|at|based|located|offering|that|which|for)\b|[,.!?;]|$)/i)?.[1];
+  const candidate = (quoted || plain || '').replace(/\s+/g, ' ').trim();
+  if (!candidate) return undefined;
+  return candidate.length <= 40 ? candidate : `${candidate.slice(0, 39).trimEnd()}…`;
+}
+
+function createFallbackTemplate(description: string) {
+  const closest = getClosestTemplate(description);
+  const businessName = inferBusinessName(description);
+  const fallback = mergeExtracted(
+    closest.template,
+    businessName ? { businessName } : {},
+    `gen-${Date.now().toString(36)}`,
+    { repurposed: !closest.matched },
+  );
+  if (!closest.matched) {
+    // Keep the starter's layout, but remove category-specific renderer variants
+    // and hidden trust/CTA copy so an unknown business does not still read as IT,
+    // photography, salon, etc. Existing local imagery is intentionally reused.
+    for (const b of fallback.blocks) {
+      if (b.data && typeof b.data === 'object') delete b.data.variant;
+      if (b.type === 'hero') {
+        delete b.data.trustPoints;
+        delete b.data.secondaryCtaText;
+        delete b.data.secondaryCtaLink;
+      }
+    }
+  }
+  fallback.generationNotice = 'fallback';
+  return fallback;
 }
 
 function parseJSON(raw: string) {
   let cleaned = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
   const start = cleaned.indexOf('{');
   const end = cleaned.lastIndexOf('}');
-  if (start === -1 || end === -1) throw new Error('Could not parse AI response JSON');
+  if (start === -1 || end === -1) throw new Error('invalid_json');
   let jsonStr = cleaned.slice(start, end + 1);
   const open = (jsonStr.match(/\{/g) || []).length;
   const close = (jsonStr.match(/\}/g) || []).length;
   if (open > close) jsonStr += '}'.repeat(open - close);
-  return JSON.parse(jsonStr);
+  try {
+    return JSON.parse(jsonStr);
+  } catch {
+    throw new Error('invalid_json');
+  }
+}
+
+function modelFailureReason(error: unknown): string {
+  if (error instanceof Error && error.name === 'AbortError') return 'timeout';
+  const message = error instanceof Error ? error.message : '';
+  if (/^http_\d+$/.test(message)) return message;
+  if (message === 'empty_content') return message;
+  if (message === 'invalid_json') return message;
+  if (message === 'unusable_extraction') return message;
+  return 'request_error';
 }
 
 export async function POST(req: Request) {
@@ -185,18 +241,17 @@ export async function POST(req: Request) {
     const rawKey = process.env.OPENROUTER_API_KEY || '';
     const cleanKey = rawKey.trim().replace(/^['"`\[\s]+/, '').replace(/['"`\]\s]+$/, '');
 
-    // If OpenRouter key is not set, load the closest matched flagship template
+    // If OpenRouter key is not set, return a safe fallback. An unmatched business
+    // must never receive the raw IT starter with its name, copy or contact details.
     if (!cleanKey || cleanKey.includes('placeholder') || cleanKey.includes('YOUR_OPENROUTER')) {
-      const fallback = getClosestTemplate(description);
-      const cloned = JSON.parse(JSON.stringify(fallback.template));
-      cloned.id = `site-${Date.now().toString(36)}`;
-      cloned.generationNotice = 'fallback';
-      return Response.json(cloned);
+      console.warn('[generate] fallback reason=missing_openrouter_key');
+      return Response.json(createFallbackTemplate(description));
     }
 
     // Serve repeat requests from cache (1-hour TTL)
     const cached = getCachedTemplate(description);
     if (cached) {
+      console.info('[generate] cache=hit');
       const cloned = JSON.parse(JSON.stringify(cached));
       cloned.id = `gen-${Date.now().toString(36)}`;
       return Response.json(cloned);
@@ -211,6 +266,7 @@ export async function POST(req: Request) {
     ];
 
     const attemptModel = async (model: string): Promise<ExtractedBusiness> => {
+      const startedAt = Date.now();
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 14000);
       try {
@@ -234,18 +290,20 @@ export async function POST(req: Request) {
           }),
         });
 
-        if (!res.ok) {
-          const errText = await res.text();
-          throw new Error(`Model ${model} returned ${res.status}: ${errText.slice(0, 100)}`);
-        }
+        if (!res.ok) throw new Error(`http_${res.status}`);
 
         const data = await res.json();
         const content = data.choices?.[0]?.message?.content;
-        if (!content) throw new Error(`Model ${model} returned empty content`);
+        if (!content) throw new Error('empty_content');
 
         const ext = parseJSON(content) as ExtractedBusiness;
-        if (!isUsableExtraction(ext)) throw new Error(`Model ${model} returned an unusable extraction`);
+        if (!isUsableExtraction(ext)) throw new Error('unusable_extraction');
+        const score = extractionScore(ext);
+        console.info(`[generate] model=${model} outcome=usable durationMs=${Date.now() - startedAt} rich=${score.rich} complete=${score.complete}`);
         return ext;
+      } catch (error) {
+        console.warn(`[generate] model=${model} outcome=failed durationMs=${Date.now() - startedAt} reason=${modelFailureReason(error)}`);
+        throw error;
       } finally {
         clearTimeout(timeoutId);
       }
@@ -280,6 +338,8 @@ export async function POST(req: Request) {
       }
       results.sort((a, b) => extractionScore(b).rich - extractionScore(a).rich);
       const ext = results[0];
+      const selectedScore = extractionScore(ext);
+      console.info(`[generate] extraction=selected rich=${selectedScore.rich} complete=${selectedScore.complete} category=${typeof ext.category === 'string' ? ext.category.toLowerCase().trim() || 'none' : 'none'}`);
 
       // Base template: trust a valid AI category, else keyword-match the description
       const rawCat = typeof ext.category === 'string' ? ext.category.toLowerCase().trim() : '';
@@ -302,20 +362,23 @@ export async function POST(req: Request) {
       if (repurposed) merged.generationNotice = 'matched';
       setCachedTemplate(description, merged);
       return Response.json(merged);
-    } catch (agg: any) {
-      console.warn('All generation models failed:', (agg?.errors ?? [agg]).map((e: any) => e?.message).join(' | ').slice(0, 300));
+    } catch {
+      console.warn('[generate] fallback reason=all_models_failed');
     }
 
-    // If all models timed out/failed, load closest flagship template — with an honest notice
-    const fallback = getClosestTemplate(description);
-    const cloned = JSON.parse(JSON.stringify(fallback.template));
-    cloned.id = `gen-${Date.now().toString(36)}`;
-    cloned.generationNotice = 'fallback';
-    return Response.json(cloned);
+    // If all models timed out/failed, return the same safe fallback path — with
+    // an honest notice but without leaking an unrelated starter business.
+    return Response.json(createFallbackTemplate(description));
 
   } catch (e: any) {
     console.error('Generate route exception:', e);
-    const fallback = FALLBACK_TEMPLATES['salon-ug-1'];
-    return Response.json({ ...JSON.parse(JSON.stringify(fallback)), id: `gen-${Date.now().toString(36)}`, generationNotice: 'fallback' });
+    const fallback = mergeExtracted(
+      FALLBACK_TEMPLATES['it-ug-1'],
+      {},
+      `gen-${Date.now().toString(36)}`,
+      { repurposed: true },
+    );
+    fallback.generationNotice = 'fallback';
+    return Response.json(fallback);
   }
 }
